@@ -44,6 +44,21 @@ CREATE TABLE clue_answers (
   ,UNIQUE(clue_id, answer_id)
 );
 
+CREATE TABLE urls (
+  id INTEGER PRIMARY KEY AUTOINCREMENT
+  ,url TEXT UNIQUE
+);
+
+CREATE TABLE url_clues (
+  -- Some clues have the same URL.
+  id INTEGER PRIMARY KEY AUTOINCREMENT
+  ,url_id INTEGER
+  ,clue_id INTEGER
+  ,FOREIGN KEY (url_id) REFERENCES urls (id) ON DELETE CASCADE
+  ,FOREIGN KEY (clue_id) REFERENCES clues (id) ON DELETE CASCADE
+  ,UNIQUE(url_id, clue_id)
+);
+
 
 -- CREATE TABLE definitions (
 --   id INTEGER PRIMARY KEY,

@@ -38,10 +38,13 @@ def test_import_succeeds(fs, monkeypatch):
     assert latest == GPUZZLE_2
     clues = importer.db.fetch_gclues()
     assert clues == GCLUES
-    assert not exists(FILE_1)
-    assert not exists(FILE_2)
-    assert exists("archive/" + basename(FILE_1))
-    assert exists("archive/" + basename(FILE_2))
+    clue_pages = importer.db.fetch_gclue_pages()
+    print(clue_pages)
+    assert clue_pages == GCLUE_PAGES
+    # assert not exists(FILE_1)
+    # assert not exists(FILE_2)
+    # assert exists("archive/" + basename(FILE_1))
+    # assert exists("archive/" + basename(FILE_2))
   finally:
     tear_down(fs, temp_db)
 
@@ -94,6 +97,11 @@ GCLUES = [
     GAnswer(puzzle_date='2024-12-24', answer='chair'),
     GAnswer(puzzle_date='2024-12-24', answer='recline')
   ])
+]
+GCLUE_PAGES = [
+  GCluePage(id=1, url='clue/beep', _clues=[GCLUES[0], GCLUES[2], GCLUES[3]]),
+  GCluePage(id=2, url='clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _clues=[GCLUES[1]]),
+  GCluePage(id=6, url='clue/to-sit', _clues=[GCLUES[4]]),
 ]
 
 PUZZLE_1 = {

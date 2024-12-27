@@ -76,6 +76,10 @@ def log_error(message, ex=None):
     logger.error(format_ex(ex))
   logger.error(message)
 
+def log_fatal(message, ex=None):
+  log_error(message, ex)
+  sys.exit(1)
+
 def debug(message, ex=None):
   if ex:
     logger.debug(format_ex(ex))

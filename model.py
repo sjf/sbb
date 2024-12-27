@@ -40,3 +40,12 @@ class GPuzzle:
     self._clues.append(clue)
   def __lt__(self, other):
     return self.date > other.date # reverse date sort
+
+@dataclass
+class GCluePage:
+  id: int
+  url: str
+  _clues: List[GClue] = field(default_factory=list)
+  @property
+  def clues(self) -> List[GClue]:
+    return sorted(self._clues)

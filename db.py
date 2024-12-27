@@ -35,8 +35,18 @@ class Answer:
   id: int | None = None
 
 @dataclass
+class Url:
+  url: str
+
+@dataclass
 class PuzzleClue:
-  puzzle_id: str
+  puzzle_id: int
+  clue_id: int
+  id: int | None = None
+
+@dataclass
+class UrlClue:
+  url_id: int
   clue_id: int
   id: int | None = None
 
@@ -86,13 +96,34 @@ class DB:
     self.cursor.execute(f"SELECT id FROM clues WHERE text = ?", (clue.text,))
     return self.cursor.fetchone()[0]
 
+  def insert_url(self, url: Url) -> int:
+    last_id = self.insert('urls', url, ignore_dups = True)
+    if last_id != 0:
+      return last_id
+    self.cursor.execute(f"SELECT id FROM urls WHERE url = ?", (url.url,))
+    return self.cursor.fetchone()[0]
+
   def fetch(self, table, cls):
     self.cursor.execute(f"SELECT * FROM {table}")
     while row := self.cursor.fetchone():
       yield DB.from_dict(cls, dict(row))
 
-  def fetch_gclues(self) -> List[GClue]:
-    rows = self.fetch_clues()
+  def fetch_gclue_pages(self) -> List[GCluePage]:
+    self.cursor.execute("""
+      SELECT urls.id, urls.url, GROUP_CONCAT(url_clues.clue_id) AS clue_ids
+      FROM urls
+      JOIN url_clues ON urls.id = url_clues.url_id
+      GROUP BY urls.id;""")
+    result = []
+    for row in self.cursor.fetchall():
+      data = dict(row)
+      clue_ids = mapl(int,split(row['clue_ids']))
+      clues = self.fetch_gclues(clue_ids)
+      result.append(GCluePage(id=data['id'],url=data['url'], _clues=clues))
+    return result
+
+  def fetch_gclues(self, ids=[]) -> List[GClue]:
+    rows = self.fetch_clues(ids)
     clues: Dict[int, GClue] = {}
     for row in rows:
       id_ = row['id']
@@ -105,8 +136,11 @@ class DB:
     result = list(clues.values())
     return result
 
-  def fetch_clues(self) -> List[dict]:
-    self.cursor.execute("""
+  def fetch_clues(self, ids: list[int]) -> List[dict]:
+    where_term = " "
+    if ids:
+      where_term = f"WHERE c.id IN ({','.join(map(str,ids))})"
+    self.cursor.execute(f"""
       SELECT c.id AS id,
              c.text AS text,
              a.answer AS answer,
@@ -115,6 +149,7 @@ class DB:
       JOIN clue_answers ca ON c.id = ca.clue_id
       JOIN answers a ON a.id = ca.answer_id
       JOIN puzzles p ON a.puzzle_id = p.id
+      {where_term}
       ORDER BY c.id, p.date;""")
     rows = self.cursor.fetchall()
     result = mapl(dict, rows)
@@ -144,7 +179,6 @@ class DB:
     puzzles = self.fetch_gpuzzles(only_latest=True)
     assert len(puzzles) == 1, puzzles
     return puzzles[0]
-
 
   def fetch_puzzles(self, only_latest) -> List[dict]:
     latest_term = " WHERE p.date = (SELECT MAX(date) FROM puzzles)" if only_latest else ""

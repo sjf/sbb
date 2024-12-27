@@ -9,12 +9,17 @@ from model import *
 from db import *
 
 OUTPUT_DIR = 'site'
+HOST='http://box:8081/'
 
-def get_new_clue_url(clue_urls, text):
-  safe_text = to_path_safe_name(text)
+def clue_url(clue: GClue) -> str:
+  # return f"clue/{clue.id}"
+  safe_text = to_path_safe_name(clue.text)
   url = f"clue/{safe_text}"
-  if url in clue_urls:
-    text = text + ' '
+  dest = OUTPUT_DIR + "/" + url
+  if exists(dest):
+    log_fatal(f"Cannot create page for {clue}, already exists: {dest}")
+  return url
+
 def to_path_safe_name(text: str, max_length: int = 100) -> str:
   # Normalize to ASCII (remove accents)
   text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
@@ -31,13 +36,10 @@ def to_path_safe_name(text: str, max_length: int = 100) -> str:
 def output(location: str, contents: str) -> None:
   path = OUTPUT_DIR + '/' + location
   write(path, contents, create_dirs = True)
-  log(f"Generated {path}")
+  log(f"Generated {HOST}{location}")
 
 def puzzle_url(puzzle: GPuzzle) -> str:
   return f"puzzle/{puzzle.date}"
-
-def clue_url(clue: GClue) -> str:
-  return f"clue/{clue.id}"
 
 class Generator:
   def __init__(self):
@@ -47,7 +49,7 @@ class Generator:
 
   def generate_all(self) -> None:
     self.generate_puzzles()
-    self.generate_clues()
+    self.generate_clue_pages()
     self.generate_main()
 
   def generate_puzzles(self) -> None:
@@ -57,12 +59,12 @@ class Generator:
       rendered = template.render(puzzle=puzzle)
       output(puzzle_url(puzzle), rendered)
 
-  def generate_clues(self) -> None:
+  def generate_clue_pages(self) -> None:
     template = self.env.get_template('clue.html')
-    clues = self.db.fetch_gclues()
-    for clue in clues:
-      rendered = template.render(clue=clue)
-      output(clue_url(clue), rendered)
+    clue_pages = self.db.fetch_gclue_pages()
+    for page in clue_pages:
+      rendered = template.render(page=page)
+      output(page.url, rendered)
 
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
