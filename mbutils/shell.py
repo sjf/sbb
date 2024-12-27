@@ -74,6 +74,9 @@ def exists_dir(f):
   return f and os.path.isdir(f)
 
 def mv(a,b):
+  if b[-1] == '/' or exists_dir(b):
+    # destination is a directory.
+    b = b + basename(a)
   os.rename(a,b)
 
 def get_size(f):
@@ -87,3 +90,6 @@ def ls(pattern):
 
 def stderr(s):
   sys.stderr.write(f"{str(s)}\n")
+
+def basename(path):
+  return os.path.basename(path)

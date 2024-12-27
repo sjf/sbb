@@ -13,9 +13,6 @@ import urllib.parse
 import pprint
 from collections.abc import Iterable
 from collections import Counter, defaultdict
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from ._defaults import _DEFAULTS
 from .log import *
 from .shell import read, stderr
 
@@ -137,20 +134,6 @@ def url_to_filename(url):
   url = url.replace('://','_')
   # Replace forbidden characters with underscores
   return re.sub(r'[<>:"/\\|?*]', '_', url)
-
-def mail(subject, body):
-  to = os.environ.get('TO_ADDRESS')
-  from_ = os.environ.get('FROM_ADDRESS')
-  message = Mail(
-      from_email=from_,
-      to_emails=to,
-      subject=subject,
-      html_content=body)
-  log(f"Sending mail '{subject}' to {to} from {from_}")
-  sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-  response = sg.send(message)
-  if response.status_code != 202:
-    log(f"Failed to send mail: response {response.status_code}\n{response.headers}")
 
 def read_csv(f, delimiter=',', quotechar='"'):
   result = []

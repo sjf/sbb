@@ -9,9 +9,6 @@ import traceback
 import re
 import ast
 from collections import Counter, defaultdict
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-from ._defaults import _DEFAULTS
 
 DATE_FORMAT = "%d/%b/%Y:%H:%M:%S %z"
 

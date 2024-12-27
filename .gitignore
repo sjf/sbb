@@ -1,4 +1,6 @@
 scraped/
+archive/
+sbb.db
 *.sublime-*
 
 # Byte-compiled / optimized / DLL files
