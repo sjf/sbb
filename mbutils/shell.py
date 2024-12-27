@@ -2,6 +2,8 @@ import os
 import subprocess
 import sys
 import glob
+import shutil
+
 from .log import log
 
 #### Shell Utils ###
@@ -76,11 +78,14 @@ def exists(f):
 def exists_dir(f):
   return f and os.path.isdir(f)
 
-def mv(a,b):
+def mv(a: str, b: str) -> None:
   if b[-1] == '/' or exists_dir(b):
     # destination is a directory.
     b = b + basename(a)
   os.rename(a,b)
+
+def cp(a: str, b: str) -> None:
+  shutil.copy(a, b)
 
 def get_size(f):
   """ Returns the file size of `f` in human-readable format."""

@@ -9,6 +9,17 @@
   <title>{{ title or "NYT Spelling Bee Solver" }}</title>
   
   <link href="/static/style.css" rel="stylesheet">
+  <link href="/static/custom.css" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YPEDWHMB1G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YPEDWHMB1G');
+  </script>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
   
@@ -22,8 +33,6 @@
 
         <div>
           <a href="/" class="text-lg text-gray-600 hover:text-blue-600 px-4">Home</a>
-          <a href="/puzzles" class="text-lg text-gray-600 hover:text-blue-600 px-4">Puzzles</a>
-          <a href="/clues" class="text-lg text-gray-600 hover:text-blue-600 px-4">Clues</a>
         </div>
       </div>
     </div>

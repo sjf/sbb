@@ -1,0 +1,66 @@
+.sb-hive {
+    width: 90%;
+    margin: 25px auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+.hive {
+    position: relative;
+    width: 100%;
+    padding-bottom: 103.9230484542%;
+}
+.hive-cell:nth-child(1) {
+    transform: translate(0, 0);
+}
+.hive-cell {
+    position: absolute;
+    top: 33.3333333333%;
+    left: 30%;
+    width: 40%;
+    height: 33.3333333333%;
+}
+
+.hive-cell .cell-fill {
+    cursor: pointer;
+    fill: #88888852;
+    stroke: white;
+    transition: all 100ms;
+}
+.hive-cell .cell-fill-center {
+    fill: #fff04c;
+}
+.hive-cell:first-child .cell-letter {
+    fill: black;
+}
+
+.hive .cell-letter {
+    fill: black;
+    font-weight: 700;
+    font-size: 1.875em;
+    text-anchor: middle;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+.hive-cell:nth-child(1) {
+    transform: translate(0, 0);
+}
+.hive-cell:nth-child(2) {
+    transform: translate(-75%, -50%);
+}
+.hive-cell:nth-child(3) {
+    transform: translate(0, -100%);
+}
+.hive-cell:nth-child(4) {
+    transform: translate(75%, -50%);
+}
+.hive-cell:nth-child(5) {
+    transform: translate(75%, 50%);
+}
+.hive-cell:nth-child(6) {
+    transform: translate(0, 100%);
+}
+.hive-cell:nth-child(7) {
+    transform: translate(-75%, 50%);
+}

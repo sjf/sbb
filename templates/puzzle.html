@@ -1,1 +1,10 @@
-puzzle-thing
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-10 p-6 max-w-4xl bg-white shadow-md rounded">
+  <h1 class="text-4xl font-bold text-center mb-6">Spelling Bee on {{puzzle.date}}</h1>
+
+  {% include "game.html" %}
+
+</div>
+{% endblock %}

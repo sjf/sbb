@@ -20,10 +20,10 @@
     </div>
 
     <p class="mt-6 text-lg">
-      Appeared in:
-      <a href="/puzzles/{{ page.clues[0].answers[0].puzzle_date | replace('-', '') }}"
+      Appeared on:
+      <a href="/puzzle/{{ page.clues[0].answers[0].puzzle_date }}"
          class="text-blue-500 hover:underline">
-        Puzzle - {{ page.clues[0].answers[0].puzzle_date }}
+        {{ page.clues[0].answers[0].puzzle_date }}
       </a>
     </p>
   </div>
@@ -60,7 +60,7 @@
 
         <p class="mt-4">
           Appeared in:
-          <a href="/puzzles/{{ clue.answers[0].puzzle_date | replace('-', '') }}"
+          <a href="/puzzle/{{ clue.answers[0].puzzle_date }}"
              class="text-blue-500 hover:underline">
             Puzzle - {{ clue.answers[0].puzzle_date }}
           </a>

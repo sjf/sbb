@@ -180,6 +180,16 @@ class DB:
     assert len(puzzles) == 1, puzzles
     return puzzles[0]
 
+  def fetch_latest_puzzle_dates(self, n) -> List[str]:
+    self.cursor.execute(f"""
+      SELECT date
+      FROM puzzles
+      ORDER BY date DESC
+      LIMIT {n};""")
+    rows = self.cursor.fetchall()
+    result = mapl(lambda x:x[0], rows)
+    return result
+
   def fetch_puzzles(self, only_latest) -> List[dict]:
     latest_term = " WHERE p.date = (SELECT MAX(date) FROM puzzles)" if only_latest else ""
 

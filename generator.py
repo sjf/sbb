@@ -51,6 +51,7 @@ class Generator:
     self.generate_puzzles()
     self.generate_clue_pages()
     self.generate_main()
+    self.generate_static()
 
   def generate_puzzles(self) -> None:
     template = self.env.get_template('puzzle.html')
@@ -69,8 +70,18 @@ class Generator:
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     latest = self.db.fetch_latest_gpuzzle()
-    rendered = template.render(puzzle=latest)
+    latest_dates = self.db.fetch_latest_puzzle_dates(8)
+    latest_dates = sorted(set(latest_dates) - set(latest.date))
+    rendered = template.render(puzzle=latest, past_dates=latest_dates)
     output('index.html', rendered)
+
+  def generate_static(self) -> None:
+    shell('npx tailwindcss -i ./static/input.css -o ./static/style.css')
+    for file in ls('static/*'):
+      if file == 'static/input.css':
+        continue
+      cp(file, OUTPUT_DIR + '/static')
+      log(f"Copied {file} to {HOST}{file}")
 
 if __name__ == '__main__':
   generator = Generator()
