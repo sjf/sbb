@@ -76,7 +76,7 @@ class DB:
       raise e
     prev = self.cursor.fetchone()
     last_id = prev[0] if prev is not None else 0
-    print(sql, data.values(), 'id:',last_id)
+    # print(sql, data.values(), 'id:',last_id)
     return last_id
 
   def insert_clue(self, clue: Clue) -> int:
@@ -124,7 +124,7 @@ class DB:
     rows = self.fetch_puzzles(only_latest)
     puzzles: Dict[int, GPuzzle] = {}
     for row in rows:
-      print(row)
+      # print(row)
       id_ = row['id']
       if id_ in puzzles:
         puzzle = puzzles[id_]

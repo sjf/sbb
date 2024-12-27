@@ -47,7 +47,10 @@ def read_lines(f, to_list=True):
       return list(result)
     return result
 
-def write(f, s):
+def write(f, s, create_dirs=False):
+  if create_dirs:
+    dirs = os.path.dirname(f)
+    mkdir(dirs)
   with open(f, 'w') as fh:
     fh.write(s)
 
@@ -91,5 +94,7 @@ def ls(pattern):
 def stderr(s):
   sys.stderr.write(f"{str(s)}\n")
 
-def basename(path):
+def basename(path: str) -> str:
   return os.path.basename(path)
+def dirname(path: str) -> str:
+  return os.path.dirname(path)
