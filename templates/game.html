@@ -1,5 +1,5 @@
-<div class="flex justify-center items-center mt-16 relative">
-<div class="sb-hive">
+<div class="flex justify-center items-center relative">
+<div class="sb-hive w-full md:w-[400px]">
 <div class="hive">
   <svg class="hive-cell center" viewBox="0 0 120 103.92304845413263">
     <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
@@ -32,34 +32,36 @@
 </div>
 </div>
 
-  <!-- Buttons to Reveal Clues and Answers -->
-  <div class="flex justify-center space-x-6 mt-8">
-    <button onclick="document.getElementById('answers').classList.toggle('hidden')"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow">
-      Reveal Answers
-    </button>
+<!-- Buttons to Reveal Clues and Answers -->
+<div class="flex justify-center space-x-6  mt-2: sm:mt-8">
+  <button data-target="clues"
+          onclick="toggleAnswer(this)"
+          class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
+    Show Clues
+  </button>
 
-    <button onclick="document.getElementById('clues').classList.toggle('hidden')"
-            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg shadow">
-      Reveal Clues
-    </button>
-  </div>
+  <button data-target="answers"
+          onclick="toggleAnswer(this)"
+          class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
+    Show Answers
+  </button>
+</div>
 
-  <!-- Hidden Sections for Clues and Answers -->
-  <div id="answers" class="hidden mt-10">
-    <h2 class="text-2xl font-semibold mb-4">Answers</h2>
-    <ul class="list-disc pl-6">
-      {% for answer in puzzle.answers %}
-      <li class="text-lg">{{ answer }}</li>
-      {% endfor %}
-    </ul>
+<!-- Hidden Sections for Clues and Answers -->
+<div id="answers" class="hidden mt-4">
+  <h2 class="text-2xl font-semibold mb-2">Answers</h2>
+  <div class="columns-2 md:columns-3 space-y-0">
+    {% for answer in puzzle.answers %}
+    <div class="text-lg break-inside-avoid">{{ answer.word }}</div>
+    {% endfor %}
   </div>
+</div>
 
-  <div id="clues" class="hidden mt-10">
-    <h2 class="text-2xl font-semibold mb-4">Clues</h2>
-    <ul class="list-disc pl-6">
-      {% for clue in puzzle.clues %}
-      <li class="text-lg">{{ clue.text }}</li>
-      {% endfor %}
-    </ul>
+<div id="clues" class="hidden mt-4">
+  <h2 class="text-2xl font-semibold mb-2">Clues</h2>
+  <div class="columns-2 md:columns-3 space-y-2">
+    {% for answer in puzzle.answers %}
+    <div class="text-lg break-inside-avoid">{{ answer.text }}</div>
+    {% endfor %}
   </div>
+</div>

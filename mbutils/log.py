@@ -29,15 +29,13 @@ def _setup_logging(list_handler=False):
   # console handler
   console_handler = logging.StreamHandler()
 
-  if 'MB_LOG_DIR' in os.environ:
-    log_dir = os.environ.get('MB_LOG_DIR')
-  else:
-    log_dir = f'logs/'
-    if not os.path.isdir(log_dir):
-      os.makedirs(log_dir, exist_ok=True)
+  log_dir = os.environ.get('MB_LOG_DIR', 'logs/')
+  if not os.path.isdir(log_dir):
+    os.makedirs(log_dir, exist_ok=True)
+  log_file = os.environ.get('MB_LOG_FILE', 'mb.log')
 
   # file handler
-  file_handler = logging.FileHandler(f'{log_dir}/mb.log')
+  file_handler = logging.FileHandler(f'{log_dir}/{log_file}')
 
   handlers = [console_handler, file_handler]
   if list_handler:

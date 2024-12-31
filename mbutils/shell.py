@@ -8,8 +8,9 @@ from .log import log
 
 #### Shell Utils ###
 
-def shell(cmd, env=None):
-  log(f"Running '{cmd}'")
+def shell(cmd, env=None, verbose=True):
+  if verbose:
+    log(f"Running '{cmd}'")
   # try:
   # check=True is equivalent of set -e, fail the script if this command fails.
   if env:

@@ -1,5 +1,1 @@
-requests
-humanfriendly
-jinja2
-pytest
-pyfakefs
+requests-cache

@@ -1,74 +1,45 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="container mx-auto mt-10 p-6 max-w-3xl bg-white shadow-md rounded">
-
-  <!-- Main Clue Section -->
-  <h1 class="text-4xl font-bold mb-6 text-center">{{ page.clues[0].text }}</h1>
-
-  <div class="text-center">
+<div class="text-center">
     <button
-      onclick="document.getElementById('answer-box').classList.toggle('hidden')"
+      data-target="answer-box-{{ index }}"
+      onclick="toggleAnswer(this)"
       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition">
       Show Answer
     </button>
 
-    <div id="answer-box" class="mt-4 hidden">
+    <div id="answer-box-{{ index }}" class="mt-4 hidden">
       <p class="text-3xl font-semibold text-green-600">
-        {{ page.clues[0].answers[0].answer }}
-      </p>
+      {{ answer.word }}
+
+      {% if answer.definition %}
+      <div class="mt-4 border-l-4 border-yellow-400 pl-4 text-lg text-gray-800 text-left">
+
+        {% for word_type in answer.definition.word_types %}
+          <p class="font-semibold uppercase mt-4 text-gray-700">{{ word_type.word_type }}</p>
+          <ol class="list-decimal pl-6">
+            {% for meaning in word_type.meanings %}
+            <li class="mt-2">
+              {{ meaning.meaning }}
+              {% if meaning.example %}
+              <p class="italic text-gray-600 mt-1">"{{ meaning.example }}"</p>
+              {% endif %}
+            {% endfor %}
+          </ol>
+        {% endfor %}
+        <p class="mt-6 text-sm text-gray-500">
+          Source: <a href="{{ answer.definition.source_url }}"
+                     class="text-blue-500 hover:underline" target="_blank">
+            {{ answer.definition.source }}
+          </a>
+        </p>
+      </div>
+      {% endif %}
     </div>
 
     <p class="mt-6 text-lg">
       Appeared on:
-      <a href="/puzzle/{{ page.clues[0].answers[0].puzzle_date }}"
+      <a href="/puzzle/{{ answer.puzzle_date }}"
          class="text-blue-500 hover:underline">
-        {{ page.clues[0].answers[0].puzzle_date }}
+        {{ answer.puzzle_date }}
       </a>
     </p>
   </div>
-
-  <!-- Definition Section -->
-  <div class="mt-10">
-    <h2 class="text-2xl font-semibold mb-4">Definition</h2>
-    <p class="text-gray-700">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
-    </p>
-  </div>
-
-  <!-- Additional Appearances -->
-  {% if page.clues|length > 1 %}
-  <div class="mt-12 pt-6 border-t">
-    <h2 class="text-2xl font-semibold mb-4">This Clue Also Appeared On</h2>
-
-    {% for clue in page.clues[1:] %}
-    <div class="mb-6">
-      <p class="text-lg font-medium">{{ clue.text }}</p>
-
-      <div class="mt-4">
-        <button
-          onclick="document.getElementById('answer-box-{{ loop.index }}').classList.toggle('hidden')"
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
-          Show Answer
-        </button>
-
-        <div id="answer-box-{{ loop.index }}" class="mt-3 hidden">
-          <p class="text-2xl font-semibold text-green-600">
-            {{ clue.answers[0].answer }}
-          </p>
-        </div>
-
-        <p class="mt-4">
-          Appeared in:
-          <a href="/puzzle/{{ clue.answers[0].puzzle_date }}"
-             class="text-blue-500 hover:underline">
-            Puzzle - {{ clue.answers[0].puzzle_date }}
-          </a>
-        </p>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-</div>
-{% endblock %}

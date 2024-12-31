@@ -11,6 +11,7 @@ import ast
 import csv
 import urllib.parse
 import pprint
+import tldextract
 from collections.abc import Iterable
 from collections import Counter, defaultdict
 from .log import *
@@ -105,6 +106,10 @@ def url_wo_host(url):
   parsed_url = urllib.parse.urlparse(url)
   new_url = ('', '', parsed_url.path, parsed_url.params, parsed_url.query, parsed_url.fragment)
   return urllib.parse.urlunparse(new_url)
+
+def url_domain(url: str) -> str:
+  extracted = tldextract.extract(url)
+  return extracted.registered_domain
 
 def replace_url_param(url, name, value):
   params = url_params(url)
