@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-10 p-6 max-w-3xl bg-white shadow-md rounded text-center">
+  <h1 class="text-4xl font-bold mb-6 ">{{ page.answers[0].text }}</h1>
+
+  {% with answer=page.answers[0], index=0 %}
+    {% include "clue.html" %}
+  {% endwith %}
+
+  {% if page.answers|length > 1 %}
+  <div class="mt-12 pt-6 border-t">
+    <h2 class="text-lg mb-6">This clue also appeared on other dates:</h2>
+    {% for answer in page.answers[1:] %}
+      <p class="text-2xl font-bold">{{ answer.text }}</p>
+      <div class="mt-4">
+      {% with index=loop.index %}
+        {% include "clue.html" %}
+      {% endwith %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

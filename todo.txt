@@ -1,0 +1,5 @@
+o The name/title of the puzzle should include the letters as well as the data.
+o You should be able to search by puzzle letters.
+o You should be able to search for clues.
+o You should be able to search for answer, and see all clues and puzzles where it occurred.
+  - There should be answer pages.

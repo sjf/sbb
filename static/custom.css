@@ -1,5 +1,10 @@
+ol.list-decimal li::marker, .subtext {
+  font-style: italic;
+  color: #6b7280;
+  font-size: 0.875rem; /* Tailwind's text-sm equivalent */
+}
+
 .sb-hive {
-    width: 90%;
     margin: 25px auto;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-user-select: none;
@@ -24,12 +29,12 @@
 
 .hive-cell .cell-fill {
     cursor: pointer;
-    fill: #88888852;
+    fill: #FDE68A;
     stroke: white;
     transition: all 100ms;
 }
 .hive-cell .cell-fill-center {
-    fill: #fff04c;
+    fill: #EAB308;
 }
 .hive-cell:first-child .cell-letter {
     fill: black;
