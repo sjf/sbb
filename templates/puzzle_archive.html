@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-4xl font-bold text-center mb-6">Puzzle Archive</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for puzzle in puzzles %}
+
+  <a href="puzzle/{{ puzzle.date }}" class="hover:underline">
+    <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
+      <p class="text-lg font-medium uppercase">{{ format_letters(puzzle) }}</p>
+      <p class="text-sm italic text-gray-500 mt-2">{{ format_date(puzzle.date) }}</p>
+    </div>
+  </a>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

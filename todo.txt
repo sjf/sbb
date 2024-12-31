@@ -1,5 +1,15 @@
+o About page
+
+o Nav bar
+
 o The name/title of the puzzle should include the letters as well as the data.
-o You should be able to search by puzzle letters.
-o You should be able to search for clues.
-o You should be able to search for answer, and see all clues and puzzles where it occurred.
-  - There should be answer pages.
+
+Search:
+1 You should be able to search for clues.
+2 You should be able to search by puzzle letters.
+3 You should be able to search for answer, and see all clues and puzzles where it occurred.
+  - This needs should be answer pages.
+Add potentialAction for site search – Allow users to search directly from Google.
+[ ] Implement the JSON-LD.
+
+o Transition animation when answer is revealed.

@@ -125,7 +125,7 @@ class Importer:
 def get_clue_url(text: str) -> str:
   # return f"clue/{clue.id}"
   safe_text = to_path_safe_name(text)
-  url = f"clue/{safe_text}"
+  url = f"/clue/{safe_text}"
   return url
 
 def to_path_safe_name(text: str, max_length: int = 100) -> str:

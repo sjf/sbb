@@ -3,6 +3,7 @@
 import unicodedata
 import re
 import os
+import datetime
 from jinja2 import Environment, FileSystemLoader
 from typing import List, Any, Dict, Optional
 from mbutils import *
@@ -12,6 +13,8 @@ from db import *
 OUTPUT_DIR = 'site'
 HOST='http://box:8081/'
 DEV=os.environ.get('DEV',None)
+DOMAIN='https://nytspellingbeesolver.com'
+PER_PAGE=100
 
 def output(location: str, contents: str) -> None:
   path = OUTPUT_DIR + '/' + location
@@ -25,13 +28,20 @@ class Generator:
   def __init__(self):
     self.db = DB()
     self.env = Environment(loader=FileSystemLoader('templates'))
-    self.env.globals.update(date_format=date_format, DEV=DEV)
+    self.env.globals.update(
+      domain=DOMAIN,
+      DEV=DEV,
+      format_date=format_date,
+      sort_by_clue=sort_by_clue,
+      format_letters=format_letters)
     mkdir(OUTPUT_DIR)
 
   def generate_all(self) -> None:
-    #self.generate_puzzles()
-    #self.generate_clue_pages()
+    self.generate_puzzles()
+    self.generate_clue_pages()
     self.generate_main()
+    self.generate_sitemap()
+    self.generate_archives()
     self.generate_static()
 
   def generate_puzzles(self) -> None:
@@ -51,29 +61,67 @@ class Generator:
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     latest = self.db.fetch_latest_gpuzzle()
-    latest_dates = self.db.fetch_latest_puzzle_dates(8)
-    latest_dates = latest_dates.remove(latest.date)
+    latest_dates = self.db.fetch_latest_puzzle_dates(14)
+    latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
     rendered = template.render(puzzle=latest, past_dates=latest_dates)
     output('index.html', rendered)
 
-  skip = ['static/input.css', 'static/custom.css']
+    template = self.env.get_template('about.html')
+    rendered = template.render()
+    output('about', rendered)
+
+
+  skip = ['static/input.css']
+  special = {'static/robots.txt': f'{OUTPUT_DIR}/robots.txt'}
   duplicate = {
     'static/favicon/favicon.ico': f'{OUTPUT_DIR}/favicon.ico',
   }
   def generate_static(self) -> None:
-    # if not DEV:
     shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.css')
 
     for file in ls('static/*'):
       filename = file.replace('static/', '', 1)
 
+      dest = OUTPUT_DIR + '/static/' + filename
+      if file in self.special:
+        dest = self.special[file]
       if file not in self.skip:
-        dest = OUTPUT_DIR + '/static/' + filename
         cp_file(file, dest)
 
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
+
+  def generate_sitemap(self) -> None:
+    template = self.env.get_template('sitemap.xml')
+    clue_pages = self.db.fetch_gclue_pages()
+    puzzles = self.db.fetch_gpuzzles()
+    current_date = datetime.datetime.today().strftime('%Y-%m-%d')
+    answers = self.db.fetch_ganswers()
+    num_clue_archive_pages = total_pages(answers)
+    rendered = template.render(
+      puzzles=puzzles,
+      clue_pages=clue_pages,
+      num_clue_archive_pages=num_clue_archive_pages,
+      current_date=current_date)
+    output('sitemap.xml', rendered)
+
+  def generate_archives(self) -> None:
+    template = self.env.get_template('clue_archive.html')
+    answers = self.db.fetch_ganswers()
+    answers = sorted(answers, key=lambda x:x.text)
+
+    for page in range(1, total_pages(answers) + 1):
+      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3)
+      output(f'clue-archive/{page}', rendered)
+
+    template = self.env.get_template('puzzle_archive.html')
+    puzzles = self.db.fetch_gpuzzles()
+    rendered = template.render(puzzles=puzzles)
+    output('puzzle-archive', rendered)
+
+def total_pages(items):
+  return ceil(len(items) / PER_PAGE)
 
 def cp_file(file: str, dest: str) -> None:
   shell(f'cp -a {file} {dest}', verbose=False)

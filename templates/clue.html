@@ -1,45 +1,46 @@
 <div class="text-center">
-    <button
-      data-target="answer-box-{{ index }}"
-      onclick="toggleAnswer(this)"
-      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition">
-      Show Answer
-    </button>
+    <div class="flex justify-center gap-2 text-5xl font-bold answer-box"
+         data-answer="{{ answer.word }}"
+         data-definition="definition-{{ index }}"
+         onclick="revealLetters(this)"
+         data-nosnippet>
 
-    <div id="answer-box-{{ index }}" class="mt-4 hidden">
-      <p class="text-3xl font-semibold text-green-600">
-      {{ answer.word }}
-
-      {% if answer.definition %}
-      <div class="mt-4 border-l-4 border-yellow-400 pl-4 text-lg text-gray-800 text-left">
-
-        {% for word_type in answer.definition.word_types %}
-          <p class="font-semibold uppercase mt-4 text-gray-700">{{ word_type.word_type }}</p>
-          <ol class="list-decimal pl-6">
-            {% for meaning in word_type.meanings %}
-            <li class="mt-2">
-              {{ meaning.meaning }}
-              {% if meaning.example %}
-              <p class="italic text-gray-600 mt-1">"{{ meaning.example }}"</p>
-              {% endif %}
-            {% endfor %}
-          </ol>
-        {% endfor %}
-        <p class="mt-6 text-sm text-gray-500">
-          Source: <a href="{{ answer.definition.source_url }}"
-                     class="text-blue-500 hover:underline" target="_blank">
-            {{ answer.definition.source }}
-          </a>
-        </p>
+      <!-- First Letter Always Visible -->
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
+        {{ answer.word[0] }}
       </div>
-      {% endif %}
+
+      <!-- Empty Boxes for Remaining Letters -->
+      {% for _ in answer.word[1:] %}
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box">
+      </div>
+      {% endfor %}
     </div>
 
-    <p class="mt-6 text-lg">
-      Appeared on:
+    <!-- Definition Section (Hidden Initially) -->
+    {% if answer.definition %}
+    <div id="definition-{{ index }}" class="mt-6 border-l-4 border-yellow-400 pl-4 text-lg text-gray-800 text-left hidden">
+      {% for word_type in answer.definition.word_types %}
+        <p class="font-semibold uppercase mt-4 text-gray-700">{{ word_type.word_type }}</p>
+        <ol class="list-decimal pl-6">
+          {% for meaning in word_type.meanings %}
+          <li class="mt-2">
+            {{ meaning.meaning }}
+            {% if meaning.example %}
+            <p class="italic text-gray-600 mt-1">"{{ meaning.example }}"</p>
+            {% endif %}
+          {% endfor %}
+        </ol>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Puzzle Date -->
+    <p class="mt-8 text-lg">
+      <span class="italic text-gray-500">Appeared on:</span>
       <a href="/puzzle/{{ answer.puzzle_date }}"
-         class="text-blue-500 hover:underline">
-        {{ answer.puzzle_date }}
+         class="text-m text-yellow-500 hover:underline">
+        {{ format_date(answer.puzzle_date) }}
       </a>
     </p>
-  </div>
+</div>

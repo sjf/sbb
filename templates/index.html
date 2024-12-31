@@ -1,22 +1,34 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div class="container mx-auto sm:mt-10 mt-0 p-6 max-w-4xl bg-white shadow-md rounded">
-  <h1 class="text-3xl font-bold text-center mb-2">Today's Spelling Bee</h1>
-  <p class="text-center italic text-gray-500">
-    {{ date_format(puzzle.date) }}
-  </p>
-  {% include "game.html" %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "NYT Spelling Bee Solver",
+  "url": "{{ domain }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ site_url }}/search?q={query}",
+    "query-input": "required name=query"
+  }
+}
+</script>
+{% endblock %}
 
-  <div class="mt-8">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Previous Spelling Bees</h2>
-    <div class="flex flex-col justify-center gap-y-4 text-center">
-      {% for date in past_dates %}
-      <a href="/puzzle/{{ date }}" class="text-m text-yellow-500 hover:underline">
-        {{ date_format(date) }}
-      </a>
-      {% endfor %}
-    </div>
+{% block content %}
+<h1 class="text-3xl font-bold text-center mb-2">Today's Spelling Bee</h1>
+<p class="text-center italic text-gray-500">{{ format_date(puzzle.date) }}</p>
+{% include "game.html" %}
+
+<div class="mt-8">
+  <h2 class="text-2xl font-semibold mb-6 text-center">Previous Spelling Bees</h2>
+  <div class="flex flex-col justify-center gap-y-4 text-center">
+    {% for date in past_dates %}
+    <a href="/puzzle/{{ date }}" class="text-m text-yellow-500 hover:underline">
+      {{ format_date(date) }}
+    </a>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

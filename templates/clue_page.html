@@ -1,25 +1,41 @@
 {% extends "base.html" %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{ page.answers[0].text }} - Spelling Bee Solver",
+  "description": "Find the answer to the spelling bee clue '{{ page.answers[0].text }}'.",
+  "url": "{{ domain }}/clue/{{ page.answers[0].clue_url }}",
+  "datePublished": "{{ page.answers[0].puzzle_date }}",
+  "mainEntity": {
+    "@type": "Question",
+    "name": "{{ page.answers[0].text }}"
+  }
+}
+</script>
+{% endblock %}
+
 {% block content %}
-<div class="container mx-auto mt-10 p-6 max-w-3xl bg-white shadow-md rounded text-center">
-  <h1 class="text-4xl font-bold mb-6 ">{{ page.answers[0].text }}</h1>
+<h1 class="text-4xl font-bold mb-6 text-center">{{ page.answers[0].text }}</h1>
 
-  {% with answer=page.answers[0], index=0 %}
-    {% include "clue.html" %}
-  {% endwith %}
+{% with answer=page.answers[0], index=0 %}
+  {% include "clue.html" %}
+{% endwith %}
 
-  {% if page.answers|length > 1 %}
-  <div class="mt-12 pt-6 border-t">
-    <h2 class="text-lg mb-6">This clue also appeared on other dates:</h2>
-    {% for answer in page.answers[1:] %}
-      <p class="text-2xl font-bold">{{ answer.text }}</p>
-      <div class="mt-4">
-      {% with index=loop.index %}
-        {% include "clue.html" %}
-      {% endwith %}
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+{% if page.answers|length > 1 %}
+<div class="mt-12 pt-6 border-t text-center">
+  <h2 class="text-lg mb-6">This clue also appeared on other dates:</h2>
+  {% for answer in page.answers[1:] %}
+    <p class="text-2xl font-bold">{{ answer.text }}</p>
+    <div class="mt-4">
+    {% with index=loop.index %}
+      {% include "clue.html" %}
+    {% endwith %}
+    </div>
+  {% endfor %}
 </div>
+{% endif %}
+
 {% endblock %}

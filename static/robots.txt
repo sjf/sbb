@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /clue/
+Allow: /puzzle/
+Allow: /about/
+Allow: /archive/
+
+Disallow: /admin/
+Disallow: /static/
+
+Sitemap: https://www.nytspellingbeesolver.com/sitemap.xml
