@@ -30,7 +30,7 @@ jobs:
 
       - name: Import
         run: |
-          ./importer.py test-data
+          ./importer.py test-data/*.json
 
       - name: Generate
         run: |
