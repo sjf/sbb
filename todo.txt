@@ -18,4 +18,15 @@ o pangram indictor in results list
 
 o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
 
-o pytest.conf use pprint to print structs.
+o puzzle archive page, make date the title. Make center letter yellow.
+
+o base title should be a link
+
+o clue page, button for reveal
+
+o puzzle page, dont cursor pointer over hive.
+
+o puzzle page: prev, next & date picker.
+
+o archive pages, pagination bar at top and bar.
+

@@ -4,14 +4,6 @@ ol.list-decimal li::marker, .subtext {
   font-size: 0.875rem; /* Tailwind's text-sm equivalent */
 }
 
-.hidden-answer {
-  display: none;
-}
-
-.answer-box {
-  justify-content: flex-end;
-}
-
 .first-letter {
   font-weight: bold;
   text-transform: uppercase;

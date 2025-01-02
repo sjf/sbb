@@ -4,6 +4,7 @@ set -eux
 # cd site
 # httpserver_w_headers.py &
 # cd ..
+. .venv/bin/activate
 
 export HOST=http://box:8081/
 
