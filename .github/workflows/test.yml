@@ -34,4 +34,4 @@ jobs:
 
       - name: Generate
         run: |
-          ./generate.py
+          ./generator.py
