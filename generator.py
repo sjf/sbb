@@ -15,13 +15,23 @@ DOMAIN='https://nytspellingbeesolver.com'
 HOST=os.environ.get('HOST', DOMAIN)
 PER_PAGE=50
 
+
+def url(path: str) -> str:
+  host = HOST
+  if host[-1] != '/' and path[0] != '/':
+    host += '/'
+  return f"{host}{path}"
+
 def output(location: str, contents: str) -> None:
   path = OUTPUT_DIR + '/' + location
   write(path, contents, create_dirs = True)
-  host = HOST
-  if host[-1] != '/':
-    host += '/'
-  log(f"Generated {host}{location}")
+  log(f"Generated {url(location)}")
+
+def cp_file(file: str, dest: str) -> None:
+  shell(f'cp -a {file} {dest}', verbose=False)
+  path = dest.replace(OUTPUT_DIR + '/', '', 1)
+  log(f"Copied {file} to {url(path)}")
+
 
 def puzzle_url(puzzle: GPuzzle) -> str:
   return f"puzzle/{puzzle.date}"
@@ -123,11 +133,6 @@ class Generator:
 
 def total_pages(items):
   return ceil(len(items) / PER_PAGE)
-
-def cp_file(file: str, dest: str) -> None:
-  shell(f'cp -a {file} {dest}', verbose=False)
-  path = dest.replace(OUTPUT_DIR + '/', '', 1)
-  log(f"Copied {file} to {HOST}{path}")
 
 if __name__ == '__main__':
   generator = Generator()
