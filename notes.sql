@@ -21,6 +21,7 @@ ORDER BY answers.answer;
 HETZNER
 adduser sjf
 sudo adduser sjf sudo
+timedatectl set-timezone America/Los_Angeles
 
 apt-get update
 apt-get install git npm
