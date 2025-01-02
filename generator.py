@@ -11,15 +11,17 @@ from model import *
 from db import *
 
 OUTPUT_DIR = 'site'
-HOST='http://box:8081/'
-DEV=os.environ.get('DEV',None)
 DOMAIN='https://nytspellingbeesolver.com'
-PER_PAGE=100
+HOST=os.environ.get('HOST', DOMAIN)
+PER_PAGE=50
 
 def output(location: str, contents: str) -> None:
   path = OUTPUT_DIR + '/' + location
   write(path, contents, create_dirs = True)
-  log(f"Generated {HOST}{location}")
+  host = HOST
+  if host[-1] != '/':
+    host += '/'
+  log(f"Generated {host}{location}")
 
 def puzzle_url(puzzle: GPuzzle) -> str:
   return f"puzzle/{puzzle.date}"
@@ -30,7 +32,6 @@ class Generator:
     self.env = Environment(loader=FileSystemLoader('templates'))
     self.env.globals.update(
       domain=DOMAIN,
-      DEV=DEV,
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       format_letters=format_letters)

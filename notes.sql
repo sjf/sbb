@@ -23,7 +23,8 @@ adduser sjf
 sudo adduser sjf sudo
 
 apt-get update
-apt-get install git
+apt-get install git npm
+npm install -D tailwindcss
 
 # install sjf public ssh key
 ...
@@ -31,6 +32,9 @@ apt-get install git
 ssh-keygen -t ed25519 -C "sjf@me.com"
 # Add to github
 open https://github.com/settings/ssh/new
+
+
+------
 
 docker run -d \
   --name foo \

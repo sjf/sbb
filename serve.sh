@@ -5,7 +5,7 @@ set -eux
 # httpserver_w_headers.py &
 # cd ..
 
-export DEV=1
+export HOST=http://box:8081/
 
 mypy generator.py && ./generator.py || true
 
