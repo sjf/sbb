@@ -13,3 +13,9 @@ Add potentialAction for site search – Allow users to search directly from Goog
 [ ] Implement the JSON-LD.
 
 o Transition animation when answer is revealed.
+
+o pangram indictor in results list
+
+o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
+
+o pytest.conf use pprint to print structs.

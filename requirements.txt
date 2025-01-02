@@ -1,1 +1,8 @@
+requests
 requests-cache
+humanfriendly
+tldextract
+pytest
+pyfakefs
+mypy
+jinja2

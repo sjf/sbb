@@ -38,57 +38,39 @@ def test_fake_fs(fs, monkeypatch):
 DB_TEST = 'scraped/db-test.json'
 IMPORTER_TEST = 'scraped/importer-test.json'
 
+P1_TOOT = GAnswer(word='toot', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-18', definition=None)
+P1_TRACTOR = GAnswer(word='tractor', is_pangram=False, text='Dad preferred a John Deere ____ but grandpa loved his Ford.',
+      url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', puzzle_date='2024-12-18', definition=None)
+P1_DUETTED = GAnswer(word='duetted', is_pangram=False, text='Play together', url='/clue/play-together', puzzle_date='2024-12-18', definition=None)
 
-# GPUZZLE_1 = GPuzzle(id=9876, date='2024-12-18',
-#       center_letter='t', outer_letters=['a', 'c', 'f', 'k', 'o', 'r'],
-#       answers=['toot', 'tractor'], pangrams=['offtrack'],
-#       _clues=[
-#         GPuzzleClue(answer='toot', text='Beep'),
-#         GPuzzleClue(answer='tractor', text='Dad preferred a John Deere ____ but grandpa loved his Ford.')
-#       ])
-# GPUZZLE_2 = GPuzzle(id=1234,
-#       date='2024-12-24',
-#       center_letter='t',
-#       outer_letters=['d', 'e', 'f', 'o', 'u', 'x'],
-#       answers=['toot', 'tooted', 'tote', 'chair', 'recline'],
-#       pangrams=['outfoxed'],
-#       _clues=[
-#         GPuzzleClue(answer='toot_', text='Beep'),
-#         GPuzzleClue(answer='tooted', text='beep!!'),
-#         GPuzzleClue(answer='tote', text='beep'),
-#         GPuzzleClue(answer='chair', text='to sit'),
-#         GPuzzleClue(answer='recline', text='to sit')
-#       ])
-# ANSWERS = [
-#   GClue(id=1, text='Beep', _answers=[
-#     GAnswer(puzzle_date='2024-12-18', answer='toot', definition=None),
-#     GAnswer(puzzle_date='2024-12-24', answer='toot_', definition=None)
-#   ]),
-#   GClue(id=2, text='Dad preferred a John Deere ____ but grandpa loved his Ford.', _answers=[
-#     GAnswer(puzzle_date='2024-12-18', answer='tractor', definition=None)]),
-#   GClue(id=4, text='beep!!', _answers=[GAnswer(puzzle_date='2024-12-24', answer='tooted', definition=None)]),
-#   GClue(id=5, text='beep', _answers=[GAnswer(puzzle_date='2024-12-24', answer='tote', definition=None)]),
-#   GClue(id=6, text='to sit', _answers=[
-#     GAnswer(puzzle_date='2024-12-24', answer='chair', definition=None),
-#     GAnswer(puzzle_date='2024-12-24', answer='recline', definition=None)
-#   ])
-# ]
+P2_TOOT_ = GAnswer(word='toot_', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
+P2_TOOTED = GAnswer(word='tooted', is_pangram=False, text='beep!!', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
+P2_HORN = GAnswer(word='horn', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
+P2_PAGE = GAnswer(word='page', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
+P2_CHAIR = GAnswer(word='chair', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definition=None)
+P2_RECLINE = GAnswer(word='recline', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definition=None)
+
+GPUZZLE_1 = GPuzzle(
+  date='2024-12-18',
+  center_letter='t',
+  outer_letters=['a', 'c', 'f', 'k', 'o', 'r'],
+  _answers=[P1_DUETTED, P1_TOOT, P1_TRACTOR])
+
+GPUZZLE_2 = GPuzzle(
+  date='2024-12-24',
+  center_letter='t',
+  outer_letters=['d', 'e', 'f', 'o', 'u', 'x'],
+  _answers=[P2_CHAIR, P2_HORN, P2_PAGE, P2_RECLINE, P2_TOOT_, P2_TOOTED])
+
+PUZZLES = [GPUZZLE_2, GPUZZLE_1]
+
 GCLUE_PAGES = [
-  GCluePage(url='clue/play-together', _answers=[
-    GAnswer(word='duetted', is_pangram=False, text='Play together', url='clue/play-together', puzzle_date='2024-12-18', definition=None)]),
-  GCluePage(url='clue/beep', _answers=[
-    GAnswer(word='toot', is_pangram=False, text='Beep', url='clue/beep', puzzle_date='2024-12-18', definition=None),
-    GAnswer(word='toot_', is_pangram=False, text='Beep', url='clue/beep', puzzle_date='2024-12-24', definition=None),
-    GAnswer(word='tooted', is_pangram=False, text='beep!!', url='clue/beep', puzzle_date='2024-12-24', definition=None),
-    GAnswer(word='horn', is_pangram=False, text='beep', url='clue/beep', puzzle_date='2024-12-24', definition=None),
-    GAnswer(word='page', is_pangram=False, text='beep', url='clue/beep', puzzle_date='2024-12-24', definition=None)]),
-  GCluePage(url='clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _answers=[
-    GAnswer(word='tractor', is_pangram=False, text='Dad preferred a John Deere ____ but grandpa loved his Ford.',
-      url='clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', puzzle_date='2024-12-18', definition=None)]),
-  GCluePage(url='clue/to-sit', _answers=[
-    GAnswer(word='chair', is_pangram=False, text='to sit', url='clue/to-sit', puzzle_date='2024-12-24', definition=None),
-    GAnswer(word='recline', is_pangram=False, text='to sit', url='clue/to-sit', puzzle_date='2024-12-24', definition=None)])
+  GCluePage(url='/clue/beep', _answers=[P2_HORN, P2_PAGE, P1_TOOT, P2_TOOT_, P2_TOOTED]),
+  GCluePage(url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _answers=[P1_TRACTOR]),
+  GCluePage(url='/clue/play-together', _answers=[P1_DUETTED]),
+  GCluePage(url='/clue/to-sit', _answers=[P2_CHAIR, P2_RECLINE])
 ]
+ANSWERS = [P2_CHAIR, P1_DUETTED, P2_HORN, P2_PAGE, P2_RECLINE, P1_TOOT, P2_TOOT_, P2_TOOTED, P1_TRACTOR]
 # PUZZLE_1 = {
 #   "id": 9876,
 #   "center_letter": "t",

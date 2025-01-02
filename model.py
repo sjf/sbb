@@ -34,7 +34,8 @@ class GAnswer:
   definition: Optional[GDefinition]
   def __lt__(self, other):
     if self.word == other.word:
-      return self.puzzle_date > other.puzzle_date # reverse date sort
+      return self.puzzle_date > other.puzzle_date
+    return self.word < other.word
 
 @dataclass
 class GPuzzle:
@@ -52,7 +53,7 @@ class GPuzzle:
     return joinl(mapl(lambda x:x.word, self.answers), sep=',')
 
   def __lt__(self, other):
-    return self.date > other.date # reverse date sort
+    return self.date > other.date
 
 @dataclass
 class GCluePage:

@@ -132,51 +132,14 @@ class DB:
       data = dict(row)
       definition = dictapis_to_def(data['definition'], data['source'])
       answer = GAnswer(word = data['word'],
-        is_pangram = data['is_pangram'],
+        is_pangram = bool(data['is_pangram']),
         text = data['text'],
         puzzle_date = data['puzzle_date'],
         url = data['url'],
         definition = definition)
       result.append(answer)
+    result = sorted(result)
     return result
-
-  # def fetch_gclues(self, ids=[]) -> List[GClue]:
-  #   rows = self.fetch_clues(ids)
-  #   clues: Dict[int, GClue] = {}
-  #   for row in rows:
-  #     id_ = row['id']
-  #     if id_ in clues:
-  #       clue = clues[id_]
-  #     else:
-  #       clue = GClue(id=id_, text=row['text'])
-  #       clues[id_] = clue
-  #     def_ = dictapis_to_def(row['definition'],row['source'])
-  #     clue.add_answer(GAnswer(answer=row['answer'], puzzle_date=row['puzzle_date'], definition=def_))
-  #   result = list(clues.values())
-  #   return result
-
-  # def fetch_clues(self, ids: list[int]) -> List[dict]:
-  #   query = """
-  #     SELECT c.id AS id,
-  #            c.text AS text,
-  #            a.answer AS answer,
-  #            d.definition as definition,
-  #            d.source as source,
-  #            p.date AS puzzle_date
-  #     FROM clues c
-  #     JOIN clue_answers ca ON c.id = ca.clue_id
-  #     JOIN answers a ON a.id = ca.answer_id
-  #     LEFT JOIN definitions d ON a.answer = d.word
-  #     JOIN puzzles p ON a.puzzle_id = p.id
-  #     {where_term}
-  #     ORDER BY c.id, p.date;"""
-  #   where_term = ''
-  #   if ids:
-  #     where_term = f" WHERE c.id IN ({','.join(map(str,ids))}) "
-  #   self.cursor.execute(query.format(where_term=where_term))
-  #   rows = self.cursor.fetchall()
-  #   result = mapl(dict, rows)
-  #   return result
 
   def fetch_gpuzzles(self, only_latest=False) -> List[GPuzzle]:
     # The answers group by url.
@@ -244,6 +207,8 @@ class DB:
     for f in fields(cls):
       if f.type == List[str] and isinstance(data.get(f.name), str):
         data[f.name] = data[f.name].split(',')
+      if f.type == bool and isinstance(data.get(f.name), int):
+        data[f.name] = bool(data[f.name])
     return cls(**data)
 
   @staticmethod

@@ -17,12 +17,14 @@ def test_import_succeeds(test_fake_fs):
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == GCLUE_PAGES
 
-  # puzzles = importer.db.fetch_gpuzzles()
-  # assert puzzles == [GPUZZLE_1, GPUZZLE_2]
-  # latest = importer.db.fetch_latest_gpuzzle()
-  # assert latest == GPUZZLE_2
-  # clues = importer.db.fetch_gclues()
-  # assert clues == GCLUES
+  puzzles = importer.db.fetch_gpuzzles()
+  assert puzzles == PUZZLES
+
+  latest = importer.db.fetch_latest_gpuzzle()
+  assert latest == GPUZZLE_2
+
+  answers = importer.db.fetch_ganswers()
+  assert answers == ANSWERS
   # assert not exists(FILE_1)
   # assert not exists(FILE_2)
   # assert exists("archive/" + basename(FILE_1))
@@ -33,7 +35,7 @@ def test_re_import_succeeds(test_fake_fs):
   importer.import_files(FILES, archive=False)
   importer.import_files(FILES)
 
-  # assert importer.db.fetch_gpuzzles() == [GPUZZLE_1, GPUZZLE_2]
-  # assert importer.db.fetch_gclues() == GCLUES
+  assert importer.db.fetch_gpuzzles() == PUZZLES
+  assert importer.db.fetch_ganswers() == ANSWERS
 
 

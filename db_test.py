@@ -35,3 +35,4 @@ def test_fetch_undefined_words_only_new(test_fake_fs):
 
   assert undefined == ['duetted', 'toot', 'tractor']
   assert only_new == ['duetted', 'toot']
+
