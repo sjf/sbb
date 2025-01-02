@@ -6,3 +6,5 @@ pytest
 pyfakefs
 mypy
 jinja2
+types-humanfriendly
+types-requests
