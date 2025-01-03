@@ -24,7 +24,15 @@ def get(url):
   return response
 
 def get_json(url):
-  return json.loads(get(url).text)
+  try:
+    response = get(url)
+    if response.status_code != 200:
+      log_error(f'Could not retrieve {url}: Got:\n{str(response)} {response.reason}')
+      return []
+    return json.loads(response.text)
+  except json.JSONDecodeError as e:
+    log_error(f'Could not decode json for {url}: {str(e)}. Got:\n{str(response)} {response.text}')
+    return []
 
 def scrape():
   active = get_json(ACTIVE_URL)
