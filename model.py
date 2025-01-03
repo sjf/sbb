@@ -28,8 +28,8 @@ class GDefinition:
 class GAnswer:
   word: str
   is_pangram: bool
-  text: str
-  url: str # URL of the clue page for this answer, multiple answers can have the same url.
+  text: Optional[str]
+  url: Optional[str] # URL of the clue page for this answer, multiple answers can have the same url.
   puzzle_date: str
   definition: Optional[GDefinition]
   def __lt__(self, other):
@@ -51,6 +51,8 @@ class GPuzzle:
     self._answers.append(answer)
   def answer_list(self) -> str:
     return joinl(mapl(lambda x:x.word, self.answers), sep=',')
+  def has_all_clues(self):
+    return all(map(lambda x:x.text, self._answers))
 
   def __lt__(self, other):
     return self.date > other.date

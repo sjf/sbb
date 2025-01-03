@@ -11,7 +11,7 @@ from model import *
 
 DIR = 'scraped/*.json'
 DB_FILE = 'nyt.db'
-SCHEMA = 'setup.sql'
+SCHEMA = 'schema.sql'
 
 # Storage classes, generated from the schema.
 @dataclass
@@ -26,7 +26,7 @@ class Answer:
   word: str
   is_pangram: bool
   puzzle_id: int
-  clue_id: int
+  clue_id: Optional[int]
   id: Optional[int] = None
 
 @dataclass
@@ -40,8 +40,12 @@ class Definition:
   word: str
   definition: Optional[str]
   source: str
+  retrieved_on: str
+
+MAPPING = {Puzzle: 'puzzles', Answer: 'answers', Clue: 'clues', Definition: 'definitions'}
 
 class DB:
+
   def __init__(self):
     log(f"Opening db {DB_FILE}")
     self.conn = sqlite3.connect(DB_FILE)
@@ -57,51 +61,77 @@ class DB:
       self.conn.executescript(read(SCHEMA))
       self.conn.commit()
 
-  def insert(self, table_name: str, dataclass_instance, ignore_dups = False, replace_dups = False) -> int:
-    # print(f"Importing {dataclass_instance}")
+  def insert(self, dataclass_instance, ignore_dups = False, replace_term = '') -> int:
     data = DB.to_dict(dataclass_instance)
+    table_name = MAPPING[type(dataclass_instance)]
     columns = ', '.join(data.keys())
-    placeholders = ', '.join(['?' for _ in data])
+    placeholders = DB.placeholders(len(data))
 
-    if ignore_dups and replace_dups:
-      raise Exception("Cannot enable both ignore_dups and replace_dups")
-    replace_term = ''
-    if ignore_dups:
-      replace_term = 'OR IGNORE'
-    elif replace_dups:
-      replace_term = 'OR REPLACE'
+    if ignore_dups and replace_term:
+      raise Exception("Cant have ignore and replace in same statement")
+    ignore_term = 'OR IGNORE' if ignore_dups else ''
+    returning_term = 'RETURNING id' if 'id' in DB.columns(dataclass_instance) else ''
 
-    sql = f"INSERT {replace_term} INTO {table_name}({columns}) VALUES ({placeholders}) RETURNING id"
+    sql = f"INSERT {ignore_term} INTO {table_name}({columns}) VALUES ({placeholders}) {replace_term} {returning_term}"
     try:
+      # print(sql,data.values())
       self.cursor.execute(sql, tuple(data.values()))
     except sqlite3.IntegrityError as e:
-      log_error(f"Failed to import into {table_name}: {dataclass_instance}")
+      log_error(f"Failed to import into {table_name}: {dataclass_instance}: {e}")
       raise e
     prev = self.cursor.fetchone()
-    last_id = prev[0] if prev is not None else 0
-    # print(sql, data.values(), 'id:',last_id)
+    if prev is None:
+      return 0
+    last_id = prev[0]
     return last_id
 
-  def insert_clue(self, clue: Clue) -> int:
-    last_id = self.insert('clues', clue, ignore_dups = True)
-    if last_id != 0:
+  def upsert_puzzle(self, puzzle: Puzzle) -> int:
+    columns = DB.to_dict(puzzle).keys() - 'id'
+    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
+    replace_term = f"ON CONFLICT(date) DO UPDATE SET {updates}"
+
+    last_id = self.insert(puzzle, replace_term=replace_term)
+    return self._last_inserted_or_get_id(last_id, 'puzzles', {'date': puzzle.date})
+
+  def upsert_answer(self, answer: Answer) -> int:
+    columns = DB.to_dict(answer).keys() - 'id'
+    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
+    replace_term = f"ON CONFLICT(word,answers.puzzle_id) DO UPDATE SET {updates}"
+
+    last_id = self.insert(answer, replace_term=replace_term)
+    return self._last_inserted_or_get_id(last_id, 'answers', {'word': answer.word, 'puzzle_id': answer.puzzle_id})
+
+  def upsert_clue(self, clue: Clue) -> int:
+    replace_term = "ON CONFLICT(text) DO NOTHING" # Theres only one other field, the url and it should not be changed.
+    last_id = self.insert(clue, replace_term=replace_term)
+    return self._last_inserted_or_get_id(last_id, 'clues', {'text': clue.text})
+
+  def upsert_definition(self, d: Definition) -> None:
+    columns = DB.to_dict(d).keys()
+    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
+    replace_term = f"ON CONFLICT(word) DO UPDATE SET {updates}"
+    self.insert(d, replace_term=replace_term)
+
+  def _last_inserted_or_get_id(self, last_id: int, table: str, where_terms: Dict[str, int | str]) -> int:
+    if last_id:
       return last_id
-    self.cursor.execute(f"SELECT id FROM clues WHERE text = ?", (clue.text,))
-    return self.cursor.fetchone()[0]
+    query = f"SELECT id FROM {table} WHERE "
+    query += joinl([ f"{col} = ?" for col in where_terms.keys()])
+    values = where_terms.values()
+    # print(query, values)
+    self.cursor.execute(query, tuple(values))
+    res = self.cursor.fetchone()
+    if res:
+      return res[0]
+    raise Exception(f"INSERT constraint failed, but could not find row in {table} with {where_terms}")
 
-  def insert_definition(self, d: Definition) -> None:
-    query = """
-    INSERT INTO definitions (word, definition, source)
-    VALUES (?,?,?)
-    ON CONFLICT(word)
-    DO UPDATE SET
-      definition = excluded.definition,
-      source = excluded.source;"""
-    self.cursor.execute(query, (d.word, d.definition, d.source))
-    self.conn.commit()
-
-  def fetch(self, table, cls):
-    self.cursor.execute(f"SELECT * FROM {table}")
+  def fetch(self, cls, ids: List[int]=[]):
+    table_name = MAPPING[cls]
+    query = f"SELECT * FROM {table_name}"
+    if ids:
+      placeholders = DB.placeholders(len(ids))
+      query += f"  WHERE id IN ({placeholders})"
+    self.cursor.execute(query, ids)
     while row := self.cursor.fetchone():
       yield DB.from_dict(cls, dict(row))
 
@@ -109,7 +139,8 @@ class DB:
     # The answers grouped by url.
     by_url = defaultdict(list)
     for answer in self.fetch_ganswers():
-      by_url[answer.url].append(answer)
+      if answer.url:
+        by_url[answer.url].append(answer)
     result = []
     for url,answers in by_url.items():
       result.append(GCluePage(url=url,_answers=answers))
@@ -119,9 +150,9 @@ class DB:
   def fetch_ganswers(self) -> List[GAnswer]:
     # Get all answers and their clue.
     self.cursor.execute("""
-      SELECT a.word, is_pangram, date as puzzle_date, text, url, definition, source
+      SELECT a.word, a.is_pangram, p.date as puzzle_date, c.text, c.url, d.definition, d.source
       FROM answers a
-      JOIN clues c ON a.clue_id = c.id
+      LEFT JOIN clues c ON a.clue_id = c.id
       JOIN puzzles p on a.puzzle_id = p.id
       LEFT JOIN definitions d on a.word = d.word
       ;
@@ -179,7 +210,7 @@ class DB:
       ORDER BY date DESC
       LIMIT {n};"""
     query = query.format(n = n)
-    return self.fetch_values(query)
+    return self._fetch_values(query)
 
   def fetch_undefined_words(self, only_new: bool = False) -> List[str]:
     only_new_term = " AND d.source IS NULL" if only_new else ''
@@ -190,9 +221,9 @@ class DB:
       WHERE d.definition IS NULL
       {only_new_term}
       ORDER BY a.word;"""
-    return self.fetch_values(query.format(only_new_term = only_new_term))
+    return self._fetch_values(query.format(only_new_term = only_new_term))
 
-  def fetch_values(self, query: str) -> List[str]:
+  def _fetch_values(self, query: str) -> List[str]:
     """
       For use with queries that just return a single value from each row.
       Returns a list of string values returned from the query.
@@ -228,3 +259,11 @@ class DB:
       else:
         raise Exception(f"Cannot write {value} of type {type(value)} to DB.")
     return data
+
+  @staticmethod
+  def columns(dataclass_instance) -> List[str]:
+    return [f.name for f in fields(type(dataclass_instance))]
+
+  @staticmethod
+  def placeholders(n):
+    return ','.join(['?'] * n)

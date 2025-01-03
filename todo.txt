@@ -1,7 +1,3 @@
-o About page
-
-o Nav bar
-
 o The name/title of the puzzle should include the letters as well as the data.
 
 Search:
@@ -20,8 +16,6 @@ o when mobile menu is expanded, nav shadow should appear at the bottom (its just
 
 o puzzle archive page, make date the title. Make center letter yellow.
 
-o base title should be a link
-
 o clue page, button for reveal
 
 o puzzle page, dont cursor pointer over hive.
@@ -30,3 +24,6 @@ o puzzle page: prev, next & date picker.
 
 o archive pages, pagination bar at top and bar.
 
+o version the css, and maybe js.
+
+o if clues are not available, use previous clues, or create clues from dictionary definitions.

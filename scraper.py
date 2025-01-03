@@ -31,9 +31,9 @@ def scrape():
   for item in active['puzzles']:
     id_ = item['id']
     filename = f"{DIR}/{item['print_date']}.json"
-    if exists(filename):
-      log(f"Skipping {filename}, already saved.")
-      continue
+    # if exists(filename):
+    #   log(f"Skipping {filename}, already saved.")
+    #   continue
     clues = get_json(CLUES_URL.format(id_ = id_))
     stats = get_json(STATS_URL.format(id_ = id_))
     item['clues'] = clues

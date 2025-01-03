@@ -17,6 +17,7 @@ DIR = 'scraped/*.json'
 ARCHIVE = 'archive/'
 DICT_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 
 class Importer:
   def __init__(self):
@@ -33,24 +34,32 @@ class Importer:
         date = content['print_date'],
         center_letter = content['center_letter'],
         outer_letters = list(content['outer_letters']))
-      puzzle_id = self.db.insert('puzzles', puzzle, ignore_dups = True)
+      # Re-import everything, even if rows already exist.
+      # Puzzles are upate on their post day with clues later.
+      puzzle_id = self.db.upsert_puzzle(puzzle)
 
-      if puzzle_id == 0: # Puzzle was not already inserted
-        log(f"Skipping {puzzle.date} from {file}, already imported")
-        continue
+      if content.get('clues', None):
+        # Clues are not available right away.
+        for content_clue in content['clues']:
+          text = content_clue['text']
+          clue = Clue(text = text, url=get_clue_url(text))
+          clue_id = self.db.upsert_clue(clue)
 
-      for content_clue in content['clues']:
-        text = content_clue['text']
-        clue = Clue(text = text, url=get_clue_url(text))
-        clue_id = self.db.insert_clue(clue)
-
-        word = content_clue['word']
-        is_pangram = word in content['pangrams']
-        answer = Answer(word = word,
-          puzzle_id = puzzle_id,
-          clue_id = clue_id,
-          is_pangram = is_pangram)
-        self.db.insert('answers', answer)
+          word = content_clue['word']
+          is_pangram = word in content['pangrams']
+          answer = Answer(word = word,
+            puzzle_id = puzzle_id,
+            clue_id = clue_id,
+            is_pangram = is_pangram)
+          self.db.upsert_answer(answer)
+      else:
+        for word in content['answers'] + content['pangrams']:
+          is_pangram = word in content['pangrams']
+          answer = Answer(word = word,
+            puzzle_id = puzzle_id,
+            clue_id = None,
+            is_pangram = is_pangram)
+          self.db.upsert_answer(answer)
 
       self.db.conn.commit()
       n += 1
@@ -71,17 +80,20 @@ class Importer:
     n = 0
     missing = []
     log(f"Looking up {joinl(words, ', ')} in {url}")
+    date = datetime.datetime.now().strftime('%Y-%m-%d')
+
     for word in words:
       response = self.get(url.format(word = word))
+      definition = None
       if not response:
         log(f"Missing {word}")
-        d = Definition(word=word, definition=None, source=url)
         missing.append(word)
       else:
-        content = response.json()
-        d = Definition(word=word, definition=json.dumps(content), source=url)
+        definition = json.dumps(response.json())
         n += 1
-      self.db.insert_definition(d)
+
+      d = Definition(word=word, definition=definition, source=url, retrieved_on=date)
+      self.db.upsert_definition(d)
       self.db.conn.commit()
       # log(f"Commited definition for {word}")
     log(f"Got definitions for {n} words, could not find {len(missing)}.")
@@ -89,15 +101,11 @@ class Importer:
 
   def setup_requests(self):
     # Set up cache for api requests.
-    if os.getenv('PYTEST'):
-      # Cant use sqlite with a backing file in unit tests.
-      self.session = requests_cache.CachedSession(backend='memory', expire_after=0)
-    else:
-      self.session = requests_cache.CachedSession(
-        '.requests_cache.sqlite',  # Cache stored on disk
-        backend='sqlite',
-        expire_after=None,  # No expiration
-        stale_if_error=True)  # Use stale cache if there's an error
+    self.session = requests_cache.CachedSession(
+      REQUESTS_SQLITE_CACHE,  # Cache stored on disk
+      backend='sqlite',
+      expire_after=None,  # No expiration
+      stale_if_error=True)  # Use stale cache if there's an error
     self.session.cache.control = 'etag'
     # Set up retry with exponential backoff
     retries = Retry(
@@ -107,7 +115,6 @@ class Importer:
       respect_retry_after_header=True)
     adapter = HTTPAdapter(max_retries=retries)
     self.session.mount('https://', adapter)
-
 
   def get(self, url):
     log(f"Getting {url}")

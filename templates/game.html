@@ -58,13 +58,18 @@
 </div>
 
 <div id="clues" class="hidden mt-4">
-  <h2 class="text-2xl font-semibold mb-4">Clues</h2>
+  <h2 class="text-2xl font-semibold mb-2">Clues</h2>
   <div class="space-y-6">
+    {% if not puzzle.has_all_clues() %}
+    <div class="text-lg italic mb-4">Clues are not available until 9AM EST.</div>
+    {% endif %}
     {% for answer in sort_by_clue(puzzle.answers) %}
     <div class="grid grid-cols-1">
-      <div class="text-lg">
-        {{ answer.text }}
-      </div>
+      {% if answer.text %}
+        <div class="text-lg">
+          {{ answer.text }}
+        </div>
+      {% endif %}
       <div class="flex flex-col items-start gap-1 mt-2">
         <div class="text-lg flex flex-wrap items-center gap-1 answer-box cursor-pointer"
              onclick="revealAnswer(this)" data-answer="{{ answer.word }}">

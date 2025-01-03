@@ -1,7 +1,7 @@
 {
   "id": 14869,
-  "center_letter": "t",
-  "outer_letters": "defoux",
+  "center_letter": "d",
+  "outer_letters": "tefoux",
   "pangrams": [
     "outfoxed"
   ],
@@ -11,11 +11,16 @@
     "page",
     "recline",
     "toot_",
-    "tooted",
-    "tote"
+    "tooted"
   ],
   "print_date": "2024-12-24",
   "clues": [
+    {
+      "word": "outfoxed",
+      "text": "Smarter than a fox",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
+    },
     {
       "word": "toot_",
       "text": "Beep",
