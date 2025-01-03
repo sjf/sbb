@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE puzzles (
   id INTEGER PRIMARY KEY AUTOINCREMENT
   ,date DATE NOT NULL UNIQUE
@@ -10,9 +12,8 @@ CREATE TABLE answers (
   id INTEGER PRIMARY KEY AUTOINCREMENT
   ,word TEXT NOT NULL
   ,is_pangram BOOL NOT NULL
-
   ,puzzle_id INTEGER NOT NULL
-  ,clue_id INTEGER NOT NULL
+  ,clue_id INTEGER
   ,FOREIGN KEY (puzzle_id) REFERENCES puzzles (id) ON DELETE CASCADE
   ,FOREIGN KEY (clue_id) REFERENCES clues (id) ON DELETE CASCADE
   ,UNIQUE(word, puzzle_id)
@@ -31,5 +32,6 @@ CREATE TABLE definitions (
   word TEXT PRIMARY KEY
   ,definition TEXT -- can be null if no defintion was found.
   ,source TEXT NOT NULL
+  ,retrieved_on TEXT NOT NULL
 );
 

@@ -30,3 +30,5 @@ o puzzle page: prev, next & date picker.
 
 o archive pages, pagination bar at top and bar.
 
+o version the css, and maybe js.
+

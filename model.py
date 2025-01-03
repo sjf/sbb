@@ -28,8 +28,8 @@ class GDefinition:
 class GAnswer:
   word: str
   is_pangram: bool
-  text: str
-  url: str # URL of the clue page for this answer, multiple answers can have the same url.
+  text: Optional[str]
+  url: Optional[str] # URL of the clue page for this answer, multiple answers can have the same url.
   puzzle_date: str
   definition: Optional[GDefinition]
   def __lt__(self, other):
