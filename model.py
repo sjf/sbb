@@ -51,6 +51,8 @@ class GPuzzle:
     self._answers.append(answer)
   def answer_list(self) -> str:
     return joinl(mapl(lambda x:x.word, self.answers), sep=',')
+  def has_all_clues(self):
+    return all(map(lambda x:x.text, self._answers))
 
   def __lt__(self, other):
     return self.date > other.date

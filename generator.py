@@ -48,14 +48,15 @@ class Generator:
     mkdir(OUTPUT_DIR)
 
   def generate_all(self) -> None:
-    self.generate_puzzles()
-    self.generate_clue_pages()
-    self.generate_main()
     self.generate_sitemap()
     self.generate_archives()
+    self.generate_puzzle_pages()
+    self.generate_clue_pages()
+    self.generate_main()
+    # This has to be last.
     self.generate_static()
 
-  def generate_puzzles(self) -> None:
+  def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
     for puzzle in puzzles:
@@ -120,6 +121,7 @@ class Generator:
   def generate_archives(self) -> None:
     template = self.env.get_template('clue_archive.html')
     answers = self.db.fetch_ganswers()
+    answers = filter(lambda x:x.text, answers) # remove answers without clues.
     answers = sorted(answers, key=lambda x:x.text)
 
     for page in range(1, total_pages(answers) + 1):
