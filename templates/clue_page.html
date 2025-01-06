@@ -7,7 +7,7 @@
   "@type": "WebPage",
   "name": "NYT Spelling Bee clue: “{{ page.answers[0].text | json_esc}}”",
   "description": "Find the answer to the NYT Spelling Bee clue “{{ page.answers[0].text | json_esc }}”.",
-  "url": "{{ domain }}/clue/{{ page.url }}",
+  "url": "{{ domain }}{{ page.url }}",
   "datePublished": "{{ page.answers[0].puzzle_date }}",
   "mainEntity": {
     "@type": "Question",
