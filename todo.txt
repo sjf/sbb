@@ -36,3 +36,8 @@ https://www.bing.com/indexnow/getstarted#
 o fix lastmod in the sitemap
 https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
 
+o add potential action for search to index.html structured data.
+
+o https://nytspellingbeesolver.com/clue/ redirect to clue-archive
+
+o change archives to not change results per page
