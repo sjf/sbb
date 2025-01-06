@@ -5,14 +5,14 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "{{ page.answers[0].text }} - Spelling Bee Solver",
-  "description": "Find the answer to the spelling bee clue '{{ page.answers[0].text }}'.",
+  "name": "NYT Spelling Bee clue: {{ page.answers[0].text | json_esc}}",
+  "description": "Find the answer to the spelling bee clue '{{ page.answers[0].text | json_esc }}'.",
   "url": "{{ domain }}/clue/{{ page.answers[0].clue_url }}",
   "datePublished": "{{ page.answers[0].puzzle_date }}",
   "mainEntity": {
     "@type": "Question",
-    "name": "{{ page.answers[0].text }}"
-  }
+    "name": {{ page.answers[0].text | json_esc}}
+  },
 }
 </script>
 {% endblock %}

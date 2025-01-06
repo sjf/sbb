@@ -5,20 +5,19 @@
 {
   "@context": "https://schema.org",
   "@type": "Quiz",
-  "name": "NYT Spelling Bee - {{ puzzle.date }}",
-  "description": "Solve the NYT Spelling Bee puzzle from {{ puzzle.date }}.",
+  "name": "NYT Spelling Bee anwers and clues - {{ puzzle.date }}",
+  "description": "Solve the NYT Spelling Bee puzzle from {{ format_date(puzzle.date) }}.",
   "datePublished": "{{ puzzle.date }}",
   "url": "{{ domain }}/puzzle/{{ puzzle.date }}",
   "mainEntity": {
     "@type": "Question",
-    "name": "Spelling Bee Puzzle - {{ puzzle.date }}",
+    "name": "NYT Spelling Bee clues and answers for {{ format_date(puzzle.date) }}",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "{{ puzzle.answer_list }}"
+      "text": "{{ puzzle.answer_list() }}"
     }
-  }
+  },
 }
-
 </script>
 {% endblock %}
 

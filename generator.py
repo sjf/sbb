@@ -36,6 +36,9 @@ def cp_file(file: str, dest: str) -> None:
 def puzzle_url(puzzle: GPuzzle) -> str:
   return f"puzzle/{puzzle.date}"
 
+def json_esc(s: str) -> str:
+  return json.dumps(s)[1:-1]
+
 class Generator:
   def __init__(self):
     self.db = DB()
@@ -45,6 +48,8 @@ class Generator:
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       format_letters=format_letters)
+    self.env.filters['json_esc'] = json_esc
+
     mkdir(OUTPUT_DIR)
 
   def generate_all(self) -> None:
