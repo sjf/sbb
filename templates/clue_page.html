@@ -11,7 +11,7 @@
   "datePublished": "{{ page.answers[0].puzzle_date }}",
   "mainEntity": {
     "@type": "Question",
-    "name": {{ page.answers[0].text | json_esc}}
+    "name": "{{ page.answers[0].text | json_esc}}"
   }
 }
 </script>
