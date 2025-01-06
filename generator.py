@@ -11,7 +11,7 @@ from model import *
 from db import *
 
 OUTPUT_DIR = 'site'
-DOMAIN='https://nytspellingbeesolver.com'
+DOMAIN='https://beekey.buzz'
 HOST=os.environ.get('HOST', DOMAIN)
 PER_PAGE=50
 
@@ -101,6 +101,10 @@ class Generator:
       if file not in self.skip:
         cp_file(file, dest)
 
+    for file in ls("secrets/*.txt"):
+      # Copy indexnow api key
+      cp_file(file, f'{OUTPUT_DIR}/{basename(file)}')
+    # Copy more files that need to be copied to multiple places
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
 
