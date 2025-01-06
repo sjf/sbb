@@ -27,3 +27,12 @@ o archive pages, pagination bar at top and bar.
 o version the css, and maybe js.
 
 o if clues are not available, use previous clues, or create clues from dictionary definitions.
+
+o ssl cert updater
+
+o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
+https://www.bing.com/indexnow/getstarted#
+
+o fix lastmod in the sitemap
+https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
+
