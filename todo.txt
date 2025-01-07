@@ -1,7 +1,5 @@
 o Standardize the naming and tagline.
 
-o Add page titles
-
 o Transition animation when answer is revealed.
 
 o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
@@ -10,7 +8,7 @@ o clue page, button for reveal
 
 o puzzle page: prev, next & date picker.
 
-o archive pages, pagination bar at top and bar.
+
 
 o if clues are not available, use previous clues, or create clues from dictionary definitions.
 
@@ -22,7 +20,7 @@ https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?for
 
 
 o change archives to not change results per page
-
+  o archive pages, pagination bar at top and bar.
 ---
 
 o puzzle-archive date shouldnt be underlined.
@@ -47,3 +45,4 @@ x pangram indictor in results list
 x puzzle page, dont cursor pointer over hive.
 x version the css, and maybe js.
 x https://nytspellingbeesolver.com/clue/ redirect to clue-archive
+x Add page titles
