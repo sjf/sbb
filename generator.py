@@ -14,7 +14,7 @@ from db import *
 OUTPUT_DIR = 'site'
 DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
 DEV=os.environ.get('DEV', False)
-VERSION=1
+VERSION=2
 PER_PAGE=50
 
 def url(path: str) -> str:
@@ -119,7 +119,7 @@ class Generator:
   }
   def generate_static(self) -> None:
     if not DEV:
-      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css')
+      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css --minify')
 
     for file in ls('static/*'):
       filename = file.replace('static/', '', 1)
