@@ -1,5 +1,3 @@
-o Standardize the naming and tagline.
-
 o Transition animation when answer is revealed.
 
 o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
@@ -8,16 +6,10 @@ o clue page, button for reveal
 
 o puzzle page: prev, next & date picker.
 
-
-
 o if clues are not available, use previous clues, or create clues from dictionary definitions.
 
 o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
 https://www.bing.com/indexnow/getstarted#
-
-o fix lastmod in the sitemap
-https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
-
 
 o change archives to not change results per page
   o archive pages, pagination bar at top and bar.
@@ -46,3 +38,6 @@ x puzzle page, dont cursor pointer over hive.
 x version the css, and maybe js.
 x https://nytspellingbeesolver.com/clue/ redirect to clue-archive
 x Add page titles
+x page performance https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
+x fix lastmod in the sitemap
+x Standardize the naming and tagline.
