@@ -1,7 +1,5 @@
 o Transition animation when answer is revealed.
 
-o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
-
 o clue page, button for reveal
 
 o puzzle page: prev, next & date picker.
@@ -41,3 +39,4 @@ x Add page titles
 x page performance https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
 x fix lastmod in the sitemap
 x Standardize the naming and tagline.
+x when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)

@@ -84,7 +84,7 @@ def dictapis_to_def(content: str, source: str) -> Optional[GDefinition]:
 
 def format_date(value: str) -> str:
     date = datetime.datetime.strptime(value, "%Y-%m-%d")
-    return date.strftime("%B %d, %Y")
+    return date.strftime("%B %-d, %Y")
 
 def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
   return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
