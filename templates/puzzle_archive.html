@@ -14,12 +14,11 @@
           <text x="13%" y="13%" text-anchor="middle" dy="0.35em" font-size="18" transform="scale(4)"  class="group-hover:underline">{{ puzzle.center_letter }}</text>
           <line x1="30" x2="90" y1="86" y2="86" class="hidden group-hover:block" stroke="black" stroke-width="6"></line>
         </svg>
-        {{ joinl(puzzle.outer_letters, sep='') }}
+        <span class="pl-1">{{ joinl(puzzle.outer_letters, sep=' ') }}</span>
       </p>
       <p class="text-sm italic mt-2 no-underline">{{ format_date(puzzle.date) }}</p>
     </div>
   </a>
   {% endfor %}
 </div>
-
 {% endblock %}
