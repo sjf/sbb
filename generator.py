@@ -14,6 +14,7 @@ from db import *
 OUTPUT_DIR = 'site'
 DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
 DEV=os.environ.get('DEV', False)
+VERSION=1
 PER_PAGE=50
 
 def url(path: str) -> str:
@@ -45,6 +46,8 @@ class Generator:
     self.env = Environment(loader=FileSystemLoader('templates'))
     self.env.globals.update(
       domain=DOMAIN,
+      DEV=DEV,
+      VERSION=VERSION,
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       joinl=joinl)
@@ -104,13 +107,17 @@ class Generator:
       output(f'error/{code}.html', rendered)
 
   skip = ['static/input.css']
-  special = {'static/robots.txt': f'{OUTPUT_DIR}/robots.txt'}
+  special = {
+    'static/robots.txt': f'{OUTPUT_DIR}/robots.txt',
+    'static/script.js': f'{OUTPUT_DIR}/static/script.{VERSION}.js',
+    'static/custom.css': f'{OUTPUT_DIR}/static/custom.{VERSION}.css',
+  }
   duplicate = {
     'static/favicon/favicon.ico': f'{OUTPUT_DIR}/favicon.ico',
   }
   def generate_static(self) -> None:
     if not DEV:
-      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.css')
+      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css')
 
     for file in ls('static/*'):
       filename = file.replace('static/', '', 1)

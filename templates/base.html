@@ -8,9 +8,12 @@
 <meta name="author" content="NYT Spelling Bee Solver">
 <title>{{ title or "NYT Spelling Bee Solver" }}</title>
 
-<!-- <script src="https://cdn.tailwindcss.com"></script> -->
-<link href="/static/style.css" rel="stylesheet">
-<link href="/static/custom.css" rel="stylesheet">
+{% if DEV %}
+  <script src="https://cdn.tailwindcss.com"></script>
+{% else %}
+  <link href="/static/style.{{VERSION}}.css" rel="stylesheet">
+{% endif %}
+<link href="/static/custom.{{VERSION}}.css" rel="stylesheet">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
@@ -22,11 +25,7 @@
   gtag('config', 'G-0BHRLPDY39');
 </script>
 
-{% if DEV %}
-<script src="https://cdn.tailwindcss.com"></script>
-{% else %}
-<script async src="/static/script.js"></script>
-{% endif %}
+<script async src="/static/script.{{VERSION}}.js"></script>
 
 {% block structured_data %}{% endblock  %}
 
