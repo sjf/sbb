@@ -120,6 +120,7 @@ class Generator:
   def generate_static(self) -> None:
     if not DEV:
       shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css --minify')
+      shell(f'terser static/script.js --mangle -o {OUTPUT_DIR}/static/script.{VERSION}.min.js')
 
     for file in ls('static/*'):
       filename = file.replace('static/', '', 1)

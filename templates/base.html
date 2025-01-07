@@ -8,14 +8,15 @@
 <meta name="author" content="NYT Spelling Bee Key">
 <title>{% block title %}NYT Spelling Bee Key{% endblock %}</title>
 
+<!-- CSS -->
 {% if DEV %}
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="/static/custom.{{VERSION}}.css" rel="stylesheet">
 {% else %}
   <link href="/static/style.{{VERSION}}.css" rel="stylesheet">
 {% endif %}
 
-<link href="/static/custom.{{VERSION}}.css" rel="stylesheet">
-
+<!-- Javascript -->
 {% if not DEV %}
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
@@ -25,8 +26,10 @@
     gtag('js', new Date());
     gtag('config', 'G-0BHRLPDY39');
   </script>
+  <script async src="/static/script.{{VERSION}}.min.js"></script>
+{% else %}
+  <script async src="/static/script.{{VERSION}}.js"></script>
 {% endif %}
-<script async src="/static/script.{{VERSION}}.js"></script>
 
 {% block structured_data %}{% endblock %}
 
@@ -50,7 +53,7 @@
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
   
-  <!-- Navigation Bar -->
+<!-- Navigation Bar -->
 <nav class="flex items-center justify-between py-4 px-6 bg-yellow-300 shadow-md">
   <div class="text-2xl font-bold flex items-center">
     <a href="/">🐝 <span class="ml-2">NYT Spelling Bee Key</span></div>
