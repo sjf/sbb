@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}NYT Spelling Bee Archive{% endblock %}
 {% block content %}
 <h1 class="text-4xl font-bold text-center mb-6">Puzzle Archive</h1>
 
@@ -12,7 +12,6 @@
         <svg class="hive-cell-standalone center" viewBox="0 0 120 103.92304845413263">
           <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
           <text x="13%" y="13%" text-anchor="middle" dy="0.35em" font-size="18" transform="scale(4)"  class="group-hover:underline">{{ puzzle.center_letter }}</text>
-          <line x1="30" x2="90" y1="86" y2="86" class="hidden group-hover:block" stroke="black" stroke-width="6"></line>
         </svg>
         <span class="pl-1">{{ joinl(puzzle.outer_letters, sep=' ') }}</span>
       </p>

@@ -21,6 +21,8 @@ def url(path: str) -> str:
   host = DOMAIN
   if host[-1] != '/' and path[0] != '/':
     host += '/'
+  if host[-1] == '/' and path[0] == '/':
+    host = host[:-1]
   return f"{host}{path}"
 
 def output(location: str, contents: str) -> None:
@@ -48,11 +50,11 @@ class Generator:
       domain=DOMAIN,
       DEV=DEV,
       VERSION=VERSION,
+      current_year=datetime.datetime.now().year,
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       joinl=joinl)
     self.env.filters['json_esc'] = json_esc
-
     mkdir(OUTPUT_DIR)
 
   def generate_all(self) -> None:

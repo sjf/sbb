@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}NYT Spelling Bee Clues{% endblock %}
 {% block content %}
 <h1 class="text-4xl font-bold text-center mb-6">Clue Archive</h1>
 
@@ -8,7 +8,7 @@
   <a href="{{ answer.url }}" class="hover:underline">
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
       <p class="text-lg font-medium">{{ answer.text }}</p>
-      <p class="text-sm italic text-gray-500 mt-2">{{ format_date(answer.puzzle_date) }}</p>
+      <p class="text-sm italic mt-2">{{ format_date(answer.puzzle_date) }}</p>
     </div>
   </a>
   {% endfor %}

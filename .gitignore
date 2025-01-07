@@ -2,6 +2,7 @@ scraped/
 archive/
 sbb.db
 *.sublime-*
+secrets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

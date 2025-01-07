@@ -5,29 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="NYT Spelling Bee Clue and Answer Solver">
 <meta name="keywords" content="NYT Spelling Bee, spellingbee, spellingbee clues, spellingbee hints, spelling bee hints">
-<meta name="author" content="NYT Spelling Bee Solver">
-<title>{{ title or "NYT Spelling Bee Solver" }}</title>
+<meta name="author" content="NYT Spelling Bee Key">
+<title>{% block title %}NYT Spelling Bee Key{% endblock %}</title>
 
 {% if DEV %}
   <script src="https://cdn.tailwindcss.com"></script>
 {% else %}
   <link href="/static/style.{{VERSION}}.css" rel="stylesheet">
 {% endif %}
+
 <link href="/static/custom.{{VERSION}}.css" rel="stylesheet">
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0BHRLPDY39');
-</script>
-
+{% if not DEV %}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0BHRLPDY39');
+  </script>
+{% endif %}
 <script async src="/static/script.{{VERSION}}.js"></script>
 
-{% block structured_data %}{% endblock  %}
+{% block structured_data %}{% endblock %}
 
 <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
@@ -52,7 +53,7 @@
   <!-- Navigation Bar -->
 <nav class="flex items-center justify-between py-4 px-6 bg-yellow-300 shadow-md">
   <div class="text-2xl font-bold flex items-center">
-    <a href="/">🐝 <span class="ml-2">Spelling Bee Solver</span></div>
+    <a href="/">🐝 <span class="ml-2">NYT Spelling Bee Key</span></div>
   </div>
   <div class="hidden sm:flex space-x-6">
     <a href="/" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
@@ -89,7 +90,7 @@ function toggleMenu() {
   <!-- Footer -->
   <footer class="bg-white border-t mt-6 sm:mt-12">
     <div class="container mx-auto px-4 py-6 text-center text-gray-500">
-      &copy; 2024 NYT Spelling Bee Solver | Not affiliated with the New York Times
+      &copy; {{ current_year }} NYT Spelling Bee Key | Not affiliated with the New York Times
     </div>
   </footer>
 </body>

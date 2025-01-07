@@ -15,13 +15,13 @@
   {% for i in range(1, num_clue_archive_pages + 1) %}
   <url>
     <loc>{{ domain }}/clue-archive/{{ i }}</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>{{ current_date }}</lastmod>
     <priority>0.8</priority>
   </url>
   {% endfor %}
   <url>
     <loc>{{ domain }}/puzzle-archive</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>{{ current_date }}</lastmod>
     <priority>0.6</priority>
   </url>
   {% for puzzle in puzzles %}

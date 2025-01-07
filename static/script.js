@@ -30,23 +30,24 @@ function revealAnswer(element) {
   }
 }
 
-function revealLetters(element) {
+function toggleClueAnswer(element) {
+  // On the clue page, reveals the answer.
   const answer = element.getAttribute('data-answer');
   const emptyBoxes = element.querySelectorAll('.empty-box');
+  const filledBoxes = element.querySelectorAll('.filled-box');
   const definition = document.getElementById(element.dataset.definition);
 
   emptyBoxes.forEach((box, index) => {
     box.textContent = answer[index + 1];  // Fill box with letter
-    box.classList.remove('empty-box');  // Mark as filled
+    box.classList.remove('empty-box');
+    box.classList.add('filled-box');
   });
 
-  // Check if all boxes are filled
-  const allRevealed = element.querySelectorAll('.empty-box').length === 0;
+  filledBoxes.forEach((box, index) => {
+    box.textContent = '';
+    box.classList.add('empty-box');
+    box.classList.remove('filled-box');
+  });
 
-  if (allRevealed && definition) {
-    definition.classList.remove('hidden');  // Show definition
-  }
-
-  // Disable further clicks after reveal
-  element.onclick = null;
+  definition.classList.toggle('hidden');
 }

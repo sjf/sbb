@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}NYT Spelling Bee Clue: {{page.answers[0].text}}{% endblock %}
 {% block structured_data %}
 <script type="application/ld+json">
 {
