@@ -89,9 +89,6 @@ def format_date(value: str) -> str:
 def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
   return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
 
-def format_letters(puzzle: GPuzzle) -> str:
-  return puzzle.center_letter + ' ' + joinl(puzzle.outer_letters, sep='')
-
 @dataclass
 class Pagination:
   items: List[Any]

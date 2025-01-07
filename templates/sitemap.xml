@@ -33,7 +33,7 @@
   {% endfor %}
   <url>
     <loc>{{ domain }}/about</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2025-01-01</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

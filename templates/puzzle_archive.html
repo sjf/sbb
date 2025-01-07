@@ -6,13 +6,19 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {% for puzzle in puzzles %}
 
-  <a href="puzzle/{{ puzzle.date }}" class="hover:underline">
+  <a href="puzzle/{{ puzzle.date }}" class="group hover:underline">
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
-      <p class="text-lg font-medium uppercase">{{ format_letters(puzzle) }}</p>
-      <p class="text-sm italic text-gray-500 mt-2">{{ format_date(puzzle.date) }}</p>
+      <p class="text-lg font-medium uppercase flex items-center">
+        <svg class="hive-cell-standalone center" viewBox="0 0 120 103.92304845413263">
+          <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+          <text x="13%" y="13%" text-anchor="middle" dy="0.35em" font-size="18" transform="scale(4)"  class="group-hover:underline">{{ puzzle.center_letter }}</text>
+          <line x1="30" x2="90" y1="86" y2="86" class="hidden group-hover:block" stroke="black" stroke-width="6"></line>
+        </svg>
+        {{ joinl(puzzle.outer_letters, sep='') }}
+      </p>
+      <p class="text-sm italic text-gray-500 mt-2 no-underline">{{ format_date(puzzle.date) }}</p>
     </div>
   </a>
-
   {% endfor %}
 </div>
 

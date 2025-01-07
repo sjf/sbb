@@ -56,7 +56,7 @@ ol.list-decimal li::marker, .subtext {
     stroke: white;
     transition: all 100ms;
 }
-.hive-cell .cell-fill-center {
+.cell-fill-center {
     fill: #EAB308;
 }
 .hive-cell:first-child .cell-letter {
@@ -91,4 +91,7 @@ ol.list-decimal li::marker, .subtext {
 }
 .hive-cell:nth-child(7) {
     transform: translate(-75%, 50%);
+}
+.hive-cell-standalone {
+  width: 30px;
 }

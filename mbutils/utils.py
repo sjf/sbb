@@ -33,7 +33,7 @@ def split(s, sep=','):
   parts = non_empty(parts)
   return parts
 
-def joinl(l, sep="\n", to_str=str, empty='[]'):
+def joinl(l, sep="\n", to_str=str, empty=''):
   if not l:
     return empty
   return sep.join(map(to_str,l))

@@ -47,7 +47,7 @@ class Generator:
       domain=DOMAIN,
       format_date=format_date,
       sort_by_clue=sort_by_clue,
-      format_letters=format_letters)
+      joinl=joinl)
     self.env.filters['json_esc'] = json_esc
 
     mkdir(OUTPUT_DIR)
