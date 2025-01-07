@@ -6,7 +6,8 @@ set -eux
 # cd ..
 . .venv/bin/activate
 
-export HOST=http://box:8081/
+export DOMAIN=http://box:8081/
+export DEV=1
 
 mypy generator.py && ./generator.py || true
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{code}} {{status}}",
+  "description": "{{message}}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto py-12 px-6">
+  <h1 class="text-3xl font-bold mb-6">{{code}} {{status}}</h1>
+  <p class="text-lg leading-relaxed mb-6">{{message}}</p>
+  <a href="/" class="text-yellow-600 hover:underline">Return to Home</a>
+</section>
+{% endblock %}

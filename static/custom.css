@@ -51,13 +51,12 @@ ol.list-decimal li::marker, .subtext {
 }
 
 .hive-cell .cell-fill {
-    cursor: pointer;
     fill: #FDE68A;
     stroke: white;
     transition: all 100ms;
 }
 .cell-fill-center {
-    fill: #EAB308;
+    fill: #EAB308 !important;
 }
 .hive-cell:first-child .cell-letter {
     fill: black;

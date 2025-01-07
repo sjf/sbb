@@ -34,14 +34,18 @@
 
 <!-- Buttons to Reveal Clues and Answers -->
 <div class="flex justify-center space-x-6  mt-2: sm:mt-8">
-  <button data-target="clues"
-          onclick="toggleAnswer(this)"
+  <button id="show-clues"
+          data-target="clues"
+          data-opposite-button="show-answers"
+          onclick="toggleVisible(this)"
           class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
     Show Clues
   </button>
 
-  <button data-target="answers"
-          onclick="toggleAnswer(this)"
+  <button id="show-answers"
+          data-target="answers"
+          data-opposite-button="show-clues"
+          onclick="toggleVisible(this)"
           class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
     Show Answers
   </button>
@@ -52,7 +56,7 @@
   <h2 class="text-2xl font-semibold mb-2">Answers</h2>
   <div class="columns-2 md:columns-3 space-y-0">
     {% for answer in puzzle.answers %}
-    <div class="text-lg break-inside-avoid">{{ answer.word }}</div>
+    <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">{{ answer.word }}</div>
     {% endfor %}
   </div>
 </div>

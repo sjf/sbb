@@ -4,6 +4,7 @@ import unicodedata
 import re
 import os
 import datetime
+from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader
 from typing import List, Any, Dict, Optional
 from mbutils import *
@@ -11,13 +12,12 @@ from model import *
 from db import *
 
 OUTPUT_DIR = 'site'
-DOMAIN='https://beekey.buzz'
-HOST=os.environ.get('HOST', DOMAIN)
+DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
+DEV=os.environ.get('DEV', False)
 PER_PAGE=50
 
-
 def url(path: str) -> str:
-  host = HOST
+  host = DOMAIN
   if host[-1] != '/' and path[0] != '/':
     host += '/'
   return f"{host}{path}"
@@ -75,6 +75,15 @@ class Generator:
       rendered = template.render(page=page)
       output(page.url, rendered)
 
+  error_messages = {
+      400: "Your request could not be processed. Please check the URL or try again later.",
+      403: "Access denied. You don't have permission to view this page.",
+      404: "We couldn't find the page you were looking for.",
+      500: "Something went wrong on our end. Please try again later.",
+      502: "The server received an invalid response from the upstream server.",
+      503: "The server is temporarily unable to handle the request. Please try again later."
+  }
+
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     latest = self.db.fetch_latest_gpuzzle()
@@ -88,6 +97,11 @@ class Generator:
     rendered = template.render()
     output('about', rendered)
 
+    template = self.env.get_template('error.html')
+    for code,message in self.error_messages.items():
+      status = HTTPStatus(code).phrase
+      rendered = template.render(code=code, status=status, message=message)
+      output(f'error/{code}.html', rendered)
 
   skip = ['static/input.css']
   special = {'static/robots.txt': f'{OUTPUT_DIR}/robots.txt'}
@@ -95,7 +109,8 @@ class Generator:
     'static/favicon/favicon.ico': f'{OUTPUT_DIR}/favicon.ico',
   }
   def generate_static(self) -> None:
-    shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.css')
+    if not DEV:
+      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.css')
 
     for file in ls('static/*'):
       filename = file.replace('static/', '', 1)

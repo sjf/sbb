@@ -22,7 +22,11 @@
   gtag('config', 'G-0BHRLPDY39');
 </script>
 
+{% if DEV %}
+<script src="https://cdn.tailwindcss.com"></script>
+{% else %}
 <script async src="/static/script.js"></script>
+{% endif %}
 
 {% block structured_data %}{% endblock  %}
 

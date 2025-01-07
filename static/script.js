@@ -1,10 +1,22 @@
-function toggleAnswer(button) {
+function toggleVisible(button) {
   // Click to show/hide any associated div.
   const targetId = button.getAttribute('data-target');
-  const answerBox = document.getElementById(targetId);
-
-  answerBox.classList.toggle('hidden');
+  const target = document.getElementById(targetId);
+  target.classList.toggle('hidden');
   button.innerText = button.innerText.replace(/Show|Hide/, match => match === 'Show' ? 'Hide' : 'Show');
+
+  const oppositeButtonId = button.getAttribute('data-opposite-button');
+  const oppositeButton = document.getElementById(oppositeButtonId);
+  hide(oppositeButton);
+}
+
+function hide(button) {
+  if (button.innerText.startsWith('Hide')) {
+    const targetId = button.getAttribute('data-target');
+    const target = document.getElementById(targetId);
+    target.classList.add('hidden');
+    button.innerText = button.innerText.replace(/Hide/, 'Show');
+  }
 }
 
 function revealAnswer(element) {

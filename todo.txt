@@ -1,30 +1,15 @@
-o The name/title of the puzzle should include the letters as well as the data.
-
-Search:
-1 You should be able to search for clues.
-2 You should be able to search by puzzle letters.
-3 You should be able to search for answer, and see all clues and puzzles where it occurred.
-  - This needs should be answer pages.
-Add potentialAction for site search – Allow users to search directly from Google.
-[ ] Implement the JSON-LD.
 
 o Transition animation when answer is revealed.
 
-o pangram indictor in results list
-
 o when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
-
-o puzzle archive page, make date the title. Make center letter yellow.
 
 o clue page, button for reveal
 
-o puzzle page, dont cursor pointer over hive.
+
 
 o puzzle page: prev, next & date picker.
 
 o archive pages, pagination bar at top and bar.
-
-o version the css, and maybe js.
 
 o if clues are not available, use previous clues, or create clues from dictionary definitions.
 
@@ -36,8 +21,28 @@ https://www.bing.com/indexnow/getstarted#
 o fix lastmod in the sitemap
 https://pagespeed.web.dev/analysis/https-nytspellingbeesolver-com/wmez07jryh?form_factor=mobile
 
-o add potential action for search to index.html structured data.
-
 o https://nytspellingbeesolver.com/clue/ redirect to clue-archive
 
 o change archives to not change results per page
+
+---
+
+o puzzle-archive date shouldnt be underlined.
+o version the css, and maybe js.
+
+----
+Search:
+1 You should be able to search for clues.
+2 You should be able to search by puzzle letters.
+3 You should be able to search for answer, and see all clues and puzzles where it occurred.
+  - This needs should be answer pages.
+Add potentialAction for site search – Allow users to search directly from Google.
+[ ] Implement the JSON-LD.
+
+
+----
+
+x The name/title of the puzzle should include the letters as well as the data.
+x puzzle archive page, make date the title. Make center letter yellow.
+x pangram indictor in results list
+x puzzle page, dont cursor pointer over hive.
