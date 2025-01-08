@@ -31,14 +31,14 @@
   </svg></div>
 </div>
 </div>
-<p class="text-center mb-3">Unlock the Spelling Bee</p>
+<p class="text-center mb-3 text-lg">Unlock the Spelling Bee</p>
 <!-- Buttons to Reveal Clues and Answers -->
 <div class="flex justify-center space-x-6  mt-2 sm:mt-1">
   <button id="show-clues"
           data-target="clues"
           data-opposite-button="show-answers"
           onclick="toggleVisible(this)"
-          class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
+          class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
     Show Clues
   </button>
 
@@ -46,7 +46,7 @@
           data-target="answers"
           data-opposite-button="show-clues"
           onclick="toggleVisible(this)"
-          class="w-full border text-center py-2 px-3 rounded-lg button-shadow  text-yellow-600 border-yellow-570">
+          class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
     Show Answers
   </button>
 </div>
@@ -65,14 +65,14 @@
   <h2 class="text-2xl font-semibold mb-2">Clues</h2>
   <div class="space-y-6">
     {% if not puzzle.has_all_clues() %}
-    <div class="text-lg italic mb-4">Full clues are not available until 9AM EST.</div>
+    <div class="text-lg italic mb-4">Clues provided by the NYT are not available until 9AM EST. These clues were created by us.</div>
     {% endif %}
     {% for answer in sort_by_clue(puzzle.answers) %}
     <div class="grid grid-cols-1">
       {% if answer.text %}
-        <div class="text-lg">
-          {{ answer.text }}
-        </div>
+        <div class="text-lg">{{ answer.text }}</div>
+      {% else %}
+        <div class="text-lg italic text-gray-500">No clue available</div>
       {% endif %}
       <div class="flex flex-col items-start gap-1 mt-2">
         <div class="text-lg flex flex-wrap items-center gap-1 answer-box cursor-pointer"

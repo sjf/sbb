@@ -147,6 +147,21 @@ class DB:
     result = sorted(result, key=lambda x:x.url)
     return result
 
+  def get_clue_by_word(self, word: str) -> Optional[Clue]:
+    """ Look for a clue for `word` in the db. """
+    self.cursor.execute(""" SELECT c.text, c.url
+    FROM answers a
+    JOIN clues c ON a.clue_id = c.id
+    JOIN puzzles p on a.puzzle_id = p.id
+    JOIN definitions d on a.word = d.word
+    WHERE a.word = ?
+    ORDER BY p.date DESC
+    LIMIT 1;
+    """, (word,))
+    for row in self.cursor.fetchall():
+      return self.from_dict(Clue, row)
+    return None
+
   def fetch_ganswers(self) -> List[GAnswer]:
     # Get all answers and their clue.
     self.cursor.execute("""
@@ -154,22 +169,36 @@ class DB:
       FROM answers a
       LEFT JOIN clues c ON a.clue_id = c.id
       JOIN puzzles p on a.puzzle_id = p.id
-      LEFT JOIN definitions d on a.word = d.word
-      ;
+      LEFT JOIN definitions d on a.word = d.word;
       """)
 
     result = []
     for row in self.cursor.fetchall():
       data = dict(row)
       definition = dictapis_to_def(data['definition'], data['source'])
-      answer = GAnswer(word = data['word'],
+      word = data['word']
+      text = data['text']
+      url = data['url']
+      if not text:
+        # Clue is not available, try to come up with one.
+        clue = self.get_clue_by_word(word)
+        if clue:
+          text = clue.text
+          url = clue.url
+        elif definition:
+          text = definition.word_types[0].meanings[0].meaning
+          url = f'/define/{word}' # NOT AVAIL YET
+      answer = GAnswer(
+        word = word,
         is_pangram = bool(data['is_pangram']),
-        text = data['text'],
+        text = text,
         puzzle_date = data['puzzle_date'],
-        url = data['url'],
+        url = url,
         definition = definition)
       result.append(answer)
     result = sorted(result)
+
+
     return result
 
   def fetch_gpuzzles(self, only_latest=False) -> List[GPuzzle]:

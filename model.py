@@ -26,9 +26,9 @@ class GDefinition:
 # Game dataclasses.
 @dataclass
 class GAnswer:
-  word: str
+  word: str # The answer word.
   is_pangram: bool
-  text: Optional[str]
+  text: Optional[str] # Clue text.
   url: Optional[str] # URL of the clue page for this answer, multiple answers can have the same url.
   puzzle_date: str
   definition: Optional[GDefinition]
@@ -52,7 +52,7 @@ class GPuzzle:
   def answer_list(self) -> str:
     return joinl(mapl(lambda x:x.word, self.answers), sep=',')
   def has_all_clues(self):
-    return all(map(lambda x:x.text, self._answers))
+    return all(map(lambda x:x.text and x.url and x.url.startswith('/clue/'), self._answers))
 
   def __lt__(self, other):
     return self.date > other.date
@@ -95,6 +95,7 @@ def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
 
 @dataclass
 class Pagination:
+  # This is used on clues archive, it can be removed when this is changed.
   items: List[Any]
   page: int
   per_page: int
@@ -145,7 +146,8 @@ class Pagination:
 
 @dataclass
 class PaginationBar:
-  pages: List[str] # List of the page urls in order.
+  """ Creates pagination links for page from a list of URLs. """
+  pages: List[str] # List of the urls in order.
   current: str # The url of the current page.
 
   @property
