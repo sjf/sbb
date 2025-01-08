@@ -66,13 +66,13 @@ ANSWERS_P2 = [P2_CHAIR, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_RECLINE, P2_TOOT_, P2_
 
 GPUZZLE_1 = GPuzzle(
   date='2024-12-18',
-  center_letter='t',
-  outer_letters=['a', 'c', 'f', 'k', 'o', 'r'],
+  center_letter='T',
+  outer_letters=['A', 'C', 'F', 'K', 'O', 'R'],
   _answers=ANSWERS_P1)
 GPUZZLE_2 = GPuzzle(
   date='2024-12-24',
-  center_letter='d',
-  outer_letters=['t', 'e', 'f', 'o', 'u', 'x'],
+  center_letter='D',
+  outer_letters=['T', 'E', 'F', 'O', 'U', 'X'],
   _answers=ANSWERS_P2)
 
 GPUZZLES = [GPUZZLE_2, GPUZZLE_1]
