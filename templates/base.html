@@ -31,7 +31,7 @@
   <script async src="/static/script.{{VERSION}}.js"></script>
 {% endif %}
 
-{% block structured_data %}{% endblock %}
+{% block head %}{% endblock %}
 
 <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
@@ -51,8 +51,8 @@
 <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
 </head>
+
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-  
 <!-- Navigation Bar -->
 <nav class="flex items-center justify-between py-4 px-6 bg-yellow-300 shadow-md">
   <div class="text-2xl font-bold flex items-center">
@@ -75,7 +75,6 @@
   <a href="/clue-archive/1" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
   <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
 </div>
-
 <script>
 function toggleMenu() {
   const menu = document.getElementById('mobileMenu');

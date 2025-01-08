@@ -1,27 +1,35 @@
 {% extends "base.html" %}
 {% block title %}NYT Spelling Bee Archive{% endblock %}
-{% block structured_data %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "NYT Spelling Bee archive for {{period}}",
-  "description": "A collection of spelling bees published in the NYT during {{period}}.",
-  "url": "{{pagination.current}}",
-  "numberOfItems": {{ puzzles|length }},
-  "itemListElement": [
-    {% for puzzle in puzzles %}
-    {
-      "@type": "ListItem",
-      "position": {{ loop.index }},
-      "url": "{{ url_for(puzzle) }}",
-      "name": "{{puzzle.center_letter}} {{joinl(puzzle.outer_letters, sep=' ')}} {{format_date(puzzle.date)}}"
-    }{% if not loop.last %},{% endif %}
-    {% endfor %}
-  ]
-}
-</script>
-<link rel="canonical" href="{{pagination.current}}">
+{% block head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "NYT Spelling Bee archive for {{period}}",
+    "description": "A collection of spelling bees published in the NYT during {{period}}.",
+    "url": "{{pagination.current}}",
+    "numberOfItems": {{ puzzles|length }},
+    "itemListElement": [
+      {% for puzzle in puzzles %}
+      {
+        "@type": "ListItem",
+        "position": {{ loop.index }},
+        "url": "{{ url_for(puzzle) }}",
+        "name": "{{puzzle.center_letter}} {{joinl(puzzle.outer_letters, sep=' ')}} {{format_date(puzzle.date)}}"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+
+  <link rel="canonical" href="{{pagination.current}}">
+  {% if pagination.has_prev %}
+    <link rel="prev" href="{{pagination.prev}}">
+  {% endif %}
+  {% if pagination.has_next %}
+    <link rel="next" href="{{pagination.next}}">
+  {% endif %}
+
 {% endblock %}
 {% block content %}
 <h1 class="text-4xl font-bold text-center mb-6">Puzzles from {{period}}</h1>
