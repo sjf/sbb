@@ -16,6 +16,7 @@ DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
 DEV=os.environ.get('DEV', False)
 VERSION=2
 PER_PAGE=50
+TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
 def url(path: str) -> str:
   host = DOMAIN
@@ -24,11 +25,6 @@ def url(path: str) -> str:
   if host[-1] == '/' and path[0] == '/':
     host = host[:-1]
   return f"{host}{path}"
-
-def output(location: str, contents: str) -> None:
-  path = OUTPUT_DIR + '/' + location
-  write(path, contents, create_dirs = True)
-  log(f"Generated {url(location)}")
 
 def cp_file(file: str, dest: str) -> None:
   shell(f'cp -a {file} {dest}', verbose=False)
@@ -55,30 +51,37 @@ class Generator:
       sort_by_clue=sort_by_clue,
       joinl=joinl)
     self.env.filters['json_esc'] = json_esc
-    mkdir(OUTPUT_DIR)
+    self.pages = []
 
   def generate_all(self) -> None:
-    self.generate_sitemap()
+    self.generate_main()
+    self.generate_clue_pages()
     self.generate_archives()
     self.generate_puzzle_pages()
-    self.generate_clue_pages()
-    self.generate_main()
-    # This has to be last.
+    # These have to be last.
+    self.generate_sitemap()
     self.generate_static()
+
+  def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
+    path = OUTPUT_DIR + '/' + location
+    write(path, contents, create_dirs = True)
+    if not is_internal:
+      self.pages.append(Page(path=location, lastmod=lastmod))
+    log(f"Generated {url(location)}")
 
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
     for puzzle in puzzles:
       rendered = template.render(puzzle=puzzle)
-      output(puzzle_url(puzzle), rendered)
+      self.output(puzzle_url(puzzle), rendered, puzzle.date)
 
   def generate_clue_pages(self) -> None:
     template = self.env.get_template('clue_page.html')
     clue_pages = self.db.fetch_gclue_pages()
     for page in clue_pages:
       rendered = template.render(page=page)
-      output(page.url, rendered)
+      self.output(page.url, rendered, page.answers[0].puzzle_date)
 
   error_messages = {
       400: "Your request could not be processed. Please check the URL or try again later.",
@@ -96,17 +99,39 @@ class Generator:
     latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
     rendered = template.render(puzzle=latest, past_dates=latest_dates)
-    output('index.html', rendered)
+    self.output('index.html', rendered, TODAY)
 
     template = self.env.get_template('about.html')
     rendered = template.render()
-    output('about', rendered)
+    self.output('about', rendered, '2025-01-01')
 
     template = self.env.get_template('error.html')
     for code,message in self.error_messages.items():
       status = HTTPStatus(code).phrase
       rendered = template.render(code=code, status=status, message=message)
-      output(f'error/{code}.html', rendered)
+      self.output(f'error/{code}.html', rendered, None, is_internal=True)
+
+  def generate_archives(self) -> None:
+    template = self.env.get_template('clue_archive.html')
+    answers = self.db.fetch_ganswers()
+    answers = filter(lambda x:x.text, answers) # remove answers without clues.
+    answers = sorted(answers, key=lambda x:x.text)
+
+    for page in range(1, total_pages(answers) + 1):
+      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3)
+      self.output(f'clue-archive/{page}', rendered, TODAY)
+
+    template = self.env.get_template('puzzle_archive.html')
+    puzzles = self.db.fetch_gpuzzles()
+    rendered = template.render(puzzles=puzzles)
+    self.output('puzzle-archive', rendered, TODAY)
+
+  def generate_sitemap(self) -> None:
+    if len(self.pages) > 50_000 - 300:
+      log_error(f"Site map is close maximum size of 50k: {len(self.pages)}")
+    template = self.env.get_template('sitemap.xml')
+    rendered = template.render(pages=self.pages)
+    self.output('sitemap.xml', rendered, None, is_internal=True)
 
   skip = ['static/input.css']
   special = {
@@ -138,37 +163,13 @@ class Generator:
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
 
-  def generate_sitemap(self) -> None:
-    template = self.env.get_template('sitemap.xml')
-    clue_pages = self.db.fetch_gclue_pages()
-    puzzles = self.db.fetch_gpuzzles()
-    current_date = datetime.datetime.today().strftime('%Y-%m-%d')
-    answers = self.db.fetch_ganswers()
-    num_clue_archive_pages = total_pages(answers)
-    rendered = template.render(
-      puzzles=puzzles,
-      clue_pages=clue_pages,
-      num_clue_archive_pages=num_clue_archive_pages,
-      current_date=current_date)
-    output('sitemap.xml', rendered)
-
-  def generate_archives(self) -> None:
-    template = self.env.get_template('clue_archive.html')
-    answers = self.db.fetch_ganswers()
-    answers = filter(lambda x:x.text, answers) # remove answers without clues.
-    answers = sorted(answers, key=lambda x:x.text)
-
-    for page in range(1, total_pages(answers) + 1):
-      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3)
-      output(f'clue-archive/{page}', rendered)
-
-    template = self.env.get_template('puzzle_archive.html')
-    puzzles = self.db.fetch_gpuzzles()
-    rendered = template.render(puzzles=puzzles)
-    output('puzzle-archive', rendered)
-
 def total_pages(items):
   return ceil(len(items) / PER_PAGE)
+
+@dataclass
+class Page:
+  path: str
+  lastmod: Optional[str]
 
 if __name__ == '__main__':
   generator = Generator()

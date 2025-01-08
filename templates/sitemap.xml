@@ -1,39 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for page in pages %}
   <url>
-    <loc>{{ domain }}/</loc>
-    <lastmod>{{ current_date }}</lastmod>
-    <priority>1.0</priority>
-  </url>
-  {% for clue_page in clue_pages %}
-  <url>
-    <loc>{{ domain }}{{ clue_page.url }}</loc>
-    <lastmod>{{ clue_page.answers[0].puzzle_date }}</lastmod>
-    <priority>1.0</priority>
+    <loc>{{ domain }}/{{ page.path }}</loc>
+    <lastmod>{{ page.lastmod }}</lastmod>
   </url>
   {% endfor %}
-  {% for i in range(1, num_clue_archive_pages + 1) %}
-  <url>
-    <loc>{{ domain }}/clue-archive/{{ i }}</loc>
-    <lastmod>{{ current_date }}</lastmod>
-    <priority>0.8</priority>
-  </url>
-  {% endfor %}
-  <url>
-    <loc>{{ domain }}/puzzle-archive</loc>
-    <lastmod>{{ current_date }}</lastmod>
-    <priority>0.6</priority>
-  </url>
-  {% for puzzle in puzzles %}
-  <url>
-    <loc>{{ domain }}/puzzle/{{ puzzle.date }}</loc>
-    <lastmod>{{ puzzle.date }}</lastmod>
-    <priority>0.6</priority>
-  </url>
-  {% endfor %}
-  <url>
-    <loc>{{ domain }}/about</loc>
-    <lastmod>2025-01-01</lastmod>
-    <priority>0.7</priority>
-  </url>
 </urlset>

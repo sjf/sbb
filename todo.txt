@@ -19,6 +19,7 @@ o puzzle-archive date shouldnt be underlined.
 
 o ssl cert updater
 
+o output to a temp dir and swap with site/
 ----
 Search:
 1 You should be able to search for clues.

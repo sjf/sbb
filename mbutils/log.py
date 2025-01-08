@@ -69,6 +69,11 @@ def log(message, ex=None):
     logger.info(format_ex(ex))
   logger.info(message)
 
+def log_warn(message, ex=None):
+  if ex:
+    logger.warn(format_ex(ex))
+  logger.warn(message)
+
 def log_error(message, ex=None):
   if ex:
     logger.error(format_ex(ex))
