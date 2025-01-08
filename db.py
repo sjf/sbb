@@ -187,7 +187,7 @@ class DB:
           url = clue.url
         elif definition:
           text = definition.word_types[0].meanings[0].meaning
-          url = f'/define/{word}' # NOT AVAIL YET
+          url = None # f'/define/{word}' # NOT AVAIL YET
       answer = GAnswer(
         word = word,
         is_pangram = bool(data['is_pangram']),
