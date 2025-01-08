@@ -72,6 +72,7 @@ def rm_glob(pattern, verbose=False):
 
 def mkdir(d):
   os.makedirs(d, exist_ok=True)
+  # log(f"Created dirs {d}")
 
 def exists(f):
   return f and os.path.exists(f)
@@ -87,6 +88,15 @@ def mv(a: str, b: str) -> None:
 
 def cp(a: str, b: str) -> None:
   shutil.copy(a, b)
+
+def ln(src: str, dest: str, target_is_directory: bool = False) -> None:
+  if os.path.islink(dest):
+    log(f' unlinking {dest}')
+    os.unlink(dest)
+  if exists(dest):
+    log(f' rmming {dest}')
+    rm(dest)
+  os.symlink(src, dest, target_is_directory=target_is_directory)
 
 def get_size(f):
   """ Returns the file size of `f` in human-readable format."""
@@ -104,3 +114,5 @@ def basename(path: str) -> str:
   return os.path.basename(path)
 def dirname(path: str) -> str:
   return os.path.dirname(path)
+def realpath(path: str) -> str:
+  return os.path.abspath(path)

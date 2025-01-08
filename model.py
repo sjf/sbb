@@ -83,8 +83,12 @@ def dictapis_to_def(content: str, source: str) -> Optional[GDefinition]:
   return None
 
 def format_date(value: str) -> str:
-    date = datetime.datetime.strptime(value, "%Y-%m-%d")
-    return date.strftime("%B %-d, %Y")
+  date = datetime.datetime.strptime(value, "%Y-%m-%d")
+  return date.strftime("%B %-d, %Y")
+
+def format_yearmonth(value: str) -> str:
+  date = datetime.datetime.strptime(value, "%Y-%m")
+  return date.strftime("%B, %Y")
 
 def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
   return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
@@ -139,4 +143,48 @@ class Pagination:
     last_part = list(range(total_pages - n - 1, total_pages + 1))
     return first_part + last_part
 
+@dataclass
+class PaginationBar:
+  pages: List[str] # List of the page urls in order.
+  current: str # The url of the current page.
+
+  @property
+  def total_pages(self) -> int:
+    return len(self.pages)
+
+  @property
+  def _idx(self) -> int:
+    """ Index of current page (starting at zero) """
+    idx = self.pages.index(self.current)
+    if idx == -1:
+      raise Exception(f"Cannot paginate, {self.current} not in pages.")
+    return idx
+
+  @property
+  def page(self) -> int:
+    return self._idx + 1
+
+  @property
+  def has_prev(self) -> bool:
+    return self._idx > 0
+
+  @property
+  def has_next(self) -> bool:
+    return self._idx < self.total_pages - 1
+
+  @property
+  def first(self) -> str:
+    return self.pages[0]
+
+  @property
+  def last(self) -> str:
+    return self.pages[-1]
+
+  @property
+  def prev(self) -> Optional[str]:
+    return self.pages[self._idx - 1] if self.has_prev else None
+
+  @property
+  def next(self) -> Optional[str]:
+    return self.pages[self._idx + 1] if self.has_next else None
 

@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /clue/
+Allow: /clue-archive/
 Allow: /puzzle/
-Allow: /about/
-Allow: /archive/
+Allow: /puzzles/
+Allow: /about
 
 Disallow: /admin/
 Disallow: /static/

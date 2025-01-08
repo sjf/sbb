@@ -8,7 +8,7 @@
   "name": "NYT Spelling Bee anwers and clues for {{ puzzle.date }}",
   "description": "Solve the NYT Spelling Bee puzzle from {{ format_date(puzzle.date) }}.",
   "datePublished": "{{ puzzle.date }}",
-  "url": "{{ domain }}/puzzle/{{ puzzle.date }}",
+  "url": "{{url_for(puzzle)}}",
   "mainEntity": {
     "@type": "Question",
     "name": "NYT Spelling Bee clues and answers for {{ format_date(puzzle.date) }}",
@@ -19,6 +19,7 @@
   }
 }
 </script>
+<link rel="canonical" href="{{url_for(puzzle)}}">
 {% endblock %}
 
 {% block content %}

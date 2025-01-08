@@ -38,7 +38,7 @@
     <!-- Puzzle Date -->
     <p class="mt-8 text-lg">
       <span class="italic text-gray-500">Appeared on:</span>
-      <a href="/puzzle/{{ answer.puzzle_date }}"
+      <a href="{{ url_for(answer.puzzle_date) }}"
          class="text-m text-yellow-500 hover:underline">
         {{ format_date(answer.puzzle_date) }}
       </a>

@@ -4,6 +4,7 @@ import unicodedata
 import re
 import os
 import datetime
+from collections import defaultdict
 from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader
 from typing import List, Any, Dict, Optional
@@ -18,22 +19,34 @@ VERSION=2
 PER_PAGE=50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
+def joinp(a: str, b: str) -> str:
+  if a[-1] != '/' and b[0] != '/':
+    a += '/'
+  if a[-1] == '/' and b[0] == '/':
+    a = a[:-1]
+  return a + b
+
 def url(path: str) -> str:
-  host = DOMAIN
-  if host[-1] != '/' and path[0] != '/':
-    host += '/'
-  if host[-1] == '/' and path[0] == '/':
-    host = host[:-1]
-  return f"{host}{path}"
+  return joinp(DOMAIN, path)
 
 def cp_file(file: str, dest: str) -> None:
+  dirs = dirname(dest)
+  mkdir(dirs)
   shell(f'cp -a {file} {dest}', verbose=False)
   path = dest.replace(OUTPUT_DIR + '/', '', 1)
   log(f"Copied {file} to {url(path)}")
 
 
-def puzzle_url(puzzle: GPuzzle) -> str:
-  return f"puzzle/{puzzle.date}"
+def url_for(o: Any) -> str:
+  if type(o) == GPuzzle:
+    return f"/puzzle/{o.date}"
+  if type(o) == str and re.match(r'^\d\d\d\d-\d\d-\d\d$', o):
+    # link to puzzle by date
+    return f"/puzzle/{o}"
+  if type(o) == str and re.match(r'^\d\d\d\d-\d\d$', o):
+    # link to puzzle archive by month and year
+    return '/puzzles/' + o.replace('-', '/')
+  raise Exception(f"Unhandled url_for {o}")
 
 def json_esc(s: str) -> str:
   return json.dumps(s)[1:-1]
@@ -47,6 +60,7 @@ class Generator:
       DEV=DEV,
       VERSION=VERSION,
       current_year=datetime.datetime.now().year,
+      url_for=url_for,
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       joinl=joinl)
@@ -57,24 +71,36 @@ class Generator:
     self.generate_main()
     self.generate_clue_pages()
     self.generate_archives()
+    self.generate_puzzle_archives()
     self.generate_puzzle_pages()
     # These have to be last.
     self.generate_sitemap()
     self.generate_static()
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
-    path = OUTPUT_DIR + '/' + location
+    path = joinp(OUTPUT_DIR, location)
     write(path, contents, create_dirs = True)
     if not is_internal:
       self.pages.append(Page(path=location, lastmod=lastmod))
     log(f"Generated {url(location)}")
+
+  def ln(self, src: str, dest: str, lastmod: str) -> None:
+    log(f"Linking {src} -> {dest} lastmod:{lastmod}")
+    src_file = realpath(joinp(OUTPUT_DIR, src))
+    dest_file = realpath(joinp(OUTPUT_DIR, dest))
+    log(f"Linking {src_file} -> {dest_file}")
+    ln(src_file, dest_file)
+    self.pages.append(Page(path=dest, lastmod=lastmod))
+    log(f"Generated {url(dest)}")
 
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
     for puzzle in puzzles:
       rendered = template.render(puzzle=puzzle)
-      self.output(puzzle_url(puzzle), rendered, puzzle.date)
+      self.output(url_for(puzzle), rendered, puzzle.date)
+    latest = puzzles[0]
+    self.ln(url_for(latest), '/puzzle/latest', latest.date)
 
   def generate_clue_pages(self) -> None:
     template = self.env.get_template('clue_page.html')
@@ -91,7 +117,6 @@ class Generator:
       502: "The server received an invalid response from the upstream server.",
       503: "The server is temporarily unable to handle the request. Please try again later."
   }
-
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     latest = self.db.fetch_latest_gpuzzle()
@@ -121,10 +146,28 @@ class Generator:
       rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3)
       self.output(f'clue-archive/{page}', rendered, TODAY)
 
+  def generate_puzzle_archives(self) -> None:
+    by_yearmonth = defaultdict(list)
+    for puzzle in self.db.fetch_gpuzzles():
+      yearmonth = puzzle.date.rsplit('-', 1)[0]
+      by_yearmonth[yearmonth].append(puzzle)
+
+    latest = sorted(by_yearmonth.keys())[-1]
+    latest_page = url_for(latest)
+    pages = mapl(url_for, by_yearmonth.keys())
+    pages = sorted(pages, reverse=True)
+
     template = self.env.get_template('puzzle_archive.html')
-    puzzles = self.db.fetch_gpuzzles()
-    rendered = template.render(puzzles=puzzles)
-    self.output('puzzle-archive', rendered, TODAY)
+    for yearmonth, puzzles in by_yearmonth.items():
+      period = format_yearmonth(yearmonth)
+      path = '/puzzles/' + yearmonth.replace('-', '/')
+      lastmod = max(map(lambda x:x.date, puzzles))
+
+      rendered = template.render(puzzles=puzzles, period=period, pagination=PaginationBar(pages=pages, current=path))
+      self.output(path, rendered, lastmod)
+
+    lastmod = sorted(by_yearmonth[latest])[0].date
+    self.ln(latest_page, '/puzzles/latest', lastmod)
 
   def generate_sitemap(self) -> None:
     if len(self.pages) > 50_000 - 300:

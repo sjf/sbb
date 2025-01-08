@@ -32,8 +32,8 @@ class Importer:
       puzzle = Puzzle(
         id = content['id'],
         date = content['print_date'],
-        center_letter = content['center_letter'],
-        outer_letters = list(content['outer_letters']))
+        center_letter = content['center_letter'].upper(),
+        outer_letters = list(map(lambda x:x.upper(), content['outer_letters'])))
       # Re-import everything, even if rows already exist.
       # Puzzles are upate on their post day with clues later.
       puzzle_id = self.db.upsert_puzzle(puzzle)
