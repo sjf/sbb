@@ -1,3 +1,5 @@
+o snippets for google search results.
+
 o Transition animation when answer is revealed.
 
 o clue page, button for reveal

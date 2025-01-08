@@ -65,7 +65,7 @@
   <h2 class="text-2xl font-semibold mb-2">Clues</h2>
   <div class="space-y-6">
     {% if not puzzle.has_all_clues() %}
-    <div class="text-lg italic mb-4">Clues are not available until 9AM EST.</div>
+    <div class="text-lg italic mb-4">Full clues are not available until 9AM EST.</div>
     {% endif %}
     {% for answer in sort_by_clue(puzzle.answers) %}
     <div class="grid grid-cols-1">
