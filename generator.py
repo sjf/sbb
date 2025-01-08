@@ -139,7 +139,7 @@ class Generator:
   def generate_archives(self) -> None:
     template = self.env.get_template('clue_archive.html')
     answers = self.db.fetch_ganswers()
-    answers = filter(lambda x:x.text, answers) # remove answers without clues.
+    answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
     answers = sorted(answers, key=lambda x:x.text)
 
     for page in range(1, total_pages(answers) + 1):
