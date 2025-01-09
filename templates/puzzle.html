@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %}NYT Spelling Bee Key for {{ format_date(puzzle.date) }}{% endblock %}
+{% block description %}
+  Explore the NYT Spelling Bee puzzle for {{ format_date(puzzle.date) }}. Solve clues, find answers, and discover new words.
+{% endblock %}
 {% block head %}
 <script type="application/ld+json">
 {

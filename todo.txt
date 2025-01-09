@@ -1,3 +1,5 @@
+o a permalink for the puzzle on the front page.
+
 o snippets for google search results.
 
 o Transition animation when answer is revealed.

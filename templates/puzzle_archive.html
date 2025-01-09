@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% block title %}NYT Spelling Bee Archive{% endblock %}
+{% block title %}NYT Spelling Bee Archive for {{ period }}{% endblock %}
+{% block description %}
+  Browse the archive of NYT Spelling Bees for {{ period }}. Explore past puzzles, find clues, and uncover answers to hone your solving skills.
+{% endblock %}
 {% block head %}
   <script type="application/ld+json">
   {

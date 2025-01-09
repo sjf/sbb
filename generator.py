@@ -130,7 +130,7 @@ class Generator:
     latest_dates = self.db.fetch_latest_puzzle_dates(14)
     latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
-    rendered = template.render(puzzle=latest, past_dates=latest_dates, canon_url=url_for(latest.date))
+    rendered = template.render(puzzle=latest, past_dates=latest_dates, canon_url=url_for(latest))
     self.output('index.html', rendered, TODAY)
 
     template = self.env.get_template('about.html')
