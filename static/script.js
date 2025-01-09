@@ -19,22 +19,11 @@ function hide(button) {
   }
 }
 
-function revealAnswer(element) {
-  // On the game page, reveals the answer for a clue.
-  const answer = element.getAttribute('data-answer');  // Get the full answer
-  const emptyBoxes = element.querySelectorAll('.empty-box');
-
-  // Fill the empty boxes starting from the second letter
-  for (let i = 0; i < emptyBoxes.length; i++) {
-    emptyBoxes[i].textContent = answer[i+1];
-  }
-}
-
 function toggleClueAnswer(element) {
-  // On the clue page, reveals the answer.
   const answer = element.getAttribute('data-answer');
   const emptyBoxes = element.querySelectorAll('.empty-box');
   const filledBoxes = element.querySelectorAll('.filled-box');
+  const icons = element.querySelectorAll('.eye');
   const definition = document.getElementById(element.dataset.definition);
 
   emptyBoxes.forEach((box, index) => {
@@ -49,5 +38,11 @@ function toggleClueAnswer(element) {
     box.classList.remove('filled-box');
   });
 
-  definition.classList.toggle('hidden');
+  icons.forEach((icon, index) => {
+    icon.classList.toggle('hidden');
+  });
+
+  if (definition) {
+    definition.classList.toggle('hidden');
+  }
 }

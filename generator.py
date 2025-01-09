@@ -13,10 +13,10 @@ from model import *
 from db import *
 
 OUTPUT_DIR = 'site'
-DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
-DEV=bool(os.environ.get('DEV', False))
-VERSION=2
-PER_PAGE=50
+DOMAIN = os.environ.get('DOMAIN', 'https://beekey.buzz')
+DEV = bool(os.environ.get('DEV', False))
+VERSION = 3
+PER_PAGE = 50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
 def joinp(a: str, b: str) -> str:
