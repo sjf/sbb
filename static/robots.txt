@@ -6,6 +6,5 @@ Allow: /puzzles/
 Allow: /about
 
 Disallow: /admin/
-Disallow: /static/
 
-Sitemap: https://www.nytspellingbeesolver.com/sitemap.xml
+Sitemap: https://beekey.buzz/sitemap.xml
