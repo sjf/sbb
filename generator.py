@@ -20,6 +20,10 @@ PER_PAGE=50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
 def joinp(a: str, b: str) -> str:
+  if not a:
+    return b
+  if not b:
+    return a
   if a[-1] != '/' and b[0] != '/':
     a += '/'
   if a[-1] == '/' and b[0] == '/':
@@ -31,11 +35,14 @@ def url(path: str) -> str:
 
 def cp_file(file: str, dest: str) -> None:
   dirs = dirname(dest)
-  mkdir(dirs)
+  if dirs:
+    mkdir(dirs)
   shell(f'cp -a {file} {dest}', verbose=False)
-  path = dest.replace(OUTPUT_DIR + '/', '', 1)
-  log(f"Copied {file} to {url(path)}")
 
+  url_path = dest.replace(OUTPUT_DIR + '/', '', 1)
+  if is_dir(dest):
+    url_path = joinp(url_path,basename(file))
+  log(f"Copied {file} to {url(url_path)}")
 
 def url_for(o: Any) -> str:
   if type(o) == GPuzzle:
@@ -191,9 +198,7 @@ class Generator:
       shell(f'terser static/script.js --mangle -o {OUTPUT_DIR}/static/script.{VERSION}.min.js')
 
     for file in ls('static/*'):
-      filename = file.replace('static/', '', 1)
-
-      dest = OUTPUT_DIR + '/static/' + filename
+      dest = joinp(OUTPUT_DIR, 'static/')
       if file in self.special:
         dest = self.special[file]
       if file not in self.skip:
@@ -201,7 +206,7 @@ class Generator:
 
     for file in ls("secrets/*.txt"):
       # Copy indexnow api key
-      cp_file(file, f'{OUTPUT_DIR}/{basename(file)}')
+      cp_file(file, OUTPUT_DIR)
     # Copy more files that need to be copied to multiple places
     for file, dest in self.duplicate.items():
       cp_file(file, dest)

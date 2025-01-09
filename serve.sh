@@ -18,7 +18,7 @@ generator.py \
 model.py \
 db.py \
 ; do
-  sleep 1s
   mypy generator.py && ./generator.py || true;
  echo "-----------------------------------------------------------"
+ sleep 1s
 done

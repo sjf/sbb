@@ -80,6 +80,11 @@ def exists(f):
 def exists_dir(f):
   return f and os.path.isdir(f)
 
+is_dir = exists_dir
+
+def is_file(f):
+  return f and os.path.isfile(f)
+
 def mv(a: str, b: str) -> None:
   if b[-1] == '/' or exists_dir(b):
     # destination is a directory.
