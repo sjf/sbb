@@ -9,8 +9,6 @@ o puzzle page: prev, next & date picker.
 o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
 https://www.bing.com/indexnow/getstarted#
 
-o change archives to not change results per page
-  o archive pages, pagination bar at top and bar.
 ---
 
 o puzzle-archive date shouldnt be underlined.
@@ -42,3 +40,5 @@ x Standardize the naming and tagline.
 x when mobile menu is expanded, nav shadow should appear at the bottom (its just hidden right now and menu has no shadow)
 x snippets for google search results.
 x if clues are not available, use previous clues, or create clues from dictionary definitions.
+x change archives to not change results per page
+  x archive pages, pagination bar at top and bar.

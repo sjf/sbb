@@ -141,17 +141,17 @@ class Generator:
     latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
     rendered = template.render(puzzle=latest, past_dates=latest_dates, canon_url=url_for(latest))
-    self.output('index.html', rendered, TODAY)
+    self.output('/index.html', rendered, TODAY)
 
     template = self.env.get_template('about.html')
     rendered = template.render(canon_url='/about')
-    self.output('about', rendered, '2025-01-01')
+    self.output('/about', rendered, '2025-01-01')
 
     template = self.env.get_template('internal/error.html')
     for code,message in self.error_messages.items():
       status = HTTPStatus(code).phrase
       rendered = template.render(code=code, status=status, message=message)
-      self.output(f'error/{code}.html', rendered, None, is_internal=True)
+      self.output(f'/error/{code}.html', rendered, None, is_internal=True)
 
   def generate_clue_archives(self) -> None:
     answers = self.db.fetch_ganswers()
@@ -178,7 +178,7 @@ class Generator:
     pages = mapl(lambda p:url_for('clues', p), prefixes)
 
     template = self.env.get_template('clue_archive.html')
-    for prefix, answers in by_prefix.items():
+    for prefix, answers in sorted(by_prefix.items(), key=lambda x:prefix_key(x[0])):
       path = url_for('clues', prefix)
       answers = sorted(answers, key=lambda x:x.text)
       lastmod = max(map(lambda x:x.puzzle_date, answers))
