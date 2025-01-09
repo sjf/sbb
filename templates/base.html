@@ -13,9 +13,17 @@
 <meta property="og:description" content="{{self.description()}}">
 <meta property="og:title" content="{{self.title()}}">
 <meta property="og:image" content="{{ domain }}/static/banner.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@SpellingBeeKey">
+<meta name="twitter:title" content="{{self.title()}}">
+<meta name="twitter:description" content="{{self.description()}}">
+<meta name="twitter:image" content="{{ domain }}/static/banner.png">
+
 {% if canon_url is defined %}
   <meta property="og:url" content="{{ domain }}{{ canon_url }}">
   <link rel="canonical" href="{{ domain }}{{ canon_url }}">
+  <meta name="twitter:url" content="{{ domain }}{{ canon_url }}">
 {% endif %}
 
 <!-- CSS -->
