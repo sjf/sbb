@@ -137,7 +137,7 @@ class Generator:
     rendered = template.render(canon_url='/about')
     self.output('about', rendered, '2025-01-01')
 
-    template = self.env.get_template('error.html')
+    template = self.env.get_template('internal/error.html')
     for code,message in self.error_messages.items():
       status = HTTPStatus(code).phrase
       rendered = template.render(code=code, status=status, message=message)
@@ -179,7 +179,7 @@ class Generator:
   def generate_sitemap(self) -> None:
     if len(self.pages) > 50_000 - 300:
       log_error(f"Site map is close maximum size of 50k: {len(self.pages)}")
-    template = self.env.get_template('sitemap.xml')
+    template = self.env.get_template('internal/sitemap.xml')
     rendered = template.render(pages=self.pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
 

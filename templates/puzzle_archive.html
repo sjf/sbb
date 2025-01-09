@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "sub/base.html" %}
 {% block title %}NYT Spelling Bee Archive for {{ period }}{% endblock %}
 {% block description %}
   Browse the archive of NYT Spelling Bees for {{ period }}. Explore past puzzles, find clues, and uncover answers to hone your solving skills.
@@ -8,9 +8,9 @@
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "NYT Spelling Bee archive for {{period}}",
-    "description": "A collection of spelling bees published in the NYT during {{period}}.",
-    "url": "{{pagination.current}}",
+    "name": "NYT Spelling Bee archive for {{ period }}",
+    "description": "{{ self.description() }}}.",
+    "url": "{{ domain }}{{ pagination.current }}",
     "numberOfItems": {{ puzzles|length }},
     "itemListElement": [
       {% for puzzle in puzzles %}
@@ -18,7 +18,7 @@
         "@type": "ListItem",
         "position": {{ loop.index }},
         "url": "{{ url_for(puzzle) }}",
-        "name": "{{puzzle.center_letter}} {{joinl(puzzle.outer_letters, sep=' ')}} {{format_date(puzzle.date)}}"
+        "name": "{{ puzzle.center_letter }} {{ joinl(puzzle.outer_letters, sep=' ') }} {{ format_date(puzzle.date) }}"
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]

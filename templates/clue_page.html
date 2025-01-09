@@ -1,9 +1,9 @@
-{% extends "base.html" %}
+{% extends "sub/base.html" %}
 {% block title %}
   NYT Spelling Bee Clue: {{page.answers[0].text}}
 {% endblock %}
 {% block description %}
-  Find the answer for the clue '{{page.answers[0].text}}' from the NYT Spelling Bee.
+  Solve the clue '{{page.answers[0].text}}' from the NYT Spelling Bee.
 {% endblock %}
 {% block head %}
 <script type="application/ld+json">
@@ -11,7 +11,7 @@
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "NYT Spelling Bee clue: “{{ page.answers[0].text | json_esc}}”",
-  "description": "Find the answer to the NYT Spelling Bee clue “{{ page.answers[0].text | json_esc }}”.",
+  "description": "Solve the clue “{{ page.answers[0].text | json_esc }}” from the NYT Spelling Bee.",
   "url": "{{ domain }}{{ page.url }}",
   "datePublished": "{{ page.answers[0].puzzle_date }}",
   "mainEntity": {
@@ -26,7 +26,7 @@
 <h1 class="text-4xl font-bold mb-6 text-center">{{ page.answers[0].text }}</h1>
 
 {% with answer=page.answers[0], index=0 %}
-  {% include "clue.html" %}
+  {% include "sub/clue.html" %}
 {% endwith %}
 
 {% if page.answers|length > 1 %}
@@ -36,7 +36,7 @@
     <p class="text-2xl font-bold">{{ answer.text }}</p>
     <div class="mt-4">
     {% with index=loop.index %}
-      {% include "clue.html" %}
+      {% include "sub/clue.html" %}
     {% endwith %}
     </div>
   {% endfor %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "sub/base.html" %}
 {% block title %}NYT Spelling Bee Key for {{ format_date(puzzle.date) }}{% endblock %}
 {% block description %}
   Explore the NYT Spelling Bee puzzle for {{ format_date(puzzle.date) }}. Solve clues, find answers, and discover new words.
@@ -8,10 +8,10 @@
 {
   "@context": "https://schema.org",
   "@type": "Quiz",
-  "name": "NYT Spelling Bee anwers and clues for {{ puzzle.date }}",
-  "description": "Solve the NYT Spelling Bee puzzle from {{ format_date(puzzle.date) }}.",
+  "name": "{{ self.title() }}",
+  "description": "{{ self.description() }}.",
   "datePublished": "{{ puzzle.date }}",
-  "url": "{{url_for(puzzle)}}",
+  "url": "{{ domain }}{{ url_for(puzzle) }}",
   "mainEntity": {
     "@type": "Question",
     "name": "NYT Spelling Bee clues and answers for {{ format_date(puzzle.date) }}",
@@ -26,5 +26,5 @@
 
 {% block content %}
 <h1 class="text-4xl font-bold text-center mb-2">Spelling Bee for {{ format_date(puzzle.date) }}</h1>
-{% include "game.html" %}
+{% include "sub/game.html" %}
 {% endblock %}
