@@ -1,0 +1,26 @@
+<!-- Pagination Section above sm (larger)-->
+<div class="my-5 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 hidden sm:flex">
+  {% if pagination.has_prev %}
+  <a href="{{pagination.first}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">First</a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-full sm:w-auto text-center">First</span>
+  {% endif %}
+  {% if pagination.has_prev %}
+  <a href="{{pagination.prev}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Previous</a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-full sm:w-auto text-center">Previous</span>
+  {% endif %}
+  <span class="px-6 py-2 border rounded bg-yellow-100 w-full sm:w-auto text-center select-none">
+    Page {{ pagination.page }} of {{ pagination.total_pages }}
+  </span>
+  {% if pagination.has_next %}
+  <a href="{{pagination.next}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Next</a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-full sm:w-auto text-center">Next</span>
+  {% endif %}
+  {% if pagination.has_next %}
+  <a href="{{pagination.last}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Last</a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-full sm:w-auto text-center">Last</span>
+  {% endif %}
+</div>

@@ -1,10 +1,49 @@
 {% extends "sub/base.html" %}
-{% block title %}NYT Spelling Bee Clues{% endblock %}
+
+{% block title %}NYT Spelling Bee clues starting with {{ prefix.upper() }}{% endblock %}
+{% block description %}Browse the archive of NYT Spelling Bee “{{ prefix.upper() }}” clues. Explore clues and uncover answers to hone your solving skills.
+{% endblock %}
+{% block head %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "{{ self.title() }}",
+    "description": "{{ self.description() }}}.",
+    "url": "{{ domain }}{{ pagination.current }}",
+    "numberOfItems": {{ answers|length }},
+    "itemListElement": [
+      {% for answer in answers %}
+      {
+        "@type": "ListItem",
+        "position": {{ loop.index }},
+        "url": "{{ url_for(answer) }}",
+        "name": "{{ answer.text | json_esc }}"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+
+  {% if pagination.has_prev %}
+    <link rel="prev" href="{{pagination.prev}}">
+  {% endif %}
+  {% if pagination.has_next %}
+    <link rel="next" href="{{pagination.next}}">
+  {% endif %}
+
+{% endblock %}
+
+
 {% block content %}
-<h1 class="text-4xl font-bold text-center mb-6">Clue Archive</h1>
+<h1 class="text-4xl font-bold text-center mb-6">Clue Archive: {{ prefix.upper() }}</h1>
+
+
+{% include 'sub/pagination_alphabet.html' %}
+{% include 'sub/pagination_small.html' %}
 
 <div class="grid grid-cols-1 gap-6">
-  {% for answer in pagination.visible_items %}
+  {% for answer in answers %}
   <a href="{{ answer.url }}" class="hover:underline">
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
       <p class="text-lg font-medium">{{ answer.text }}</p>
@@ -14,48 +53,8 @@
   {% endfor %}
 </div>
 
-<!-- Pagination Section -->
-<div class="mt-10 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-  {% if pagination.has_prev %}
-  <a href="/clue-archive/1" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">
-    First
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">
-    First
-  </span>
-  {% endif %}
-  {% if pagination.has_prev %}
-  <a href="/clue-archive/{{ pagination.prev_num }}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">
-    Previous
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">
-    Previous
-  </span>
-  {% endif %}
 
-  <span class="px-6 py-2 border rounded bg-yellow-100 w-full sm:w-auto text-center">
-    Page {{ pagination.page }} of {{ pagination.total_pages }}
-  </span>
+{% include 'sub/pagination_small.html' %}
+{% include 'sub/pagination_alphabet.html' %}
 
-  {% if pagination.has_next %}
-  <a href="/clue-archive/{{ pagination.next_num }}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">
-    Next
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">
-    Next
-  </span>
-  {% endif %}
-  {% if pagination.has_next %}
-  <a href="/clue-archive/{{ pagination.total_pages }}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">
-    Last
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">
-    Last
-  </span>
-  {% endif %}
-</div>
 {% endblock %}

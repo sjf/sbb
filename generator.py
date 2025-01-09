@@ -44,19 +44,29 @@ def cp_file(file: str, dest: str) -> None:
     url_path = joinp(url_path,basename(file))
   log(f"Copied {file} to {url(url_path)}")
 
-def url_for(o: Any) -> str:
+def url_for(o: Any, arg=None) -> str:
   if type(o) == GPuzzle:
     return f"/puzzle/{o.date}"
+
   if type(o) == str and re.match(r'^\d\d\d\d-\d\d-\d\d$', o):
     # link to puzzle by date
     return f"/puzzle/{o}"
+
   if type(o) == str and re.match(r'^\d\d\d\d-\d\d$', o):
     # link to puzzle archive by month and year
     return '/puzzles/' + o.replace('-', '/')
-  raise Exception(f"Unhandled url_for {o}")
 
-def json_esc(s: str) -> str:
-  return json.dumps(s)[1:-1]
+  if type(o) == GAnswer:
+    if not o.url:
+      raise Exception(f"Cannot create url for answer with no clue url: {o}")
+    return o.url
+
+  if o == 'clues':
+    if not arg:
+      raise Exception("Unhandled url, clues archive needs arg")
+    return '/clues/' + arg
+
+  raise Exception(f"Unhandled url_for '{o}' arg={arg}")
 
 class Generator:
   def __init__(self):
@@ -71,13 +81,13 @@ class Generator:
       format_date=format_date,
       sort_by_clue=sort_by_clue,
       joinl=joinl)
-    self.env.filters['json_esc'] = json_esc
+    self.env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1] # Escape json, don't include quotes.
     self.pages = []
 
   def generate_all(self) -> None:
     self.generate_main()
     self.generate_clue_pages()
-    self.generate_archives()
+    self.generate_clue_archives()
     self.generate_puzzle_archives()
     self.generate_puzzle_pages()
     # These have to be last.
@@ -143,15 +153,42 @@ class Generator:
       rendered = template.render(code=code, status=status, message=message)
       self.output(f'error/{code}.html', rendered, None, is_internal=True)
 
-  def generate_archives(self) -> None:
-    template = self.env.get_template('clue_archive.html')
+  def generate_clue_archives(self) -> None:
     answers = self.db.fetch_ganswers()
     answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
-    answers = sorted(answers, key=lambda x:x.text)
+    by_prefix = defaultdict(list)
+    for answer in answers:
+      prefix = re.sub('^[\'"“”‘ ]+', '', answer.text)[0:1]
+      prefix = prefix.lower()
+      if prefix.isdigit():
+        prefix = '0-9'
+      elif not prefix or not prefix.isalpha():
+        prefix = 'symbols'
+      by_prefix[prefix].append(answer)
 
-    for page in range(1, total_pages(answers) + 1):
-      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3, canon_url=f'/clue-archive/{page}')
-      self.output(f'clue-archive/{page}', rendered, TODAY)
+    def prefix_key(prefix):
+      if len(prefix) == 1 and prefix.isalpha():
+        return (0, prefix)
+      elif prefix.isdigit():
+        return (1, prefix)
+      else:
+        return (2, prefix)
+
+    prefixes = sorted(by_prefix.keys(), key=prefix_key)
+    pages = mapl(lambda p:url_for('clues', p), prefixes)
+
+    template = self.env.get_template('clue_archive.html')
+    for prefix, answers in by_prefix.items():
+      path = url_for('clues', prefix)
+      answers = sorted(answers, key=lambda x:x.text)
+      lastmod = max(map(lambda x:x.puzzle_date, answers))
+      rendered = template.render(
+        answers=answers,
+        prefix=prefix,
+        alphabet=prefixes,
+        pagination=PaginationBar(pages=pages, current=path),
+        canon_url=path)
+      self.output(path, rendered, lastmod)
 
   def generate_puzzle_archives(self) -> None:
     by_yearmonth = defaultdict(list)

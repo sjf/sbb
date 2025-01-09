@@ -1,14 +1,13 @@
 {% extends "sub/base.html" %}
 {% block title %}NYT Spelling Bee Archive for {{ period }}{% endblock %}
-{% block description %}
-  Browse the archive of NYT Spelling Bees for {{ period }}. Explore past puzzles, find clues, and uncover answers to hone your solving skills.
+{% block description %}Browse the archive of NYT Spelling Bees for {{ period }}. Explore past puzzles, find clues, and uncover answers to hone your solving skills.
 {% endblock %}
 {% block head %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "NYT Spelling Bee archive for {{ period }}",
+    "name": "{{ self.title() }}",
     "description": "{{ self.description() }}}.",
     "url": "{{ domain }}{{ pagination.current }}",
     "numberOfItems": {{ puzzles|length }},
@@ -33,8 +32,12 @@
   {% endif %}
 
 {% endblock %}
+
 {% block content %}
 <h1 class="text-4xl font-bold text-center mb-6">Puzzles from {{period}}</h1>
+
+{% include 'sub/pagination_small.html' %}
+{% include 'sub/pagination_large.html' %}
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {% for puzzle in puzzles %}
@@ -52,62 +55,6 @@
   </a>
   {% endfor %}
 </div>
-<!-- Pagination Section small screens -->
-<div class="mt-10 flex justify-between items-center text-sm w-full block sm:hidden">
-  <div class="flex space-x-1">
-    {% if pagination.has_prev %}
-    <a href="{{pagination.first}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">First</a>
-    {% else %}
-    <span class="px-2 py-1 border rounded text-gray-400 cursor-not-allowed text-center">First</span>
-    {% endif %}
-    {% if pagination.has_prev %}
-    <a href="{{pagination.prev}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Prev</a>
-    {% else %}
-    <span class="px-2 py-1 border rounded text-gray-400 cursor-not-allowed text-center">Prev</span>
-    {% endif %}
-  </div>
-  <span class="px-2 py-1 border rounded bg-yellow-100 text-center">
-    Page {{ pagination.page }} of {{ pagination.total_pages }}
-  </span>
-  <div class="flex space-x-1">
-    {% if pagination.has_next %}
-    <a href="{{pagination.next}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Next</a>
-    {% else %}
-    <span class="px-2 py-1 border rounded text-gray-400 cursor-not-allowed text-center">Next</span>
-    {% endif %}
-    {% if pagination.has_next %}
-    <a href="{{pagination.last}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Last</a>
-    {% else %}
-    <span class="px-2 py-1 border rounded text-gray-400 cursor-not-allowed text-center">Last</span>
-    {% endif %}
-  </div>
-</div>
-
-<!-- Pagination Section above sm (larger)-->
-<div class="mt-10 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 hidden sm:flex">
-  {% if pagination.has_prev %}
-  <a href="{{pagination.first}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">First</a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">First</span>
-  {% endif %}
-  {% if pagination.has_prev %}
-  <a href="{{pagination.prev}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Previous</a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">Previous</span>
-  {% endif %}
-  <span class="px-6 py-2 border rounded bg-yellow-100 w-full sm:w-auto text-center">
-    Page {{ pagination.page }} of {{ pagination.total_pages }}
-  </span>
-  {% if pagination.has_next %}
-  <a href="{{pagination.next}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Next</a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">Next</span>
-  {% endif %}
-  {% if pagination.has_next %}
-  <a href="{{pagination.last}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-full sm:w-auto text-center">Last</a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 cursor-not-allowed w-full sm:w-auto text-center">Last</span>
-  {% endif %}
-</div>
-
+{% include 'sub/pagination_small.html' %}
+{% include 'sub/pagination_large.html' %}
 {% endblock %}
