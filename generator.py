@@ -6,7 +6,7 @@ import os
 import datetime
 from collections import defaultdict
 from http import HTTPStatus
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
 from mbutils import *
 from model import *
@@ -14,7 +14,7 @@ from db import *
 
 OUTPUT_DIR = 'site'
 DOMAIN=os.environ.get('DOMAIN', 'https://beekey.buzz')
-DEV=os.environ.get('DEV', False)
+DEV=bool(os.environ.get('DEV', False))
 VERSION=2
 PER_PAGE=50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -61,7 +61,7 @@ def json_esc(s: str) -> str:
 class Generator:
   def __init__(self):
     self.db = DB()
-    self.env = Environment(loader=FileSystemLoader('templates'))
+    self.env = Environment(loader=FileSystemLoader('templates'), undefined=StrictUndefined, trim_blocks=(not DEV), lstrip_blocks=(not DEV))
     self.env.globals.update(
       domain=DOMAIN,
       DEV=DEV,
@@ -104,7 +104,7 @@ class Generator:
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
     for puzzle in puzzles:
-      rendered = template.render(puzzle=puzzle)
+      rendered = template.render(puzzle=puzzle, canon_url=url_for(puzzle))
       self.output(url_for(puzzle), rendered, puzzle.date)
     latest = puzzles[0]
     self.ln(url_for(latest), '/puzzle/latest', latest.date)
@@ -113,7 +113,7 @@ class Generator:
     template = self.env.get_template('clue_page.html')
     clue_pages = self.db.fetch_gclue_pages()
     for page in clue_pages:
-      rendered = template.render(page=page)
+      rendered = template.render(page=page, canon_url=page.url)
       self.output(page.url, rendered, page.answers[0].puzzle_date)
 
   error_messages = {
@@ -130,11 +130,11 @@ class Generator:
     latest_dates = self.db.fetch_latest_puzzle_dates(14)
     latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
-    rendered = template.render(puzzle=latest, past_dates=latest_dates)
+    rendered = template.render(puzzle=latest, past_dates=latest_dates, canon_url=url_for(latest.date))
     self.output('index.html', rendered, TODAY)
 
     template = self.env.get_template('about.html')
-    rendered = template.render()
+    rendered = template.render(canon_url='/about')
     self.output('about', rendered, '2025-01-01')
 
     template = self.env.get_template('error.html')
@@ -150,7 +150,7 @@ class Generator:
     answers = sorted(answers, key=lambda x:x.text)
 
     for page in range(1, total_pages(answers) + 1):
-      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3)
+      rendered = template.render(pagination=Pagination(items=answers, page=page, per_page=PER_PAGE), n=3, canon_url=f'/clue-archive/{page}')
       self.output(f'clue-archive/{page}', rendered, TODAY)
 
   def generate_puzzle_archives(self) -> None:
@@ -167,10 +167,10 @@ class Generator:
     template = self.env.get_template('puzzle_archive.html')
     for yearmonth, puzzles in by_yearmonth.items():
       period = format_yearmonth(yearmonth)
-      path = '/puzzles/' + yearmonth.replace('-', '/')
+      path = url_for(yearmonth)
       lastmod = max(map(lambda x:x.date, puzzles))
 
-      rendered = template.render(puzzles=puzzles, period=period, pagination=PaginationBar(pages=pages, current=path))
+      rendered = template.render(puzzles=puzzles, period=period, pagination=PaginationBar(pages=pages, current=path), canon_url=path)
       self.output(path, rendered, lastmod)
 
     lastmod = sorted(by_yearmonth[latest])[0].date
