@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-import requests
-import json
-import time
 from mbutils import *
+from requester import *
 
 ACTIVE_URL = "https://www.nytimes.com/svc/spelling-bee/v1/active.json"
 CLUES_URL = "https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/{id_}.json"
@@ -12,43 +10,37 @@ DIR = "scraped"
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 SLEEP = 0.1
 
-def setup():
-  if not exists_dir(DIR):
-    return mkdir(DIR)
+class Scraper:
+  def __init__(self):
+    self.requester = Requester(user_agent=USER_AGENT, sleep=SLEEP)
 
-def get(url):
-  log(f"Requesting {url}")
-  headers = {'User-Agent': USER_AGENT}
-  response = requests.get(url, headers=headers)
-  time.sleep(SLEEP)
-  return response
+  def setup(self):
+    if not exists_dir(DIR):
+      return mkdir(DIR)
 
-def get_json(url):
-  try:
-    response = get(url)
-    if response.status_code != 200:
-      log_error(f'Could not retrieve {url}: Got:\n{str(response)} {response.reason}')
+  def get_json(self, url):
+    response = self.requester.get_json(url)
+    if response is None:
       return []
-    return json.loads(response.text)
-  except json.JSONDecodeError as e:
-    log_error(f'Could not decode json for {url}: {str(e)}. Got:\n{str(response)} {response.text}')
-    return []
+    return response
 
-def scrape():
-  active = get_json(ACTIVE_URL)
-  for item in active['puzzles']:
-    id_ = item['id']
-    filename = f"{DIR}/{item['print_date']}.json"
-    # if exists(filename):
-    #   log(f"Skipping {filename}, already saved.")
-    #   continue
-    clues = get_json(CLUES_URL.format(id_ = id_))
-    stats = get_json(STATS_URL.format(id_ = id_))
-    item['clues'] = clues
-    item['stats'] = stats
-    write(filename, json.dumps(item))
-    log(f"Saved to {filename}")
+  def scrape(self):
+    active = self.get_json(ACTIVE_URL)
+    for item in active['puzzles']:
+      id_ = item['id']
+      filename = f"{DIR}/{item['print_date']}.json"
+      # if exists(filename):
+      #   log(f"Skipping {filename}, already saved.")
+      #   continue
+      clues = self.get_json(CLUES_URL.format(id_ = id_))
+      stats = self.get_json(STATS_URL.format(id_ = id_))
+      item['clues'] = clues
+      item['stats'] = stats
+      write(filename, json.dumps(item))
+      log(f"Saved to {filename}")
 
 if __name__ == '__main__':
-  setup()
-  scrape()
+  scraper = Scraper()
+  scraper.setup()
+  scraper.scrape()
+  print(scraper.requester.cache_status())
