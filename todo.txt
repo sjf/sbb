@@ -9,6 +9,7 @@ o puzzle page: prev, next & date picker.
 o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
 https://www.bing.com/indexnow/getstarted#
 
+o register on ddg search
 ---
 
 o puzzle-archive date shouldnt be underlined.

@@ -58,11 +58,13 @@ P2_PAGE_NO_CLUE = GAnswer(word='page', is_pangram=False, text=None, url=None, pu
 P2_CHAIR_NO_CLUE = GAnswer(word='chair', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
 P2_RECLINE_NO_CLUE = GAnswer(word='recline', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
 P2_OUTFOXED_NO_CLUE = GAnswer(word='outfoxed', is_pangram=True, text=None, url=None, puzzle_date='2024-12-24', definition=None)
+P2_NOCLUE_NO_CLUE = GAnswer(word='noclue', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
 
-ANSWERS = [P2_CHAIR, P1_DUETTED, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_RECLINE, P1_TOOT, P2_TOOT_, P2_TOOTED, P1_TRACTOR]
-ANSWERS_P1 = [P1_DUETTED, P1_TOOT, P1_TRACTOR]
-ANSWERS_P2_NO_CLUE = [P2_CHAIR_NO_CLUE, P2_HORN_NO_CLUE, P2_OUTFOXED_NO_CLUE, P2_PAGE_NO_CLUE, P2_RECLINE_NO_CLUE, P2_TOOT__NO_CLUE, P2_TOOTED_NO_CLUE]
-ANSWERS_P2 = [P2_CHAIR, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_RECLINE, P2_TOOT_, P2_TOOTED]
+
+ANSWERS = sorted([P2_CHAIR, P1_DUETTED, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_NOCLUE_NO_CLUE, P2_RECLINE, P1_TOOT, P2_TOOT_, P2_TOOTED, P1_TRACTOR])
+ANSWERS_P1 = sorted([P1_DUETTED, P1_TOOT, P1_TRACTOR])
+ANSWERS_P2_NO_CLUE = sorted([P2_CHAIR_NO_CLUE, P2_HORN_NO_CLUE, P2_OUTFOXED_NO_CLUE, P2_PAGE_NO_CLUE, P2_NOCLUE_NO_CLUE, P2_RECLINE_NO_CLUE, P2_TOOT__NO_CLUE, P2_TOOTED_NO_CLUE])
+ANSWERS_P2 = sorted([P2_CHAIR, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_NOCLUE_NO_CLUE, P2_RECLINE, P2_TOOT_, P2_TOOTED])
 
 GPUZZLE_1 = GPuzzle(
   date='2024-12-18',

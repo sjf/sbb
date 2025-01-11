@@ -51,11 +51,14 @@ def read_lines(f, to_list=True):
     return result
 
 def write(f, s, create_dirs=False):
-  if create_dirs:
-    dirs = os.path.dirname(f)
-    mkdir(dirs)
-  with open(f, 'w') as fh:
-    fh.write(s)
+  try:
+    if create_dirs:
+      dirs = os.path.dirname(f)
+      mkdir(dirs)
+    with open(f, 'w') as fh:
+      fh.write(s)
+  except Exception as e:
+    raise Exception(f"Failed to write to '{f}'") from e
 
 def touch(f):
   write(f, '')

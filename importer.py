@@ -42,8 +42,11 @@ class Importer:
         # Clues are not available right away.
         for content_clue in content['clues']:
           text = content_clue['text']
-          clue = Clue(text = text, url=get_clue_url(text))
-          clue_id = self.db.upsert_clue(clue)
+          clue_id = None
+          if text:
+            # Sometimes a clue will be missing, no text
+            clue = Clue(text = text, url=get_clue_url(text))
+            clue_id = self.db.upsert_clue(clue)
 
           word = content_clue['word']
           is_pangram = word in content['pangrams']
@@ -130,12 +133,14 @@ class Importer:
     mv(file, ARCHIVE)
 
 def get_clue_url(text: str) -> str:
-  # return f"clue/{clue.id}"
   safe_text = to_path_safe_name(text)
+  if not safe_text:
+    raise Exception(f"Could not create url for clue text '{text}'")
   url = f"/clue/{safe_text}"
   return url
 
 def to_path_safe_name(text: str, max_length: int = 100) -> str:
+  """ !!! Changing this will break the existing URLs. """
   # Normalize to ASCII (remove accents)
   text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
   # Replace non-alphanumeric characters with hyphens

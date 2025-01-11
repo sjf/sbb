@@ -12,6 +12,7 @@ from model import *
 DIR = 'scraped/*.json'
 DB_FILE = 'nyt.db'
 SCHEMA = 'schema.sql'
+DEBUG = os.environ.get('DEBUG', False)
 
 # Storage classes, generated from the schema.
 @dataclass
@@ -51,6 +52,8 @@ class DB:
     self.conn = sqlite3.connect(DB_FILE)
     # Return rows as dictionaries (column name access)
     self.conn.row_factory = sqlite3.Row
+    if DEBUG:
+      self.conn.set_trace_callback(lambda x:print(x))
     self.cursor = self.conn.cursor()
 
     # Create tables if they don't exist
@@ -102,7 +105,11 @@ class DB:
     return self._last_inserted_or_get_id(last_id, 'answers', {'word': answer.word, 'puzzle_id': answer.puzzle_id})
 
   def upsert_clue(self, clue: Clue) -> int:
-    replace_term = "ON CONFLICT(text) DO NOTHING" # Theres only one other field, the url and it should not be changed.
+    assert clue.text and clue.url, clue
+    columns = DB.to_dict(clue).keys() - 'id'
+    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
+    replace_term = f"ON CONFLICT(text) DO UPDATE SET {updates}"
+
     last_id = self.insert(clue, replace_term=replace_term)
     return self._last_inserted_or_get_id(last_id, 'clues', {'text': clue.text})
 
