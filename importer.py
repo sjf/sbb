@@ -12,6 +12,7 @@ from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
 from model import *
 from db import *
+from requester import *
 
 DIR = 'scraped/*.json'
 ARCHIVE = 'archive/'
@@ -22,7 +23,7 @@ REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 class Importer:
   def __init__(self):
     self.db = DB()
-    self.setup_requests()
+    self.requester = Requester()
 
   def import_files(self, files, archive=True) -> None:
     n = 0
@@ -86,7 +87,7 @@ class Importer:
     date = datetime.datetime.now().strftime('%Y-%m-%d')
 
     for word in words:
-      response = self.get(url.format(word = word))
+      response = self.requester.get(url.format(word = word))
       definition = None
       if not response:
         log(f"Didn't get definition for {word} from {url}")
@@ -101,45 +102,6 @@ class Importer:
       # log(f"Commited definition for {word}")
     log(f"Got definitions for {n} words, could not find {len(missing)}.")
     return missing
-
-  def setup_requests(self):
-    # Set up cache for api requests.
-    self.session = requests_cache.CachedSession(
-      REQUESTS_SQLITE_CACHE,  # Cache stored on disk
-      backend='sqlite',
-      allowable_codes=(200, 404),
-      expire_after=None,  # No expiration
-      stale_if_error=True)  # Use stale cache if there's an error
-    self.session.cache.control = 'etag'
-    self.cache_hits = 0
-    self.cache_misses = 0
-
-    # Set up retry with exponential backoff
-    retries = Retry(
-      total=5,
-      backoff_factor=2,
-      status_forcelist=[429, 500, 502, 503, 504],
-      respect_retry_after_header=True)
-    adapter = HTTPAdapter(max_retries=retries)
-    self.session.mount('https://', adapter)
-
-  def cache_hit_rate(self):
-    total = self.cache_hits + self.cache_misses
-    return f'{percent(self.cache_hits, total)} for {total} total requests'
-
-  def get(self, url):
-    response = self.session.get(url)
-
-    if response.from_cache:
-      self.cache_hits += 1
-    else:
-      log(f"Getting {url}")
-      self.cache_misses += 1
-
-    if response.status_code == 404:
-      return None
-    response.raise_for_status()
-    return response
 
   def archive_file(self,file):
     if not exists_dir(ARCHIVE):
@@ -178,4 +140,4 @@ if __name__ == '__main__':
     sys.exit(0)
   importer.import_files(files)
   importer.import_definitions()
-  print(f'Cache hit rate {importer.cache_hit_rate()}')
+  print(importer.requester.cache_status())
