@@ -89,7 +89,7 @@ class Importer:
       response = self.get(url.format(word = word))
       definition = None
       if not response:
-        log(f"Missing {word}")
+        log(f"Didn't get definition for {word} from {url}")
         missing.append(word)
       else:
         definition = json.dumps(response.json())
@@ -107,9 +107,13 @@ class Importer:
     self.session = requests_cache.CachedSession(
       REQUESTS_SQLITE_CACHE,  # Cache stored on disk
       backend='sqlite',
+      allowable_codes=(200, 404),
       expire_after=None,  # No expiration
       stale_if_error=True)  # Use stale cache if there's an error
     self.session.cache.control = 'etag'
+    self.cache_hits = 0
+    self.cache_misses = 0
+
     # Set up retry with exponential backoff
     retries = Retry(
       total=5,
@@ -119,9 +123,19 @@ class Importer:
     adapter = HTTPAdapter(max_retries=retries)
     self.session.mount('https://', adapter)
 
+  def cache_hit_rate(self):
+    total = self.cache_hits + self.cache_misses
+    return f'{percent(self.cache_hits, total)} for {total} total requests'
+
   def get(self, url):
-    log(f"Getting {url}")
     response = self.session.get(url)
+
+    if response.from_cache:
+      self.cache_hits += 1
+    else:
+      log(f"Getting {url}")
+      self.cache_misses += 1
+
     if response.status_code == 404:
       return None
     response.raise_for_status()
@@ -164,3 +178,4 @@ if __name__ == '__main__':
     sys.exit(0)
   importer.import_files(files)
   importer.import_definitions()
+  print(f'Cache hit rate {importer.cache_hit_rate()}')

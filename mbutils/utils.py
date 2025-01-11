@@ -83,6 +83,12 @@ def index_or_default(n, l, default):
     return default
   return l[n]
 
+def percent(n,d):
+  if n == d == 0:
+    return '0%'
+  pc = int((n / d) * 100)
+  return f'{pc}%'
+
 def file_line_reader(file_path):
   """ Generator to read file line by line, returns the line number and stripped line."""
   # DEBUG and log(f"Opening {file_path}")
