@@ -19,20 +19,28 @@ class Requester:
   It uses exponential backoff for retries.
   Can sleep between requets.
   """
-  def __init__(self, user_agent=None, sleep=None):
+  def __init__(self, user_agent=None, sleep=None, cache=True):
     self.user_agent = user_agent
     self.sleep = sleep
-
-    # Set up cache for http requests.
-    self.session = requests_cache.CachedSession(
-      REQUESTS_SQLITE_CACHE,  # Cache stored on disk
-      backend='sqlite',
-      allowable_codes=(200, 404),
-      expire_after=None,  # No expiration
-      stale_if_error=True)  # Use stale cache if there's an error
-    self.session.cache.control = 'etag'
+    self.last_request_time_ms = None
+    self.cache = cache
     self.cache_hits = 0
     self.cache_misses = 0
+
+    # Set up cache for http requests.
+    if cache:
+      self.session = requests_cache.CachedSession(
+        REQUESTS_SQLITE_CACHE,  # Cache stored on disk
+        backend='sqlite',
+        allowable_codes=(200, 404),
+        expire_after=None,  # No expiration
+        stale_if_error=True,  # Use stale cache if there's an error
+        #cache_control=True)
+      )
+      self.session.cache.control = 'etag'
+
+    else:
+      self.session = requests.Session()
 
     # Set up retry with exponential backoff
     retries = Retry(
@@ -40,24 +48,24 @@ class Requester:
       backoff_factor=2,
       status_forcelist=[429, 500, 502, 503, 504],
       respect_retry_after_header=True)
-    adapter = HTTPAdapter(max_retries=retries)
-    self.session.mount('https://', adapter)
+    self.session.mount('https://', HTTPAdapter(max_retries=retries))
 
   def get(self, url, headers={}) -> Optional[requests.Response]:
-    if self.cache_misses > 0 and self.sleep:
-      # Pause if its not the first request
-      time.sleep(self.sleep)
+    self.maybe_sleep()
 
     if self.user_agent and not 'User-Agent' in headers:
       headers['User-Agent'] = self.user_agent
 
     response = self.session.get(url)
 
-    if response.from_cache:
+    if self.cache and response.from_cache:
       self.cache_hits += 1
     else:
       log(f"Getting {url}")
       self.cache_misses += 1
+      self.last_request_time_ms = time_ms()
+
+    # print(dictl(response.headers))
 
     if response.status_code == 404:
       return None
@@ -76,6 +84,18 @@ class Requester:
       return None
 
   def cache_status(self) -> str:
+    if not self.cache:
+      return ''
     total = self.cache_hits + self.cache_misses
     pc = percent(self.cache_hits, total)
     return f'Cache hit rate {pc} for {total} total requests'
+
+  def maybe_sleep(self) -> None:
+    if not self.sleep:
+      return
+    if not self.last_request_time_ms:
+      return
+    if time_ms() < self.last_request_time_ms + (self.sleep * 1000):
+      time.sleep(self.sleep)
+
+

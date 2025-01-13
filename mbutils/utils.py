@@ -98,6 +98,9 @@ def file_line_reader(file_path):
       yield line.rstrip(), line_num
       line_num += 1
 
+def time_ms():
+  return int(time.time() * 1000)
+
 def url_params(url, keep_blank_values=True, query_only=False):
   """ Returns the URL params as dict where the value is list all the param values. """
   if query_only:

@@ -12,7 +12,7 @@ SLEEP = 0.1
 
 class Scraper:
   def __init__(self):
-    self.requester = Requester(user_agent=USER_AGENT, sleep=SLEEP)
+    self.requester = Requester(user_agent=USER_AGENT, sleep=SLEEP, cache=False)
 
   def setup(self):
     if not exists_dir(DIR):
@@ -43,4 +43,4 @@ if __name__ == '__main__':
   scraper = Scraper()
   scraper.setup()
   scraper.scrape()
-  print(scraper.requester.cache_status())
+
