@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from sendgrid import SendGridAPIClient # type: ignore
+from sendgrid.helpers.mail import Mail # type: ignore
 from .shell import *
 from .utils import *
 
