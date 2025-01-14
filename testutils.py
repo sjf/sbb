@@ -1,15 +1,9 @@
 import os
 import tempfile
 import db
-import importer
-from model import *
 from db import *
+import requester
 import pytest
-# import json
-# import db
-# import tempfile
-# from mbutils import *
-# from importer import *
 
 @pytest.fixture
 def fake_files(fs, monkeypatch) -> None:
@@ -31,7 +25,7 @@ def temp_db(fs, monkeypatch) -> None:
   fs.resume()
   write('schema.sql', schema)
   monkeypatch.setattr(db, 'DB_FILE', ':memory:')
-  monkeypatch.setattr(importer, 'REQUESTS_SQLITE_CACHE', ':memory:')
+  monkeypatch.setattr(requester, 'REQUESTS_SQLITE_CACHE', ':memory:')
 
 DB_TEST = 'scraped/db-test.json'
 IMPORTER_TEST = 'scraped/importer-test.json'

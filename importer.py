@@ -23,7 +23,7 @@ REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 class Importer:
   def __init__(self):
     self.db = DB()
-    self.requester = Requester()
+    self.requester = Requester(sleep=0.5)
 
   def import_files(self, files, archive=True) -> None:
     n = 0
