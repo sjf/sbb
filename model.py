@@ -59,12 +59,24 @@ class GPuzzle:
     return self.date > other.date
 
 @dataclass
+class GClueAnswer:
+  word: str # The answer word.
+  text: Optional[str] # Clue text.
+  puzzle_dates: list[str] # The dates on which this clue/anwer combo appeared.
+  # The same clue can hava different answers.
+  definition: Optional[GDefinition]
+  def __lt__(self, other):
+    if self.word == other.word:
+      return self.puzzle_dates > other.puzzle_dates
+    return self.word < other.word
+
+@dataclass
 class GCluePage:
   url: str
-  _answers: List[GAnswer] = field(default_factory=list)
+  _clue_answers: List[GClueAnswer] = field(default_factory=list)
   @property
-  def answers(self) -> List[GAnswer]:
-    return sorted(self._answers)
+  def clue_answers(self) -> List[GClueAnswer]:
+    return sorted(self._clue_answers)
 
 def dictapis_to_def(content: str, source: str) -> Optional[GDefinition]:
   if not source or not content:

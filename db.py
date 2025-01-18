@@ -150,7 +150,18 @@ class DB:
         by_url[answer.url].append(answer)
     result = []
     for url,answers in by_url.items():
-      result.append(GCluePage(url=url,_answers=answers))
+      by_word = defaultdict(list)
+      for answer in answers:
+        by_word[answer.word].append(answer)
+      clue_answers = []
+      for word,anss in by_word.items():
+        puzzle_dates = sorted(mapl(lambda x:x.puzzle_date,anss), reverse=True)
+        clue_answers.append(GClueAnswer(
+          word=anss[0].word,
+          text=anss[0].text, # I am assuming the clue text is the same if the url is the same.
+          puzzle_dates=puzzle_dates,
+          definition=anss[0].definition))
+      result.append(GCluePage(url=url, _clue_answers=clue_answers))
     result = sorted(result, key=lambda x:x.url)
     return result
 

@@ -54,6 +54,27 @@ P2_RECLINE_NO_CLUE = GAnswer(word='recline', is_pangram=False, text=None, url=No
 P2_OUTFOXED_NO_CLUE = GAnswer(word='outfoxed', is_pangram=True, text=None, url=None, puzzle_date='2024-12-24', definition=None)
 P2_NOCLUE_NO_CLUE = GAnswer(word='noclue', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
 
+C1_TOOT = GClueAnswer(word='toot', text='Beep', puzzle_dates=['2024-12-18'], definition=None)
+C1_TRACTOR = GClueAnswer(word='tractor', text='Dad preferred a John Deere ____ but grandpa loved his Ford.',
+      puzzle_dates=['2024-12-18'], definition=None)
+C1_DUETTED = GClueAnswer(word='duetted', text='Play together', puzzle_dates=['2024-12-18'], definition=None)
+
+C2_TOOT_ = GClueAnswer(word='toot_', text='Beep', puzzle_dates=['2024-12-24'], definition=None)
+C2_TOOTED = GClueAnswer(word='tooted', text='beep!!', puzzle_dates=['2024-12-24'], definition=None)
+C2_HORN = GClueAnswer(word='horn', text='beep', puzzle_dates=['2024-12-24'], definition=None)
+C2_PAGE = GClueAnswer(word='page', text='beep', puzzle_dates=['2024-12-24'], definition=None)
+C2_CHAIR = GClueAnswer(word='chair', text='to sit', puzzle_dates=['2024-12-24'], definition=None)
+C2_RECLINE = GClueAnswer(word='recline', text='to sit', puzzle_dates=['2024-12-24'], definition=None)
+C2_OUTFOXED = GClueAnswer(word='outfoxed', text='Smarter than a fox', puzzle_dates=['2024-12-24'], definition=None)
+
+C2_TOOT__NO_CLUE = GClueAnswer(word='toot_', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_TOOTED_NO_CLUE = GClueAnswer(word='tooted', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_HORN_NO_CLUE = GClueAnswer(word='horn', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_PAGE_NO_CLUE = GClueAnswer(word='page', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_CHAIR_NO_CLUE = GClueAnswer(word='chair', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_RECLINE_NO_CLUE = GClueAnswer(word='recline', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_OUTFOXED_NO_CLUE = GClueAnswer(word='outfoxed', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_NOCLUE_NO_CLUE = GClueAnswer(word='noclue', text=None, puzzle_dates=['2024-12-24'], definition=None)
 
 ANSWERS = sorted([P2_CHAIR, P1_DUETTED, P2_HORN, P2_OUTFOXED, P2_PAGE, P2_NOCLUE_NO_CLUE, P2_RECLINE, P1_TOOT, P2_TOOT_, P2_TOOTED, P1_TRACTOR])
 ANSWERS_P1 = sorted([P1_DUETTED, P1_TOOT, P1_TRACTOR])
@@ -74,16 +95,16 @@ GPUZZLE_2 = GPuzzle(
 GPUZZLES = [GPUZZLE_2, GPUZZLE_1]
 
 GCLUE_PAGES = [
-  GCluePage(url='/clue/beep', _answers=[P2_HORN, P2_PAGE, P1_TOOT, P2_TOOT_, P2_TOOTED]),
-  GCluePage(url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _answers=[P1_TRACTOR]),
-  GCluePage(url='/clue/play-together', _answers=[P1_DUETTED]),
-  GCluePage(url='/clue/smarter-than-a-fox', _answers=[P2_OUTFOXED]),
-  GCluePage(url='/clue/to-sit', _answers=[P2_CHAIR, P2_RECLINE])
+  GCluePage(url='/clue/beep', _clue_answers=[C2_HORN, C2_PAGE, C1_TOOT, C2_TOOT_, C2_TOOTED]),
+  GCluePage(url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _clue_answers=[C1_TRACTOR]),
+  GCluePage(url='/clue/play-together', _clue_answers=[C1_DUETTED]),
+  GCluePage(url='/clue/smarter-than-a-fox', _clue_answers=[C2_OUTFOXED]),
+  GCluePage(url='/clue/to-sit', _clue_answers=[C2_CHAIR, C2_RECLINE])
 ]
 GCLUE_PAGES_P1 = [
-  GCluePage(url='/clue/beep', _answers=[P1_TOOT]),
-  GCluePage(url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _answers=[P1_TRACTOR]),
-  GCluePage(url='/clue/play-together', _answers=[P1_DUETTED]),
+  GCluePage(url='/clue/beep', _clue_answers=[C1_TOOT]),
+  GCluePage(url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', _clue_answers=[C1_TRACTOR]),
+  GCluePage(url='/clue/play-together', _clue_answers=[C1_DUETTED]),
 ]
 
 # DB Classes
