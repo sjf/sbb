@@ -68,6 +68,7 @@ class Requester:
     # print(dictl(response.headers))
 
     if response.status_code == 404:
+      log_error(f'Could not retrieve {url}: Got:{str(response)} {response.reason}')
       return None
     response.raise_for_status()
     return response
@@ -76,7 +77,6 @@ class Requester:
     try:
       response = self.get(url, headers)
       if not response:
-        log_error(f'Could not retrieve {url}: Got:\n{str(response)} {response.reason}')
         return None
       return json.loads(response.text)
     except json.JSONDecodeError as e:

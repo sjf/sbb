@@ -52,7 +52,7 @@ class GPuzzle:
   def answer_list(self) -> str:
     return joinl(mapl(lambda x:x.word, self.answers), sep=',')
   def has_all_clues(self):
-    n = len(mapl(lambda x:x.text and x.url and x.url.startswith('/clue/'), self._answers))
+    n = len(list(filter(lambda x:x.text and x.url and x.url.startswith('/clue/'), self._answers)))
     return n/len(self._answers) > .8 # 80% of answers have official clues.
 
   def __lt__(self, other):
