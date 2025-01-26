@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from mbutils import *
 import json
+import emoji
 import sqlite3
 import unicodedata
 import re
@@ -117,6 +118,8 @@ def get_clue_url(text: str) -> str:
 
 def to_path_safe_name(text: str, max_length: int = 100) -> str:
   """ !!! Changing this will break the existing URLs. """
+  # Replace emojis with the text version.
+  text = emoji.demojize(text)
   # Normalize to ASCII (remove accents)
   text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
   # Replace non-alphanumeric characters with hyphens

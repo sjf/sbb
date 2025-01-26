@@ -9,3 +9,4 @@ jinja2
 types-humanfriendly
 types-requests
 sendgrid
+emoji

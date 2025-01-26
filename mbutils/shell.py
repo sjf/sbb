@@ -124,3 +124,14 @@ def dirname(path: str) -> str:
   return os.path.dirname(path)
 def realpath(path: str) -> str:
   return os.path.abspath(path)
+
+def joinp(a: str, b: str) -> str:
+  if not a:
+    return b
+  if not b:
+    return a
+  if a[-1] != '/' and b[0] != '/':
+    return a + '/' + b
+  if a[-1] == '/' and b[0] == '/':
+    return a[:-1] + b
+  return a + b

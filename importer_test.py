@@ -64,5 +64,12 @@ def test_import_definitions(temp_db, fake_files):
 
   assert importer.db.fetch_undefined_words() == []
 
-
-
+@pytest.mark.parametrize('input_str, expected', [
+  ('foo bar: buz (something)', 'foo-bar-buz-something'),
+  ('FOO BAR', 'foo-bar'),
+  ('Учебное пособие', ''),
+  ('l\'Île Esthétisme', 'l-ile-esthetisme'),
+  ('👁🦷', 'eye-tooth')
+])
+def test_to_path_safe_name(input_str, expected):
+  assert imp.to_path_safe_name(input_str) == expected

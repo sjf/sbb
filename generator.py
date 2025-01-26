@@ -19,17 +19,6 @@ VERSION = 3
 PER_PAGE = 50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
-def joinp(a: str, b: str) -> str:
-  if not a:
-    return b
-  if not b:
-    return a
-  if a[-1] != '/' and b[0] != '/':
-    a += '/'
-  if a[-1] == '/' and b[0] == '/':
-    a = a[:-1]
-  return a + b
-
 def url(path: str) -> str:
   return joinp(DOMAIN, path)
 
