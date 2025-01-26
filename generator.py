@@ -113,7 +113,7 @@ class Generator:
     clue_pages = self.db.fetch_gclue_pages()
     for page in clue_pages:
       rendered = template.render(page=page, canon_url=page.url)
-      self.output(page.url, rendered, page.answers[0].puzzle_date)
+      self.output(page.url, rendered, page.clue_answers[0].puzzle_dates[0])
 
   error_messages = {
       400: "Your request could not be processed. Please check the URL or try again later.",

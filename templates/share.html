@@ -1,0 +1,25 @@
+<section class="mt-8">
+  <h2 class="text-lg font-semibold">Share Today’s Puzzle</h2>
+  <div class="flex space-x-4 mt-4">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ domain }}/{{ url_for(puzzle.date) }}" target="_blank"
+       class="bg-blue-600 text-white rounded-full p-3 hover:bg-blue-700 transition">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <!-- Twitter -->
+    <a href="https://twitter.com/intent/tweet?url={{ domain }}/{{ url_for(puzzle.date) }}&text=Solve%20today's%20Spelling%20Bee!" target="_blank"
+       class="bg-blue-400 text-white rounded-full p-3 hover:bg-blue-500 transition">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <!-- WhatsApp -->
+    <a href="https://wa.me/?text=Solve%20the%20Spelling%20Bee:%20{{ domain }}/{{ url_for(puzzle.date) }}" target="_blank"
+       class="bg-green-500 text-white rounded-full p-3 hover:bg-green-600 transition">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <!-- Email -->
+    <a href="mailto:?subject=Today's%20Puzzle&body=Check%20it%20out:%20{{ domain }}/{{ url_for(puzzle.date) }}" target="_blank"
+       class="bg-gray-500 text-white rounded-full p-3 hover:bg-gray-600 transition">
+      <i class="fas fa-envelope"></i>
+    </a>
+  </div>
+</section>

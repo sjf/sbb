@@ -1,40 +1,40 @@
 {% extends "sub/base.html" %}
-{% block title %}NYT Spelling Bee Clue: {{page.answers[0].text}}{% endblock %}
-{% block description %}See the answer to '{{page.answers[0].text}}' from the NYT Spelling Bee.{% endblock %}
+{% block title %}NYT Spelling Bee Clue: {{page.clue_answers[0].text}}{% endblock %}
+{% block description %}See the answer to '{{page.clue_answers[0].text}}' from the NYT Spelling Bee.{% endblock %}
 {% block head %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "NYT Spelling Bee clue: “{{ page.answers[0].text | json_esc}}”",
-  "description": "Solve the clue “{{ page.answers[0].text | json_esc }}” from the NYT Spelling Bee.",
+  "name": "NYT Spelling Bee clue: “{{ page.clue_answers[0].text | json_esc}}”",
+  "description": "Solve the clue “{{ page.clue_answers[0].text | json_esc }}” from the NYT Spelling Bee.",
   "url": "{{ domain }}{{ page.url }}",
-  "datePublished": "{{ page.answers[0].puzzle_date }}",
+  "datePublished": "{{ page.clue_answers[0].puzzle_dates[0] }}",
   "mainEntity": {
     "@type": "Question",
-    "name": "{{ page.answers[0].text | json_esc}}"
+    "name": "{{ page.clue_answers[0].text | json_esc}}"
   }
 }
 </script>
 {% endblock %}
 
 {% block content %}
-<h1 class="text-4xl font-bold mb-6 text-center">{{ page.answers[0].text }}</h1>
+<h1 class="text-4xl font-bold mb-6 text-center">{{ page.clue_answers[0].text }}</h1>
 
-{% with answer=page.answers[0], index=0 %}
+{% with answer=page.clue_answers[0], index=0, is_sub=False %}
   {% include "sub/clue.html" %}
 {% endwith %}
 
-{% if page.answers|length > 1 %}
-<div class="mt-12 pt-6 border-t text-center">
-  <h2 class="text-lg mb-6">This clue also appeared on other dates:</h2>
-  {% for answer in page.answers[1:] %}
-    <p class="text-2xl font-bold">{{ answer.text }}</p>
-    <div class="mt-4">
-    {% with index=loop.index %}
-      {% include "sub/clue.html" %}
+<!-- Other answers for the same clue. -->
+{% if page.clue_answers|length > 1 %}
+<div class="mt-10 pt-6 border-t text-center">
+  <h2 class="text-lg mb-6">This clue has also appeared with other answers. Find all the answers below:</h2>
+  {% for answer in page.clue_answers[1:] %}
+    {% with index=loop.index,is_sub=True %}
+      <div class="mb-8 border-b last:border-b-0 pb-8 ">
+        {% include "sub/clue.html" %}
+      </div>
     {% endwith %}
-    </div>
   {% endfor %}
 </div>
 {% endif %}
