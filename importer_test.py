@@ -66,10 +66,17 @@ def test_import_definitions(temp_db, fake_files):
 
 @pytest.mark.parametrize('input_str, expected', [
   ('foo bar: buz (something)', 'foo-bar-buz-something'),
+  ('foo bar 💎', 'foo-bar'),
+  (' foo bar ', 'foo-bar'),
   ('FOO BAR', 'foo-bar'),
   ('Учебное пособие', ''),
   ('l\'Île Esthétisme', 'l-ile-esthetisme'),
-  ('👁🦷', 'eye-tooth')
+  ('👁🦷', 'eye-tooth'),
+  ('👁🦷💎', 'eye-tooth-gem-stone'),
 ])
 def test_to_path_safe_name(input_str, expected):
   assert imp.to_path_safe_name(input_str) == expected
+
+def test_to_path_safe_name_truncates():
+  assert imp.to_path_safe_name('foo bar buz', 10) == 'foo-bar'
+  assert imp.to_path_safe_name('foo bar buz', 11) == 'foo-bar-buz'

@@ -118,18 +118,25 @@ def get_clue_url(text: str) -> str:
 
 def to_path_safe_name(text: str, max_length: int = 100) -> str:
   """ !!! Changing this will break the existing URLs. """
+  # Remove gem-stone emoji at end, this is added by one writer to indicate a hard clue.
+  text = re.sub(r'([a-zA-Z].*)💎$', r'\1', text)
   # Replace emojis with the text version.
   text = emoji.demojize(text)
-  # Normalize to ASCII (remove accents)
+  # Normalize to ASCII (remove accents and non-latin characters).
   text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8')
-  # Replace non-alphanumeric characters with hyphens
+  # Replace non-alphanumeric characters with hyphens.
   text = re.sub(r'[^a-zA-Z0-9\s-]', '-', text)
-  # Replace spaces and multiple hyphens with a single hyphen
-  text = re.sub(r'[\s-]+', '-', text).strip('-')
-  # Lowercase the final string
+  # Replace spaces and multiple hyphens with a single hyphen.
+  text = re.sub(r'[\s-]+', '-', text)
+  # Remove leading and trailing hyphens.
+  text = text.strip('-')
+  # Lowercase the final text.
   text = text.lower()
   if len(text) > max_length:
-    text = text[:max_length].rsplit('-', 1)[0] # Split at hyphen.
+    # Truncate.
+    text = text[:max_length]
+    # Split at hyphen.
+    text = text.rsplit('-', 1)[0]
   return text
 
 if __name__ == '__main__':
