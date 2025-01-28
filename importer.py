@@ -40,14 +40,12 @@ class Importer:
       # Puzzles are upate on their post day with clues later.
       puzzle_id = self.db.upsert_puzzle(puzzle)
 
-      if content.get('clues', None):
-        # Clues are not available right away.
+      if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:
           text = content_clue['text']
           clue_id = None
-          if text:
-            # Sometimes a clue will be missing, no text
-            clue = Clue(text = text, url=get_clue_url(text))
+          if text: # Sometimes a clue will be missing, i.e. there will be no text
+            clue = Clue(text=get_clue_text(text), url=get_clue_url(text))
             clue_id = self.db.upsert_clue(clue)
 
           word = content_clue['word']
@@ -58,6 +56,7 @@ class Importer:
             is_pangram = is_pangram)
           self.db.upsert_answer(answer)
       else:
+        # Clues are not present in the json.
         for word in content['answers'] + content['pangrams']:
           is_pangram = word in content['pangrams']
           answer = Answer(word = word,
@@ -115,6 +114,11 @@ def get_clue_url(text: str) -> str:
     raise Exception(f"Could not create url for clue text '{text}'")
   url = f"/clue/{safe_text}"
   return url
+
+def get_clue_text(text: str) -> str:
+  # Remove gem-stone emoji at end, this is added by one writer to indicate a hard clue.
+  text = re.sub(r'([a-zA-Z].*)💎$', r'\1', text)
+  return text
 
 def to_path_safe_name(text: str, max_length: int = 100) -> str:
   """ !!! Changing this will break the existing URLs. """

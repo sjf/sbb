@@ -10,7 +10,7 @@ import re
 import ast
 from collections import Counter, defaultdict
 
-DATE_FORMAT = "%d/%b/%Y:%H:%M:%S %z"
+DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
 
 def iso_timestamp():
   return datetime.datetime.now().astimezone().strftime(DATE_FORMAT)
