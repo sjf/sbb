@@ -22,7 +22,7 @@ jobs:
 
       - name: Setup local files and start containers
         run: |
-          rm .env
+          rm .env || true
           echo ES_PORT=9383 >> .env
           echo ES_PORT_NODE=9384 >> .env
           echo BACKEND_PORT=9385 >> .env
