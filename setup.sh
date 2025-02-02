@@ -3,17 +3,21 @@ set -eux
 
 mkdir -p secrets
 
+function password() {
+  head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12
+}
+
 ## Setup flask secret key password
 if [ ! -f secrets/flask-secret-key.txt ]; then
   echo Creating Flask secret key...
-  uuidgen | tr -d '-' | head -c 12 > secrets/flask-secret-key.txt
+  password > secrets/flask-secret-key.txt
 fi
 
 ## Setup elasticsearch password
 if [ ! -f secrets/elastic-password.txt ]; then
   echo Creating elastic password...
-  uuidgen | tr -d '-' | head -c 12 > secrets/elastic-password.txt
-  # echo -n elastic > secrets/elastic-password.txt
+  # password > secrets/elastic-password.txt
+  echo -n elastic > secrets/elastic-password.txt
 fi
 # elasticsearch refuses to start if permissions are not correct.
 chmod 600 secrets/elastic-password.txt

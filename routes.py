@@ -11,6 +11,7 @@ from http import HTTPStatus
 import urllib.parse as ul
 
 from pyutils import *
+from gunicorn_util import *
 
 bp = Blueprint('main', __name__)
 es = ElasticSearch()
@@ -42,8 +43,8 @@ def _search(query):
 def handle_result(query, result):
   access_log_json('RESULTS', {
     'params': request.query_string.decode('utf-8'),
-    'count': len(result.pages),
-    'urls': list(map(lambda x:x.url, result.pages)),
+    # 'count': len(result.pages),
+    # 'urls': list(map(lambda x:x.url, result.pages)),
     })
   return render_template('results.html', result=result, query=query, page='results')
 

@@ -6,7 +6,7 @@ set -eux
 . .venv/bin/activate
 
 PORT=8002
-LOG_DIR=$HOME/logs
+LOG_DIR=/tmp/logs
 
 export FLASK_ENV=development
 export ELASTIC_API_KEY_FILE=secrets/elastic-api-key.txt
