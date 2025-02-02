@@ -7,6 +7,10 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip-action')"
     runs-on: self-hosted
 
+    env:
+      DOCKER_ENV: "prod"
+      COMPOSE_PROJECT_NAME: "github-runner"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
