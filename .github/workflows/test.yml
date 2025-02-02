@@ -20,18 +20,12 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Install dependencies
-        run: |
-          # python -m pip install --upgrade pip
-          # pip install -r requirements.txt
-
-          # npm install -g tailwindcss @tailwindcss/cli terser
-
-          git clone https://github.com/sjf/scripts.git external-scripts
-          echo "$(pwd)/external-scripts" >> $GITHUB_PATH
-
       - name: Setup local files and start containers
         run: |
+          rm .env
+          echo ES_PORT=9383 >> .env
+          echo ES_PORT_NODE=9384 >> .env
+          echo BACKEND_PORT=9385 >> .env
           ./setup.sh
           docker compose up --quiet-pull -d
 
@@ -42,7 +36,7 @@ jobs:
       - name: Setup backend services
         run: |
           ./elasticsearch/setup.sh
-          ./external-scripts/wait_for_containers.sh 2 30 backend
+          wait_for_containers.sh 2 30 backend
 
       - name: Import
         run: |

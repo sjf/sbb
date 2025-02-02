@@ -11,8 +11,10 @@ services:
       # - xpack.security.enabled=true
       - xpack.security.enabled=false
     ports:
-      - 127.0.0.1:9200:9200
-      - 127.0.0.1:9300:9300
+      - "${ES_PORT:-127.0.0.1:9200}:9200"
+      - "${ES_PORT_NODE:-127.0.0.1:9300}:9300"
+      # - 127.0.0.1:9200:9200
+      # - 127.0.0.1:9300:9300
     volumes:
       - elastic-data:/usr/share/elasticsearch/data
       - elastic-config:/usr/share/elasticsearch/config
@@ -33,7 +35,8 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 127.0.0.1:8000:8000
+      # - 127.0.0.1:8000:8000
+      - "${BACKEND_PORT:-127.0.0.1:9300}:9300"
     environment:
       - TZ=America/Los_Angeles
       - SECRET_KEY_FILE=/run/secrets/flask-secret-key.txt
