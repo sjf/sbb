@@ -48,13 +48,13 @@ jobs:
         run: |
           ./generator.py
 
-    - name: Compress log files into logs.tgz
-      if: success() || failure()
-      run: tar -czf logs.tgz logs
+      - name: Compress log files into logs.tgz
+        if: success() || failure()
+        run: tar -czf logs.tgz logs
 
-    - name: Upload compressed logs as an artifact
-      if: success() || failure()
-      uses: actions/upload-artifact@main
-      with:
-        name: logs
-        path: logs.tgz
+      - name: Upload compressed logs as an artifact
+        if: success() || failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: logs
+          path: logs.tgz
