@@ -3,6 +3,7 @@ archive/
 sbb.db
 *.sublime-*
 secrets/
+actions-runner/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
