@@ -26,34 +26,34 @@ services:
       timeout: 10s
       retries: 5
 
-  backend:
-    build:
-      context: . # pwd for build is the same dir as the compose file.
-      dockerfile: backend/Dockerfile
-    restart: always
-    ports:
-      - 127.0.0.1:8000:8000
-    environment:
-      - TZ=America/Los_Angeles
-      - SECRET_KEY_FILE=/run/secrets/flask-secret-key.txt
-      - ELASTIC_HOST=http://elasticsearch:9200
-      - ELASTIC_API_KEY_NAME=read_only_search_key
-      - ELASTIC_API_KEY_FILE=/run/secrets/elastic-api-key.txt
-      - MB_LOG_DIR=/var/log/
-    volumes:
-      - /home/sjf/logs/:/var/log
-    secrets:
-      - flask-secret-key.txt
-      - elastic-api-key.txt
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://127.0.0.1:8000/health || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
+  # backend:
+  #   build:
+  #     context: . # pwd for build is the same dir as the compose file.
+  #     dockerfile: backend/Dockerfile
+  #   restart: always
+  #   ports:
+  #     - 127.0.0.1:8000:8000
+  #   environment:
+  #     - TZ=America/Los_Angeles
+  #     - SECRET_KEY_FILE=/run/secrets/flask-secret-key.txt
+  #     - ELASTIC_HOST=http://elasticsearch:9200
+  #     - ELASTIC_API_KEY_NAME=read_only_search_key
+  #     - ELASTIC_API_KEY_FILE=/run/secrets/elastic-api-key.txt
+  #     - PYUTILS_LOG_DIR=/var/log/
+  #   volumes:
+  #     - /home/sjf/logs/:/var/log
+  #   secrets:
+  #     - flask-secret-key.txt
+  #     - elastic-api-key.txt
+  #   healthcheck:
+  #     test: wget --no-verbose --tries=1 --spider http://127.0.0.1:8000/health || exit 1
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 60s
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
 
   kibana:
     image: kibana:8.15.0

@@ -1,15 +1,13 @@
 {
   "dynamic": "strict",
   "properties": {
-    "clue_text": {
-      "type": "text",
-      "analyzer": "search_analyser"
-    },
     "word": {
       "type": "text",
       "analyzer": "search_analyser"
     },
-
-    "url": {"type": "text", "index": "false"}
+    "text": {
+      "type": "text",
+      "analyzer": "search_analyser"
+    }
   }
 }

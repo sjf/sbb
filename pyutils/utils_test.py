@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import pytest
-from mbutils.utils import *
+from pyutils.utils import *
 
 url_params_input = [
     ('/', {}),

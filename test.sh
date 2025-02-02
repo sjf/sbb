@@ -1,4 +1,4 @@
 #!/bin/bash
 set -eux
 export PYTEST=1
-pytest $@
+pytest --mypy --ignore=external-scripts $@

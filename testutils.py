@@ -1,9 +1,14 @@
 import os
 import tempfile
-import db
-from db import *
 import requester
 import pytest
+from typing import Generator
+from unittest.mock import patch, call
+
+from pyutils.settings import config
+import db
+from model import *
+from storage import *
 
 @pytest.fixture
 def fake_files(fs, monkeypatch) -> None:
@@ -13,10 +18,8 @@ def fake_files(fs, monkeypatch) -> None:
     test_files[basename(file)] = read(file)
   fs.resume()
 
-  mkdir('scraped')
-  mkdir('archive')
   for file,content in test_files.items():
-    write(f"scraped/{file}", content)
+    write(f"scraped/{file}", content, create_dirs=True)
 
 @pytest.fixture
 def temp_db(fs, monkeypatch) -> None:
@@ -26,6 +29,22 @@ def temp_db(fs, monkeypatch) -> None:
   write('schema.sql', schema)
   monkeypatch.setattr(db, 'DB_FILE', ':memory:')
   monkeypatch.setattr(requester, 'REQUESTS_SQLITE_CACHE', ':memory:')
+
+@pytest.fixture
+def mock_es(fs) -> Generator:
+  write(config.get('ELASTIC_ADMIN_API_KEY_FILE'), 'test-elastic-admin-api-key', create_dirs=True)
+
+  with patch("elasticsearch.Elasticsearch.search") as mock_search, \
+       patch("elasticsearch.Elasticsearch.update") as mock_update:
+    mock_search.return_value = {
+      "hits": {"hits": [{"_source": {"Title": "Fake Book"}}]}
+    }
+    mock_update.return_value = {
+      "_index": config.get('INDEX'),
+      "_id": "test-id-123",
+      "result": "updated"
+    }
+    yield {"search": mock_search, "update": mock_update}
 
 DB_TEST = 'scraped/db-test.json'
 IMPORTER_TEST = 'scraped/importer-test.json'
@@ -123,3 +142,20 @@ DEFINITION_TRACTOR = Definition(word='tractor',
     definition="A defintion of tractor",
     source='http://example.com/tractor',
     retrieved_on='2025-01-01')
+
+ES_UPDATES_P1 = [
+  call(index='sbb', id='/clue/play-together', body={'doc': {'word': 'duetted', 'text': 'Play together'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot', 'text': 'Beep'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford',
+    body={'doc': {'word': 'tractor', 'text': 'Dad preferred a John Deere ____ but grandpa loved his Ford.'}, 'doc_as_upsert': True})
+]
+ES_UPDATES_P2 = [
+  call(index='sbb', id='/clue/smarter-than-a-fox', body={'doc': {'word': 'outfoxed', 'text': 'Smarter than a fox'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot_', 'text': 'Beep'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'tooted', 'text': 'beep!!'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'horn', 'text': 'beep'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'page', 'text': 'beep'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'chair', 'text': 'to sit'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'recline', 'text': 'to sit'}, 'doc_as_upsert': True})
+]
+ES_UPDATES = ES_UPDATES_P1 + ES_UPDATES_P2

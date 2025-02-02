@@ -1,25 +1,47 @@
 import re
 import elasticsearch
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, helpers
 import langcodes
 from functools import cmp_to_key
 from collections import defaultdict
 import json
 import os
 import shlex
-
-from mbutils.settings import config
-from mbutils import *
-from gunicorn_util import *
+from typing import List, Any, Dict, Optional
+from pyutils.settings import config
+from pyutils import *
+from storage import *
 
 class ElasticSearch:
   def __init__(self):
     host = config.get('ELASTIC_HOST')
-    api_key = read_value(config.get('ELASTIC_API_KEY_FILE'))
-    access_log(f"Connecting to Elasticsearch {host}")
+    api_key = read_value(config.get('ELASTIC_ADMIN_API_KEY_FILE'))
+    log(f"Connecting to Elasticsearch {host} api_key={api_key[:4]}...")
     self.es = Elasticsearch(host, api_key = api_key)
+
     self.page_size = config.get('PAGE_SIZE')
     self.index = config.get('INDEX')
+    self.max_retries = config.get('ES_MAX_RETRIES')
+    self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
+
+  def upsert_clue(self, url: str, word: str, text: str) -> None:
+    retries = self.max_retries + 1
+    success = 0
+
+    doc = {'word': word, 'text': text}
+    while retries > 0:
+      try:
+        body = {'doc': doc, 'doc_as_upsert': True}
+        self.es.update(index=self.index, id=url, body=body)
+        break # Don't retry
+      except (elasticsearch.AuthenticationException, elasticsearch.AuthorizationException) as e:
+        raise e
+      except Exception as ex:
+        log_error(f"Upserting failed with exception:{ex}")
+        retries -= 1
+        if retries > 0:
+          log(f'Retrying... (attempt {self.max_retries + 2 - retries}) after {self.retry_delay_secs} seconds', )
+          time.sleep(self.retry_delay_secs)
 
   def search(self, query):
     return [] #sjfsjf
@@ -264,3 +286,7 @@ def es_or(clauses):
 #     }
 #   }
 # },
+
+
+
+

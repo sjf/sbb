@@ -7,8 +7,8 @@ import elasticsearch
 from es import ElasticSearch
 from http import HTTPStatus
 
-from mbutils import *
-from mbutils.settings import config
+from pyutils import *
+from pyutils.settings import config
 from gunicorn_util import *
 from routes import bp
 
@@ -39,7 +39,7 @@ def setup_logging():
     # Set up gunicorn logs if not being run by gunicorn.
     # Log access and errors to the console.
     console_handler = logging.StreamHandler()
-    console_handler.setFormatter(mbutils.formatter)
+    console_handler.setFormatter(pyutils.formatter)
     gunicorn_error_logger.setLevel(logging.DEBUG)
     gunicorn_error_logger.addHandler(console_handler)
 

@@ -8,7 +8,7 @@ from requests.adapters import HTTPAdapter
 from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
-from mbutils import *
+from pyutils import *
 
 REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 

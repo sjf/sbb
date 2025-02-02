@@ -3,7 +3,7 @@ import json
 import os
 from flask import request
 
-from mbutils import config, replace_url_param
+from pyutils import config, replace_url_param
 from book import Book
 
 COVER_URL = "https://covers.openlibrary.org/b/isbn/{isbn}-M.jpg"

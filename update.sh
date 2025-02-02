@@ -8,8 +8,8 @@ fi
 . .venv/bin/activate
 pip3 install -qr requirements.txt
 
-export MB_LOG_DIR=/home/sjf/logs
-export MB_LOG_FILE=sbb.log
+export PYUTILS_LOG_DIR=$HOME/logs
+export PYUTILS_LOG_FILE=sbb.log
 
 ./scraper.py
 ./importer.py

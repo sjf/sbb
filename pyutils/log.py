@@ -19,7 +19,7 @@ def duration(start, end):
   return humanfriendly.format_timespan(end - start)
 
 list_handler = None
-logger = logging.getLogger('mbutils')
+logger = logging.getLogger('pyutils')
 formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s',  datefmt=DATE_FORMAT)
 is_initialized = False
 
@@ -29,10 +29,10 @@ def _setup_logging(list_handler=False):
   # console handler
   console_handler = logging.StreamHandler()
 
-  log_dir = os.environ.get('MB_LOG_DIR', 'logs/')
+  log_dir = os.environ.get('PYUTILS_LOG_DIR', 'logs/')
   if not os.path.isdir(log_dir):
     os.makedirs(log_dir, exist_ok=True)
-  log_file = os.environ.get('MB_LOG_FILE', 'mb.log')
+  log_file = os.environ.get('PYUTILS_LOG_FILE', 'pyutils.log')
 
   # file handler
   file_handler = logging.FileHandler(f'{log_dir}/{log_file}')

@@ -1,6 +1,6 @@
 import logging
 from flask import has_request_context
-from mbutils import *
+from pyutils import *
 
 def client_ip():
   if has_request_context():
@@ -10,7 +10,7 @@ def client_ip():
 
 def access_log(mesg):
   """ Logs an info message to the gunicorn access log."""
-  log_mesg = f"{client_ip()} - - [{iso_timestamp()}] \"{mesg}\"" # these quotes dont work great json.
+  log_mesg = f"{client_ip()} - - [{iso_timestamp()}] {mesg}"
 
   logger = logging.getLogger("gunicorn.access")
   logger.info(log_mesg)

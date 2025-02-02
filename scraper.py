@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from mbutils import *
+from pyutils import *
 from requester import *
 
 ACTIVE_URL = "https://www.nytimes.com/svc/spelling-bee/v1/active.json"

@@ -1,1 +1,1 @@
---exclude-dir=site  --exclude-dir=logs
+--exclude-dir=site  --exclude-dir=logs --exclude-dir=.venv --exclude-dir=.mypy_cache

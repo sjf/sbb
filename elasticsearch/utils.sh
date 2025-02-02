@@ -2,7 +2,7 @@
 INDEX1=sbb
 INDEX2=
 
-ESPASS=$(cat secrets/elastic-password.txt.orig)
+ESPASS=$(cat secrets/elastic-password.txt.orig 2>/dev/null || cat secrets/elastic-password.txt)
 ELASTIC_HOST='http://localhost:9200'
 
 export bold=$(tput bold)

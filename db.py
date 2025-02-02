@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from mbutils import *
 import json
 import sqlite3
 import unicodedata
@@ -7,6 +6,8 @@ import re
 from dataclasses import dataclass, asdict, fields, field
 from typing import List, Any, Dict, Optional
 from collections import defaultdict
+from pyutils import *
+from storage import *
 from model import *
 
 DIR = 'scraped/*.json'
@@ -14,41 +15,11 @@ DB_FILE = 'nyt.db'
 SCHEMA = 'schema.sql'
 DEBUG = os.environ.get('DEBUG', False)
 
-# Storage classes, generated from the schema.
-@dataclass
-class Puzzle:
-  date: str
-  center_letter: str
-  outer_letters: List[str]
-  id: Optional[int] = None
-
-@dataclass
-class Answer:
-  word: str
-  is_pangram: bool
-  puzzle_id: int
-  clue_id: Optional[int]
-  id: Optional[int] = None
-
-@dataclass
-class Clue:
-  text: str
-  url: str
-  id: Optional[int] = None
-
-@dataclass
-class Definition:
-  word: str
-  definition: Optional[str]
-  source: str
-  retrieved_on: str
-
 MAPPING = {Puzzle: 'puzzles', Answer: 'answers', Clue: 'clues', Definition: 'definitions'}
 
 class DB:
-
   def __init__(self):
-    log(f"Opening db {DB_FILE}")
+    log(f"Opening SqliteDB {DB_FILE}")
     self.conn = sqlite3.connect(DB_FILE)
     # Return rows as dictionaries (column name access)
     self.conn.row_factory = sqlite3.Row

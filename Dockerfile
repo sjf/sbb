@@ -6,8 +6,7 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install -q -r requirements.txt
 
 WORKDIR /app/backend/
-COPY mbutils .
-COPY backend .
+COPY * .
 
 COPY .git/HEAD /tmp/HEAD
 COPY .git/FETCH_HEAD /tmp/FETCH_HEAD

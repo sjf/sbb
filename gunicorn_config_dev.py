@@ -1,10 +1,10 @@
 import logging
-import mbutils
+import pyutils
 
 def on_starting(server):
   # Log access and errors to the console.
   console_handler = logging.StreamHandler()
-  console_handler.setFormatter(mbutils.formatter)
+  console_handler.setFormatter(pyutils.formatter)
   gunicorn_error_logger = logging.getLogger("gunicorn.error")
   gunicorn_error_logger.addHandler(console_handler)
 

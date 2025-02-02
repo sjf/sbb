@@ -106,7 +106,7 @@ def url_params(url, keep_blank_values=True, query_only=False):
   if query_only:
     query = url
   else:
-    query = urllib.parse.splitquery(url)[1] # split query from url
+    query = urllib.parse.urlparse(url).query # split query from url
   params = urllib.parse.parse_qs(query, keep_blank_values=keep_blank_values)
   return dict(params)
 

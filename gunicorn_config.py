@@ -12,13 +12,13 @@ loglevel = 'info'
 preload = True
 
 import logging
-import mbutils
+import pyutils
 
 def on_starting(server):
   # Log errors to console as well as error log file.
   gunicorn_error_logger = logging.getLogger("gunicorn.error")
   console_handler = logging.StreamHandler()
-  console_handler.setFormatter(mbutils.formatter)
+  console_handler.setFormatter(pyutils.formatter)
   gunicorn_error_logger.addHandler(console_handler)
 
   gunicorn_error_logger.info(f'Starting Gunicorn...')

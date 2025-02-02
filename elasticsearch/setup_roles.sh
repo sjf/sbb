@@ -15,24 +15,6 @@ echo $ACI | jcurl PUT "/_cluster/settings" -d @-
 
 # If this is failing with "no handler found for uri [/_security... security is disabled in the ES settings.
 # The REST API uses the base64 encoded api key, not the 'api_key' in the response.
-# The analyze api stupidly needs the manage permission.
-echo "${bold}Creating api key for backend${normal}"
-KEY='
-{
-  "name": "read_only_key",
-  "role_descriptors": {
-    "read_only_role": {
-      "cluster": [],
-      "index": [
-        {
-          "names": ["*"],
-          "privileges": ["read", "manage"]
-        }
-      ]
-    }
-  }
-}'
-echo $KEY | jcurl POST "/_security/api_key" -d @- | jq -r .encoded > secrets/elastic-api-key.txt
 
 echo "${bold}Creating admin api key with all privileges${normal}"
 ADMIN_KEY='
@@ -40,7 +22,7 @@ ADMIN_KEY='
   "name": "all_access_key",
   "role_descriptors": {
     "all_access_role": {
-      "cluster": ["all"],
+      "cluster": [],
       "index": [
         {
           "names": ["*"],
