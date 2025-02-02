@@ -25,7 +25,7 @@ def configure_flask_app():
       response.headers['Referrer-Policy'] = 'same-origin'
       return response
   else:
-    app.config['SECRET_KEY'] = read(config['SECRET_KEY_FILE'])
+    app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
   return app
 
 def is_using_gunicorn():

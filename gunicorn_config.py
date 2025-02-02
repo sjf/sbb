@@ -1,7 +1,7 @@
 # This is inside the docker container, so it is ok to bind on 0.0.0.0.
 bind = '0.0.0.0:8000'
-accesslog = '/var/log/gunicorn/gunicorn-access.log'
-errorlog  = '/var/log/gunicorn/gunicorn-error.log'
+accesslog = '/var/log/gunicorn-access.log'
+errorlog  = '/var/log/gunicorn-error.log'
 pidfile = '/var/run/gunicorn.pid'
 # Client IP address is always the IP of the nginx proxy, change to use the forwarded IP real-ip header.
 # %L is response time.

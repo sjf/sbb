@@ -2,6 +2,9 @@ services:
   elasticsearch:
     ports: !override
       - 9200:9200
+  backend:
+    ports: !override
+      - 8000:8000
   kibana:
     ports: !override
       - 5601:5601

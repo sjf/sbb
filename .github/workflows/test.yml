@@ -11,15 +11,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Start containers
-        run: |
-          docker compose up --quiet-pull -d
-
-      - name: Clone scripts
-        run: |
-          git clone https://github.com/sjf/scripts.git external-scripts
-          echo "$(pwd)/external-scripts" >> $GITHUB_PATH
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -27,13 +18,25 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y uuid-runtime
+
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
           npm install -g tailwindcss @tailwindcss/cli terser
 
-      # - name: Run Pytest unit-tests
-      #   run: |
-      #     ./test.sh
+          git clone https://github.com/sjf/scripts.git external-scripts
+          echo "$(pwd)/external-scripts" >> $GITHUB_PATH
+
+      - name: Setup local files and start containers
+        run: |
+          ./setup.sh
+          docker compose up --quiet-pull -d
+
+      - name: Run Pytest unit-tests
+        run: |
+          ./test.sh
 
       - name: Set up elasticsearch
         run: |
