@@ -82,9 +82,9 @@ services:
 
 volumes:
   elastic-data:
-    name: sbb-elastic-data
+    name: ${COMPOSE_PROJECT_NAME}sbb-elastic-data
   elastic-config:
-    name: sbb-elastic-config
+    name: ${COMPOSE_PROJECT_NAME}sbb-elastic-config
 
 secrets:
   elastic-password.txt:
