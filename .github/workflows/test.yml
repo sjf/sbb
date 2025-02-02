@@ -51,8 +51,8 @@ jobs:
       - name: Compress log files into logs.tgz
         if: failure()
         run: |
-          docker ps -a && docker logs $(docker ps -aq) > docker.log
-          tar -czf logs.tgz /home/sjf/logs/*
+          docker compose logs > docker.log
+          tar -czf logs.tgz logs/*
 
       - name: Upload compressed logs as an artifact
         if: failure()
