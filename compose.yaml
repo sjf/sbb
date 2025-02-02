@@ -8,7 +8,8 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - xpack.license.self_generated.type=trial
       - xpack.security.http.ssl.enabled=false
-      - xpack.security.enabled=true
+      # - xpack.security.enabled=true
+      - xpack.security.enabled: false
     ports:
       - 127.0.0.1:9200:9200
       - 127.0.0.1:9300:9300
