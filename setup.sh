@@ -2,6 +2,7 @@
 set -eux
 
 mkdir -p secrets
+mkdir -p logs
 
 function password() {
   head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12

@@ -49,11 +49,11 @@ jobs:
           ./generator.py
 
       - name: Compress log files into logs.tgz
-        if: success() || failure()
-        run: tar -czf logs.tgz logs
+        if: failure()
+        run: tar -czf logs.tgz /home/sjf/logs/*
 
       - name: Upload compressed logs as an artifact
-        if: success() || failure()
+        if: failure()
         uses: actions/upload-artifact@main
         with:
           name: logs
