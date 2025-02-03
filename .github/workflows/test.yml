@@ -5,11 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     if: "!contains(github.event.head_commit.message, 'skip-action')"
-    runs-on: self-hosted
-
-    env:
-      DOCKER_ENV: "prod"
-      COMPOSE_PROJECT_NAME: "github-runner"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -20,12 +16,18 @@ jobs:
         with:
           python-version: 3.12
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+          npm install -g tailwindcss @tailwindcss/cli terser
+
+          git clone https://github.com/sjf/scripts.git external-scripts
+          echo "$(pwd)/external-scripts" >> $GITHUB_PATH
+
       - name: Setup local files and start containers
         run: |
-          rm .env || true
-          echo ES_PORT=9383 >> .env
-          echo ES_PORT_NODE=9384 >> .env
-          echo BACKEND_PORT=9385 >> .env
           ./setup.sh
           docker compose up --quiet-pull -d
 
@@ -36,7 +38,7 @@ jobs:
       - name: Setup backend services
         run: |
           ./elasticsearch/setup.sh
-          wait_for_containers.sh 2 30 backend
+          ./external-scripts/wait_for_containers.sh 2 30 backend
 
       - name: Import
         run: |
@@ -46,15 +48,22 @@ jobs:
         run: |
           ./generator.py
 
-      - name: Compress log files into logs.tgz
+      - name: Breakpoint if tests failed
         if: failure()
-        run: |
-          docker compose logs > logs/docker.log
-          tar -czf logs.tgz logs/*
-
-      - name: Upload compressed logs as an artifact
-        if: failure()
-        uses: actions/upload-artifact@main
+        uses: namespacelabs/breakpoint-action@v0
         with:
-          name: logs
-          path: logs.tgz
+          duration: 30m
+          authorized-users: sjf
+
+      # - name: Compress log files into logs.tgz
+      #   if: failure()
+      #   run: |
+      #     docker compose logs > logs/docker.log
+      #     tar -czf logs.tgz logs/*
+
+      # - name: Upload compressed logs as an artifact
+      #   if: failure()
+      #   uses: actions/upload-artifact@main
+      #   with:
+      #     name: logs
+      #     path: logs.tgz

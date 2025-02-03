@@ -8,8 +8,8 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - xpack.license.self_generated.type=trial
       - xpack.security.http.ssl.enabled=false
-      # - xpack.security.enabled=true
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
+      # - xpack.security.enabled=false
     ports:
       - "${ES_PORT:-127.0.0.1:9200}:9200"
       - "${ES_PORT_NODE:-127.0.0.1:9300}:9300"
@@ -36,7 +36,7 @@ services:
     restart: always
     ports:
       # - 127.0.0.1:8000:8000
-      - "${BACKEND_PORT:-127.0.0.1:9300}:9300"
+      - "${BACKEND_PORT:-127.0.0.1:8000}:8000"
     environment:
       - TZ=America/Los_Angeles
       - SECRET_KEY_FILE=/run/secrets/flask-secret-key.txt
@@ -62,7 +62,7 @@ services:
   kibana:
     image: kibana:8.15.0
     ports:
-      - 127.0.0.1:5601:5601
+      - "${KIBANA_PORT:-127.0.0.1:5601}:5601"
     # Don't put this container in the default profile so it doesn't start when doing `up`.
     profiles:
       - kibana
