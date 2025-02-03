@@ -230,9 +230,6 @@ class Generator:
       if file not in self.skip:
         cp_file(file, dest)
 
-    for file in ls("secrets/*.txt"):
-      # Copy indexnow api key
-      cp_file(file, OUTPUT_DIR)
     # Copy more files that need to be copied to multiple places
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
