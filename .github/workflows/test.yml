@@ -30,7 +30,7 @@ jobs:
         run: |
           ./setup.sh
           sudo chown 1000:0 secrets/elastic-password.txt
-          docker compose up --quiet-pull -d
+          docker compose up --quiet-pull -d elasticsearch
 
       - name: Run Pytest unit-tests
         run: |
@@ -39,6 +39,7 @@ jobs:
       - name: Setup backend services
         run: |
           ./elasticsearch/setup.sh
+          docker compose up --quiet-pull -d backend
           wait_for_containers.sh 2 30 backend
 
       - name: Import
