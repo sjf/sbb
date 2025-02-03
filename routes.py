@@ -12,13 +12,14 @@ import urllib.parse as ul
 
 from pyutils import *
 from gunicorn_util import *
+from query import Query
 
 bp = Blueprint('main', __name__)
 es = ElasticSearch()
 
 @bp.route('/search')
 def search():
-  query = request.args.get('q','')
+  query = Query(request.args)
   result = _search(query)
   # if result:
   return handle_result(query, result)
@@ -46,7 +47,7 @@ def handle_result(query, result):
     # 'count': len(result.pages),
     # 'urls': list(map(lambda x:x.url, result.pages)),
     })
-  return render_template('results.html', result=result, query=query, page='results')
+  return render_template('results.html', result=result, canon_url=result.first_page)
 
 @bp.route('/health')
 def health():
@@ -54,5 +55,5 @@ def health():
 
 @bp.after_app_request
 def add_header(response):
-  response.headers['X-MBMB'] = f'{maybe_read("build_time.txt", "n/a")} {maybe_read("git.txt", "n/a") }'
+  response.headers['X-SBB'] = f'{maybe_read("build_time.txt", "n/a")} {maybe_read("git.txt", "n/a") }'
   return response

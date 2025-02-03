@@ -78,6 +78,15 @@ class GCluePage:
   def clue_answers(self) -> List[GClueAnswer]:
     return sorted(self._clue_answers)
 
+@dataclass
+class GSearchResult:
+  word: str
+  text: str
+  url: str
+  def __lt__(self, other):
+    if self.word == other.word:
+      return self.text > other.text
+
 def dictapis_to_def(content: str, source: str) -> Optional[GDefinition]:
   if not source or not content:
     return None

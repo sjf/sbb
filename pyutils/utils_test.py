@@ -26,3 +26,13 @@ replace_url_param_input = [
 @pytest.mark.parametrize('input, expected', replace_url_param_input)
 def test_replace_url_param(input, expected):
   assert replace_url_param(*input) == expected
+
+remove_url_param_input = [
+    (('http://foo.com/?foo=bar', 'foo'), 'http://foo.com/'),
+    (('http://foo.com/?one=two&foo=bar', 'foo'), 'http://foo.com/?one=two'),
+    (('http://foo.com/', 'foo'), 'http://foo.com/'),
+    (('http://foo.com/?foo=bar&foo=bob&one=two', 'foo'), 'http://foo.com/?one=two')
+]
+@pytest.mark.parametrize('input, expected', remove_url_param_input)
+def test_remove_url_param(input, expected):
+  assert remove_url_param(*input) == expected

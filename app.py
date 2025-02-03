@@ -2,6 +2,7 @@ import sys
 import logging
 import os
 import json
+import jinja2
 from flask import Flask, render_template, request, flash
 import elasticsearch
 from es import ElasticSearch
@@ -11,14 +12,22 @@ from pyutils import *
 from pyutils.settings import config
 from gunicorn_util import *
 from routes import bp
+from generator import set_env_globals
 
-def configure_flask_app():
+def configure_flask_app() -> None:
+  app.jinja_env.undefined = jinja2.StrictUndefined
+  set_env_globals(app.jinja_env)
+
   if app.debug or os.getenv('FLASK_ENV') == 'development':
     app.config['TESTING'] = True
     app.config['DEBUG'] = True
     app.config['SECRET_KEY'] ='dev'
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     os.environ['DEBUG'] = 'True'
+
+    app.static_folder = "site/static"
+    app.static_url_path = "/static"
+
     @app.after_request
     def add_referrer_policy_header(response):
       # This header is added by nginx in prod.
@@ -26,7 +35,10 @@ def configure_flask_app():
       return response
   else:
     app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
-  return app
+    mkdir('site/flask_static')
+    app.static_folder = 'site/flask_static' # an empty dir, dont serve static files in prod.
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
 
 def is_using_gunicorn():
   return "gunicorn" in os.environ.get("SERVER_SOFTWARE", "")

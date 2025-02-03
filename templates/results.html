@@ -1,0 +1,72 @@
+{% extends "sub/base.html" %}
+{% block title %}"{{result.term}}" results{% endblock %}
+{% block description %}Search the NYT Spelling Bee clue archive for "{{result.term}}"{% endblock %}
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SearchResultsPage",
+  "name": "'{{ result.term | json_esc }}' results",
+  "description": "Search results for '{{ result.term | json_esc }}' in the NYT Spelling Bee clue archive.",
+  "url": "{{ request.url }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ domain }}/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Search results for '{{ result.term | json_esc }}'",
+    "itemListElement": [
+      {% for clue in result.results %}
+      {
+        "@type": "ListItem",
+        "position": {{ loop.index }},
+        "url": "{{ clue.url }}",
+        "name": "{{ clue.text | json_esc }}"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10 p-6 max-w-4xl bg-white shadow-md rounded">
+  <h1 class="text-4xl font-bold text-center mb-6">Search Results for "{{ result.term }}"</h1>
+
+  {% if result.results %}
+    <ul class="divide-y divide-gray-200">
+      {% for clue in result.results %}
+      <li class="py-4">
+        <a href="{{ clue.url }}" class="text-lg font-semibold text-blue-600 hover:underline">
+          {{ clue.text }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="text-gray-600 text-center">No results found for "{{ result.term }}".</p>
+  {% endif %}
+
+  <!-- Pagination -->
+  {% if result.next_page or result.prev_page %}
+  <div class="mt-8 flex justify-center space-x-4">
+    {% if result.prev_page %}
+      <a href="{{ result.first_page }}" class="px-4 py-2 border rounded-lg bg-gray-200 hover:bg-gray-300">First</a>
+      <a href="{{ result.prev_page }}" class="px-4 py-2 border rounded-lg bg-gray-200 hover:bg-gray-300">Previous</a>
+    {% endif %}
+
+    <span class="px-4 py-2 border rounded-lg bg-gray-300">Page {{ request.args.get('page', 1) }}</span>
+
+    {% if result.next_page %}
+      <a href="{{ result.next_page }}" class="px-4 py-2 border rounded-lg bg-gray-200 hover:bg-gray-300">Next</a>
+      {% if not result.at_max %}
+      <a href="{{ replace_url_param(result.next_page, 'page', config['MAX_PAGE_NUM']) }}" class="px-4 py-2 border rounded-lg bg-gray-200 hover:bg-gray-300">Last</a>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

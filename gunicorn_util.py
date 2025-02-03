@@ -1,6 +1,6 @@
 import logging
 import json
-from flask import has_request_context
+from flask import has_request_context, request
 from pyutils import *
 
 def client_ip():

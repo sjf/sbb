@@ -130,6 +130,15 @@ def replace_url_param(url, name, value):
   new_url = urllib.parse.urlunparse(parsed_url)
   return new_url
 
+def remove_url_param(url, param):
+  parsed_url = urllib.parse.urlparse(url)
+
+  query_params = urllib.parse.parse_qs(parsed_url.query)
+  query_params.pop(param, None) # Remove the specified parameter
+  new_query = urllib.parse.urlencode(query_params, doseq=True)
+
+  return urllib.parse.urlunparse(parsed_url._replace(query=new_query))
+
 def url_decode(s):
   return urllib.parse.unquote(s)
 

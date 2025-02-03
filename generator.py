@@ -57,20 +57,27 @@ def url_for(o: Any, arg=None) -> str:
 
   raise Exception(f"Unhandled url_for '{o}' arg={arg}")
 
+def set_env_globals(env: Environment) -> None:
+  env.globals.update(
+    domain=DOMAIN,
+    DEV=DEV,
+    VERSION=VERSION,
+    current_year=datetime.datetime.now().year,
+    url_for=url_for,
+    format_date=format_date,
+    sort_by_clue=sort_by_clue,
+    joinl=joinl)
+  env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
+
 class Generator:
   def __init__(self):
     self.db = DB()
-    self.env = Environment(loader=FileSystemLoader('templates'), undefined=StrictUndefined, trim_blocks=(not DEV), lstrip_blocks=(not DEV))
-    self.env.globals.update(
-      domain=DOMAIN,
-      DEV=DEV,
-      VERSION=VERSION,
-      current_year=datetime.datetime.now().year,
-      url_for=url_for,
-      format_date=format_date,
-      sort_by_clue=sort_by_clue,
-      joinl=joinl)
-    self.env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1] # Escape json, don't include quotes.
+    self.env = Environment(
+      loader=FileSystemLoader('templates'),
+      undefined=StrictUndefined,
+      trim_blocks=(not DEV),
+      lstrip_blocks=(not DEV))
+    set_env_globals(self.env)
     self.pages = []
 
   def generate_all(self) -> None:

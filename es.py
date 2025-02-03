@@ -10,7 +10,8 @@ import shlex
 from typing import List, Any, Dict, Optional
 from pyutils.settings import config
 from pyutils import *
-from storage import *
+from model import GSearchResult
+from result import Result
 
 class ElasticSearch:
   def __init__(self):
@@ -44,16 +45,15 @@ class ElasticSearch:
           time.sleep(self.retry_delay_secs)
 
   def search(self, query):
-    return [] #sjfsjf
     and_terms = []
     or_terms = [] # Match any of full title, isbn or doi.
-    unquoted, quoted = get_quoted_substrings(query.search)
+    unquoted, quoted = get_quoted_substrings(query.term)
     if unquoted:
-      unquoted_t = inexact_phrase('full_title', self.tokenize(unquoted), 400, 300, 50, 0)
+      unquoted_t = inexact_phrase('text', self.tokenize(unquoted), 400, 300, 50, 0)
       if not quoted:
         or_terms.append(unquoted_t)
     if quoted:
-      quoted_ts = [exact_phrase('full_title', q, 500) for q in quoted]
+      quoted_ts = [exact_phrase('text', q, 500) for q in quoted]
       if unquoted:
         # Include the unquoted phrase in the `and` clause
         quoted_ts.append(unquoted_t)
@@ -61,22 +61,17 @@ class ElasticSearch:
       or_terms.append(es_and(quoted_ts))
     and_terms.append(es_or(or_terms))
 
-    filters = get_filters(query)
-    sort = get_sort(query)
-
     os.environ.get('DEBUG','') and print(query) # ssss
-    search_expanded = False
-    es_query = es_and(and_terms, filters)
-    hits = self._search(es_query, sort, query.page_num)
-
-    result = Result(query, hits)
+    es_query = es_and(and_terms)
+    hits = self._search(es_query, query.page_num)
+    results = mapl(to_clue, hits)
+    result = Result(query, results)
     os.environ.get('DEBUG','') and (print(result)) # ssss
     return result
 
-  def _search(self, es_query, sort, page_num):
+  def _search(self, es_query, page_num):
     body = {
       "query": es_query,
-      "sort": sort,
       "from": page_num * self.page_size,
       "size": self.page_size + 1
     }
@@ -92,6 +87,12 @@ class ElasticSearch:
     body = {'analyzer': 'search_analyser', 'text': s}
     response = self.es.indices.analyze(index=self.index, body=body)
     return [token['token'] for token in response['tokens']]
+
+def to_clue(hit: Dict) -> GSearchResult:
+  url = hit['_id']
+  word = hit['_source']['word']
+  text = hit['_source']['text']
+  return GSearchResult(url=url, word=word, text=text)
 
 def split_quotes(s):
   lex = shlex.shlex(s)
@@ -274,18 +275,6 @@ def es_and(clauses, filters=None):
 def es_or(clauses):
   return {"bool":{"should": clauses}} # should means 'or'
 
-# Document contains all the terms in any order, with fuzziness.
-
-# {
-#   "match": {
-#     "full_title": {
-#       "query": query.search,
-#       "operator": "and",
-#       "fuzziness": "AUTO",
-#       "boost": 10
-#     }
-#   }
-# },
 
 
 
