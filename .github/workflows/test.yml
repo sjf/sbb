@@ -39,7 +39,7 @@ jobs:
       - name: Setup backend services
         run: |
           ./elasticsearch/setup.sh
-          ./external-scripts/wait_for_containers.sh 2 30 backend
+          wait_for_containers.sh 2 30 backend
 
       - name: Import
         run: |

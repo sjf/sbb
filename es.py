@@ -15,7 +15,7 @@ from storage import *
 class ElasticSearch:
   def __init__(self):
     host = config.get('ELASTIC_HOST')
-    api_key = read_value(config.get('ELASTIC_ADMIN_API_KEY_FILE'))
+    api_key = read_value(config.get('ELASTIC_API_KEY_FILE'))
     log(f"Connecting to Elasticsearch {host} api_key={api_key[:4]}...")
     self.es = Elasticsearch(host, api_key = api_key)
 

@@ -32,7 +32,7 @@ ADMIN_KEY='
     }
   }
 }'
-echo $ADMIN_KEY | jcurl POST "/_security/api_key" -d @- | jq -r .encoded > secrets/elastic-admin-api-key.txt
+echo $ADMIN_KEY | jcurl POST "/_security/api_key" -d @- | jq -r .encoded > secrets/elastic-api-key.txt
 
 echo "${bold}Creating service account token for kibana${normal}"
 jcurl POST "/_security/service/elastic/kibana/credential/token" |\

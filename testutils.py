@@ -32,7 +32,7 @@ def temp_db(fs, monkeypatch) -> None:
 
 @pytest.fixture
 def mock_es(fs) -> Generator:
-  write(config.get('ELASTIC_ADMIN_API_KEY_FILE'), 'test-elastic-admin-api-key', create_dirs=True)
+  write(config.get('ELASTIC_API_KEY_FILE'), 'test-elastic-api-key', create_dirs=True)
 
   with patch("elasticsearch.Elasticsearch.search") as mock_search, \
        patch("elasticsearch.Elasticsearch.update") as mock_update:
