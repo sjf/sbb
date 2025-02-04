@@ -1,4 +1,43 @@
 services:
+  frontend:
+    image: nginx:1.13-alpine
+    restart: always
+    network_mode: host # Use host networking instead of docker NAT.
+    # command: tail -f /dev/null
+    # ports:
+    #   # These should be only publically accessibly ports.
+    #   - 0.0.0.0:443:443
+    #   - 0.0.0.0:80:80
+    ports: [] # Ports not used in host network.
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+        bind:
+          # This is a file mount, prevent docker from creating a directory if it is missing.
+          create_host_path: false
+      - type: bind
+        source: ./secrets/ssl
+        target: /etc/ssl
+        read_only: true
+        bind:
+          # Prevent docker from creating a directory if it is missing because it will be owned by root.
+          create_host_path: false
+      - ./site/:/var/www/site:ro
+      - ./logs/:/var/log
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider https://localhost/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      backend:
+        condition: service_healthy
+
   elasticsearch:
     image: elasticsearch:8.15.0
     environment:
@@ -9,12 +48,9 @@ services:
       - xpack.license.self_generated.type=trial
       - xpack.security.http.ssl.enabled=false
       - xpack.security.enabled=true
-      # - xpack.security.enabled=false
     ports:
       - "${ES_PORT:-127.0.0.1:9200}:9200"
       - "${ES_PORT_NODE:-127.0.0.1:9300}:9300"
-      # - 127.0.0.1:9200:9200
-      # - 127.0.0.1:9300:9300
     volumes:
       - elastic-data:/usr/share/elasticsearch/data
       - elastic-config:/usr/share/elasticsearch/config
@@ -35,7 +71,6 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      # - 127.0.0.1:8000:8000
       - "${BACKEND_PORT:-127.0.0.1:8000}:8000"
     environment:
       - TZ=America/Los_Angeles

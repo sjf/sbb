@@ -39,8 +39,8 @@ jobs:
       - name: Setup backend services
         run: |
           ./elasticsearch/setup.sh
-          docker compose up --quiet-pull -d backend
-          wait_for_containers.sh 2 30 backend
+          docker compose up --quiet-pull -d
+          wait_for_containers.sh 2 45 frontend
 
       - name: Import
         run: |

@@ -29,3 +29,20 @@ cp secrets/elastic-password.txt secrets/elastic-password.txt.orig
 ## Set up API key
 # file has to exist for docker secret binding to work.
 touch secrets/elastic-api-key.txt
+
+## Set up SSL
+SSL=secrets/ssl
+mkdir -p $SSL
+
+if [ ! -f $SSL/beekey.buzz.private.key.pem ]; then
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout $SSL/beekey.buzz.private.key.pem \
+    -out $SSL/beekey.buzz.domain.cert.pem -subj \
+    "/C=US/ST=State/L=City/O=Organization/OU=OrgUnit/CN=localhost"
+fi
+if [ ! -f $SSL/nytspellingbeesolver.com.key.pem ]; then
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout $SSL/nytspellingbeesolver.com.key.pem \
+    -out $SSL/nytspellingbeesolver.com.cert.pem -subj \
+    "/C=US/ST=State/L=City/O=Organization/OU=OrgUnit/CN=localhost"
+fi
