@@ -16,3 +16,5 @@ flask
 elasticsearch
 langcodes
 pytest-mypy
+types-beautifulsoup4
+bs4

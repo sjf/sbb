@@ -3,7 +3,7 @@ import requests
 import http.client
 import os
 import re
-import pyutils.settings
+import pyutils
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
 from pyutils import *
@@ -87,8 +87,30 @@ def test_index_invalid_param_ignored():
   assert response.text == response2.text
 
 def test_puzzles():
+  response = get('/puzzles/latest')
+  assert_contains(response, "NYT Spelling Bee")
+
+def test_puzzle():
   response = get('/puzzle/latest')
-  assert_contains(response, "Today's NYT Spelling Bee")
+  assert_contains(response, "NYT Spelling Bee")
+
+def test_clues():
+  response = get('/clues/a')
+  assert_contains(response, "NYT Spelling Bee")
+
+def test_search():
+  response = get('/search?q=foo')
+  assert_contains(response, "NYT Spelling Bee")
+
+def test_css():
+  version = settings.config['VERSION']
+  response = get(f'/static/style.{version}.css')
+  assert_contains(response, '')
+
+def test_js():
+  version = settings.config['VERSION']
+  response = get(f'/static/script.{version}.min.js')
+  assert_contains(response, '')
 
 ####### Other pages
 

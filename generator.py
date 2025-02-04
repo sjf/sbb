@@ -8,15 +8,15 @@ from collections import defaultdict
 from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
+from pyutils import settings
 from pyutils import *
 from model import *
 from db import *
 
-OUTPUT_DIR = 'site'
-DOMAIN = os.environ.get('DOMAIN', 'https://beekey.buzz')
+OUTPUT_DIR = settings.config['OUTPUT_DIR']
+DOMAIN = settings.config['DOMAIN']
+VERSION = settings.config['VERSION']
 DEV = bool(os.environ.get('DEV', False))
-VERSION = 3
-PER_PAGE = 50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
 def url(path: str) -> str:
@@ -250,9 +250,6 @@ class Generator:
     # Copy more files that need to be copied to multiple places
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
-
-def total_pages(items):
-  return ceil(len(items) / PER_PAGE)
 
 @dataclass
 class Page:

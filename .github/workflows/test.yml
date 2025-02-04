@@ -26,7 +26,7 @@ jobs:
           git clone https://github.com/sjf/scripts.git external-scripts
           echo "$(pwd)/external-scripts" >> $GITHUB_PATH
 
-      - name: Setup local files and start containers
+      - name: Setup local files and start elasticsearch
         run: |
           ./setup.sh
           sudo chown 1000:0 secrets/elastic-password.txt
@@ -34,9 +34,9 @@ jobs:
 
       - name: Run Pytest unit-tests
         run: |
-          ./test.sh
+          ./unit_tests.sh
 
-      - name: Setup backend services
+      - name: Setup backend all services
         run: |
           ./elasticsearch/setup.sh
           docker compose up --quiet-pull -d
@@ -49,6 +49,14 @@ jobs:
       - name: Generate
         run: |
           ./generator.py
+
+      - name: e2e Tests
+        env:
+          BACKEND: https://localhost
+          VERIFY_SSL: False
+          PYTHONWARNINGS: ignore:Unverified HTTPS request
+        run: |
+          ./e2e_tests.sh
 
       - name: Breakpoint if tests failed
         if: failure()
