@@ -99,11 +99,7 @@ def cp(a: str, b: str) -> None:
 
 def ln(src: str, dest: str, target_is_directory: bool = False) -> None:
   if os.path.islink(dest):
-    log(f' unlinking {dest}')
     os.unlink(dest)
-  if exists(dest):
-    log(f' rmming {dest}')
-    rm(dest)
   os.symlink(src, dest, target_is_directory=target_is_directory)
 
 def get_size(f):

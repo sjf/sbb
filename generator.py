@@ -97,14 +97,24 @@ class Generator:
       self.pages.append(Page(path=location, lastmod=lastmod))
     log(f"Generated {url(location)}")
 
-  def ln(self, src: str, dest: str, lastmod: str) -> None:
-    log(f"Linking {src} -> {dest} lastmod:{lastmod}")
-    src_file = realpath(joinp(OUTPUT_DIR, src))
-    dest_file = realpath(joinp(OUTPUT_DIR, dest))
-    log(f"Linking {src_file} -> {dest_file}")
-    ln(src_file, dest_file)
-    self.pages.append(Page(path=dest, lastmod=lastmod))
-    log(f"Generated {url(dest)}")
+  def ln(self, src: str, dst: str, lastmod: str) -> None:
+    log(f"Linking {src} -> {dst} lastmod:{lastmod}")
+    src_path = realpath(joinp(OUTPUT_DIR, src))
+    dst_path = realpath(joinp(OUTPUT_DIR, dst))
+
+    common_dir = os.path.commonpath([src_path, dst_path]) # This is guaranteed to be in the OUTPUT_DIR
+    saved_dir = os.getcwd()
+    os.chdir(common_dir)
+
+    rel_src_path = src_path[len(common_dir)+1:]
+    rel_dst_path = dst_path[len(common_dir)+1:]
+
+    log(f"Linking relative {rel_src_path} -> {rel_dst_path} in {common_dir}.")
+    ln(rel_src_path, rel_dst_path)
+    os.chdir(saved_dir)
+
+    self.pages.append(Page(path=dst, lastmod=lastmod))
+    log(f"Generated {url(dst)}")
 
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')

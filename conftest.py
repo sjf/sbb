@@ -12,3 +12,9 @@ def pytest_assertrepr_compare(op, left, right):
             "Right:",
             *right_str
         ]
+
+def pytest_configure(config):
+  if 'BACKEND' in os.environ:
+    print("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    print(f"Testing BACKEND:{os.environ['BACKEND']}")
+    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
