@@ -26,8 +26,14 @@ services:
         bind:
           # Prevent docker from creating a directory if it is missing because it will be owned by root.
           create_host_path: false
-      - ./site/:/var/www/site:ro
-      - ./logs/:/var/log
+      - type: bind
+        source: ./site
+        target: /var/www/site
+        read_only: true
+        bind:
+          # Prevent docker from creating a directory if it is missing because it will be owned by root.
+          create_host_path: false
+      - /home/sjf/logs/:/var/log
     healthcheck:
       test: wget --no-verbose --tries=1 --spider https://localhost/health || exit 1
       interval: 10s
