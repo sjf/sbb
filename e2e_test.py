@@ -95,7 +95,7 @@ def test_puzzle():
   assert_contains(response, "NYT Spelling Bee")
 
 def test_clues():
-  response = get('/clues/a')
+  response = get('/clues/b')
   assert_contains(response, "NYT Spelling Bee")
 
 def test_search():
