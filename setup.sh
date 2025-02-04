@@ -1,8 +1,9 @@
 #!/bin/bash
 set -eux
 
-mkdir -p secrets
+mkdir -p secrets/ssl
 mkdir -p logs
+mkdir -p site
 
 function password() {
   head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12
@@ -32,8 +33,6 @@ touch secrets/elastic-api-key.txt
 
 ## Set up SSL
 SSL=secrets/ssl
-mkdir -p $SSL
-
 if [ ! -f $SSL/beekey.buzz.private.key.pem ]; then
   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout $SSL/beekey.buzz.private.key.pem \
