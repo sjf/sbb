@@ -21,7 +21,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-          npm install -g tailwindcss @tailwindcss/cli terser
+          npm install -g tailwindcss@3 terser
 
           git clone https://github.com/sjf/scripts.git external-scripts
           echo "$(pwd)/external-scripts" >> $GITHUB_PATH

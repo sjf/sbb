@@ -10,6 +10,7 @@ export DOMAIN=http://box:8081
 export DEV=1
 
 mypy generator.py && ./generator.py || true
+date
 
 while inotifywait -r -e modify,create,delete \
 templates/ \
@@ -18,7 +19,8 @@ generator.py \
 model.py \
 db.py \
 ; do
-  mypy generator.py && ./generator.py || true;
+ mypy generator.py && ./generator.py || true;
+ date
  echo "-----------------------------------------------------------"
  sleep 1s
 done
