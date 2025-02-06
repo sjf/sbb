@@ -114,14 +114,18 @@
         data-opposite-button="searchButton">☰</button>
   </div>
 </nav>
-<div id="searchBox" class="hidden flex items-center w-full pl-4 pr-2 sm:pr-4 py-4 bg-yellow-300 shadow-md">
+
+<!-- Search Box -->
+{% set is_search_page = request.path == '/search' %}
+<div id="searchBox" class="{% if not is_search_page %}hidden{% endif %} flex items-center w-full pl-4 pr-2 sm:pr-4 py-4 bg-yellow-300 shadow-md">
   <!-- Centered Search Form -->
   <form action="/search" class="flex-1 flex justify-center">
     <div class="w-full max-w-full sm:max-w-[570px] flex flex-row items-center rounded-md border border-gray-300 bg-white px-3 focus-within:ring-1 focus-within:ring-gray-400 focus-within:outline-none mx-auto">
       <input
         type="text"
         name="q"
-        placeholder="Search..."
+        value="{{ request.args.get('q', '') if is_search_page else '' }}"
+        placeholder="Search for clues..."
         autocomplete="off"
         class="w-full py-2 pr-1 rounded-md outline-none"/>
       <button type="submit">
@@ -132,11 +136,13 @@
     </div>
   </form>
   <!-- X Button on the Right -->
-  <button onclick="toggleVisible(this)" data-target="searchBox" class="ml-2">
-    <svg class="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-    </svg>
-  </button>
+  {% if not is_search_page %}
+    <button onclick="toggleVisible(this)" data-target="searchBox" class="ml-2">
+      <svg class="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  {% endif %}
 </div>
 
 <div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 py-4 bg-yellow-300 shadow-md">

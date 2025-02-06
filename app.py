@@ -22,6 +22,7 @@ def configure_flask_app() -> None:
     app.config['TESTING'] = True
     app.config['DEBUG'] = True
     app.config['SECRET_KEY'] ='dev'
+    app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     os.environ['DEBUG'] = 'True'
 
@@ -35,9 +36,10 @@ def configure_flask_app() -> None:
       return response
   else:
     app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
-    mkdir('site/flask_static')
     # Cant figure out how to disable static serving, point it to an empty directory.
+    mkdir('site/flask_static')
     app.static_folder = 'site/flask_static'
+
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True
 
