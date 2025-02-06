@@ -1,6 +1,8 @@
 import logging
 import pyutils
 
+domain = pyutils.settings.config['DOMAIN']
+
 def on_starting(server):
   # Log access and errors to the console.
   console_handler = logging.StreamHandler()
@@ -13,7 +15,7 @@ def on_starting(server):
   gunicorn_error_logger.info(f'Starting Gunicorn...')
 
 def when_ready(server):
-  logging.getLogger("gunicorn.error").info(f'Gunicorn ready, listening on {",".join(server.cfg.bind)}...')
+  logging.getLogger("gunicorn.error").info(f'** Gunicorn DEV SERVER ** ready at {domain} ...')
 def on_reload(server):
   logging.getLogger("gunicorn.error").info('Reloading Gunicorn...')
 def on_exit(server):

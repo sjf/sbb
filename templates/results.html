@@ -6,8 +6,8 @@
 {
   "@context": "https://schema.org",
   "@type": "SearchResultsPage",
-  "name": "'{{ result.term | json_esc }}' results",
-  "description": "Search results for '{{ result.term | json_esc }}' in the NYT Spelling Bee clue archive.",
+  "name": "“{{ result.term | json_esc }}” results",
+  "description": "Search results for “{{ result.term | json_esc }}” in the NYT Spelling Bee clue archive.",
   "url": "{{ request.url }}",
   "potentialAction": {
     "@type": "SearchAction",
@@ -16,10 +16,9 @@
   },
   "mainEntity": {
     "@type": "ItemList",
-    "name": "Search results for '{{ result.term | json_esc }}'",
+    "name": "Search results for “{{ result.term | json_esc }}”",
     "itemListElement": [
-      {% for clue in result.results %}
-      {
+      {% for clue in result.results %}{
         "@type": "ListItem",
         "position": {{ loop.index }},
         "url": "{{ clue.url }}",
@@ -33,21 +32,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-10 p-6 max-w-4xl bg-white shadow-md rounded">
-  <h1 class="text-4xl font-bold text-center mb-6">Search Results for "{{ result.term }}"</h1>
+{% with pagination=result.pagination %}
+<h1 class="text-4xl font-bold text-center mb-6">Search Results for “{{ result.term }}”</h1>
 
-  {% if result.results %}
-    <ul class="divide-y divide-gray-200">
-      {% for clue in result.results %}
-      <li class="py-4">
-        <a href="{{ clue.url }}" class="text-lg font-semibold text-blue-600 hover:underline">
-          {{ clue.text }}
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="text-gray-600 text-center">No results found for "{{ result.term }}".</p>
-  {% endif %}
-</div>
+{% include 'sub/pagination_small.html' %}
+{% include 'sub/pagination_large.html' %}
+
+{% if result.results %}
+  <div class="grid grid-cols-1 gap-6">
+    {% for clue in result.results %}
+    <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
+      <a href="{{ clue.url }}" class="hover:underline">
+        <p class="text-lg font-medium">{{ clue.text }}</p>
+      </a>
+      {% with word=clue.word %}
+        {% include "sub/word_boxes.html" %}
+      {% endwith %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-gray-600 text-center">No results found for "{{ result.term }}".</p>
+{% endif %}
+
+{% include 'sub/pagination_small.html' %}
+{% include 'sub/pagination_large.html' %}
+{% endwith %}
 {% endblock %}

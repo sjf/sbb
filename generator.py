@@ -192,7 +192,7 @@ class Generator:
         answers=answers,
         prefix=prefix,
         alphabet=prefixes,
-        pagination=PaginationBar(pages=pages, current=path),
+        pagination=PaginateList(pages=pages, current=path),
         canon_url=path)
       self.output(path, rendered, lastmod)
 
@@ -213,7 +213,11 @@ class Generator:
       path = url_for(yearmonth)
       lastmod = max(map(lambda x:x.date, puzzles))
 
-      rendered = template.render(puzzles=puzzles, period=period, pagination=PaginationBar(pages=pages, current=path), canon_url=path)
+      rendered = template.render(
+        puzzles=puzzles,
+        period=period,
+        pagination=PaginateList(pages=pages, current=path),
+        canon_url=path)
       self.output(path, rendered, lastmod)
 
     lastmod = sorted(by_yearmonth[latest])[0].date

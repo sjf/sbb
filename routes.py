@@ -2,7 +2,7 @@ import sys
 import logging
 import os
 import json
-from flask import Flask, render_template, request, flash, redirect
+from flask import Flask, render_template, request, flash, redirect, send_from_directory
 from markupsafe import escape
 from flask import Blueprint, current_app
 import elasticsearch
@@ -47,7 +47,16 @@ def handle_result(query, result):
     # 'count': len(result.pages),
     # 'urls': list(map(lambda x:x.url, result.pages)),
     })
-  return render_template('results.html', result=result, canon_url=result.first_page)
+  # Canonical URL for results page is the first page of results.
+  return render_template('results.html', result=result, canon_url=result.pagination.first)
+
+if os.getenv('FLASK_ENV') == 'development':
+  @bp.route('/', defaults={'filename': 'index.html'})
+  @bp.route('/<path:filename>')
+  def send_from_site_directory(filename):
+    if exists('site/' + filename):
+      return send_from_directory('site', filename, mimetype='text/html')
+    return abort(404)
 
 @bp.route('/health')
 def health():

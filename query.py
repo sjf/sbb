@@ -13,7 +13,7 @@ from typing import List, Any, Dict, Optional
 class Query:
   def __init__(self, args=Dict[str,str]):
     self.term = _sanitize(args.get('q', ''))
-    self.page_num = _get_page_num_from_request(args)
+    self.page_num = _get_page_num_from_request(args) or 1
 
   @property
   def has_search_query(self) -> bool:
@@ -35,14 +35,14 @@ def _sanitize(s):
   s = s.strip()    # Only whitespace will become the empty string.
   return s
 
-def _get_page_num_from_request(args):
+def _get_page_num_from_request(args) -> Optional[int]:
   if not is_set(args, 'page'):
-    return 0
+    return None
   try:
     val = int(args['page'])
   except ValueError:
-    return 0
+    return None
   if val > config['MAX_PAGE_NUM']:
     flash("Something went wrong")
-    return 0
+    return None
   return val

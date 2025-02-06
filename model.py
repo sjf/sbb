@@ -116,58 +116,7 @@ def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
   return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
 
 @dataclass
-class Pagination:
-  # This is used on clues archive, it can be removed when this is changed.
-  items: List[Any]
-  page: int
-  per_page: int
-
-  @property
-  def total_pages(self) -> int:
-    return ceil(len(self.items) / self.per_page)
-
-  @property
-  def has_prev(self) -> bool:
-    return self.page > 1
-
-  @property
-  def has_next(self) -> bool:
-    return self.page < self.total_pages
-
-  @property
-  def prev_num(self) -> Optional[int]:
-    return self.page - 1 if self.has_prev else None
-
-  @property
-  def next_num(self) -> Optional[int]:
-    return self.page + 1 if self.has_next else None
-
-  @property
-  def start_index(self) -> int:
-    return (self.page - 1) * self.per_page
-
-  @property
-  def end_index(self) -> int:
-    return min(self.start_index + self.per_page, len(self.items))
-
-  @property
-  def visible_items(self) -> List[Any]:
-    return self.items[self.start_index:self.end_index]
-
-  @property
-  def pages_to_display(self) -> List[int]:
-    n = 3
-    total_pages = self.total_pages
-    if total_pages <= n*2:
-      return list(range(1, total_pages + 1))
-
-    # Show first n and last n pages
-    first_part = list(range(1, n))
-    last_part = list(range(total_pages - n - 1, total_pages + 1))
-    return first_part + last_part
-
-@dataclass
-class PaginationBar:
+class PaginateList:
   """ Creates pagination links for page from a list of URLs. """
   pages: List[str] # List of the urls in order.
   current: str # The url of the current page.
@@ -211,4 +160,47 @@ class PaginationBar:
   @property
   def next(self) -> Optional[str]:
     return self.pages[self._idx + 1] if self.has_next else None
+
+@dataclass
+class PaginateByNum:
+  """ Creates pagination links for numbered pages. """
+
+  current: int # Current page number
+  has_next: bool
+  base_url: str
+
+  @property
+  def page(self) -> int:
+    return self.current
+
+  @property
+  def has_prev(self) -> bool:
+    return self.current > 1
+
+  @property
+  def prev(self) -> Optional[str]:
+    if not self.has_next:
+      return None
+    if self.current == 2:
+      # Don't use page=1
+      return self.base_url
+    return replace_url_param(self.base_url, 'page', self.current - 1)
+
+  @property
+  def next(self) -> Optional[str]:
+    if not self.has_next:
+      return None
+    return replace_url_param(self.base_url, 'page', self.current + 1)
+
+  @property
+  def first(self) -> str:
+    return self.base_url
+
+  @property
+  def last(self) -> Optional[str]:
+    return None
+
+  @property
+  def total_pages(self) -> Optional[int]:
+    return None
 

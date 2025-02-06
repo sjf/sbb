@@ -36,7 +36,8 @@ def configure_flask_app() -> None:
   else:
     app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
     mkdir('site/flask_static')
-    app.static_folder = 'site/flask_static' # an empty dir, dont serve static files in prod.
+    # Cant figure out how to disable static serving, point it to an empty directory.
+    app.static_folder = 'site/flask_static'
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True
 

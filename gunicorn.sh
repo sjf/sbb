@@ -6,12 +6,14 @@ set -eux
 . .venv/bin/activate
 
 PORT=8002
+HOST=`hostname`
 LOG_DIR=/tmp/logs
 
 export DEV=1
 export FLASK_ENV=development
 export ELASTIC_API_KEY_FILE=secrets/elastic-api-key.txt
 export PYUTILS_LOG_DIR=$LOG_DIR
+export DOMAIN=http://$HOST:$PORT
 
 # reload srcs on change
 # in access log, use remote address instead of real-ip header b/c the header is not set by gunicorn.

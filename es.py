@@ -7,7 +7,7 @@ from collections import defaultdict
 import json
 import os
 import shlex
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict, Optional, Tuple
 from pyutils.settings import config
 from pyutils import *
 from model import GSearchResult
@@ -21,6 +21,7 @@ class ElasticSearch:
     self.es = Elasticsearch(host, api_key = api_key)
 
     self.page_size = config.get('PAGE_SIZE')
+    self.max_page_num = config.get('MAX_PAGE_NUM')
     self.index = config.get('INDEX')
     self.max_retries = config.get('ES_MAX_RETRIES')
     self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
@@ -63,22 +64,24 @@ class ElasticSearch:
 
     os.environ.get('DEBUG','') and print(query) # ssss
     es_query = es_and(and_terms)
-    hits = self._search(es_query, query.page_num)
+    hits, has_next = self._search(es_query, query.page_num - 1) # pages start at 1.
     results = mapl(to_clue, hits)
-    result = Result(query, results)
+    result = Result(query, results, has_next)
     os.environ.get('DEBUG','') and (print(result)) # ssss
     return result
 
-  def _search(self, es_query, page_num):
+  def _search(self, es_query, page_num) -> Tuple[List[GSearchResult], bool]:
     body = {
       "query": es_query,
       "from": page_num * self.page_size,
       "size": self.page_size + 1
     }
-    os.environ.get('DEBUG','') and (print(self.index), print(json.dumps(body,indent=2))) # ssss
+    # os.environ.get('DEBUG','') and (print(self.index), print(json.dumps(body,indent=2))) # ssss
     search_response = self.es.search(index=self.index, body=body)
-    # Just return the list of results.
-    return search_response['hits']['hits']
+    # os.environ.get('DEBUG','') and pprint.pprint(search_response) # ssss
+    hits = search_response['hits']['hits'][:self.page_size]
+    has_next = len(search_response['hits']['hits']) > self.page_size and (page_num +1) < self.max_page_num
+    return (hits, has_next)
 
   def tokenize(self, s):
     if not s:
