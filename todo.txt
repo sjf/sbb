@@ -1,3 +1,5 @@
+o attribute wikitonary
+
 o on clue archive page, current page should be yellow, like on puzzle archive.
 
 o a permalink for the puzzle on the front page.

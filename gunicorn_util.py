@@ -11,7 +11,7 @@ def client_ip():
 
 def access_log(mesg):
   """ Logs an info message to the gunicorn access log."""
-  log_mesg = f"{client_ip()} - - [{iso_timestamp()}] {mesg}"
+  log_mesg = f"{client_ip()} - - [{timestamp()}] {mesg}"
 
   logger = logging.getLogger("gunicorn.access")
   logger.info(log_mesg)

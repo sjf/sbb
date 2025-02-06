@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 
 DATE_FORMAT = "%d/%b/%Y:%H:%M:%S%z"
 
-def iso_timestamp():
+def timestamp():
   return datetime.datetime.now().astimezone().strftime(DATE_FORMAT)
 
 def duration(start, end):
