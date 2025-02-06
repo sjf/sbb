@@ -1,0 +1,137 @@
+services:
+  frontend:
+    image: nginx:1.13-alpine
+    restart: always
+    network_mode: host # Use host networking instead of docker NAT.
+    # command: tail -f /dev/null
+    # ports:
+    #   # These should be only publically accessibly ports.
+    #   - 0.0.0.0:443:443
+    #   - 0.0.0.0:80:80
+    ports: [] # Ports not used in host network.
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+        bind:
+          # This is a file mount, prevent docker from creating a directory if it is missing.
+          create_host_path: false
+      - type: bind
+        source: ./secrets/ssl
+        target: /etc/ssl
+        read_only: true
+        bind:
+          # Prevent docker from creating a directory if it is missing because it will be owned by root.
+          create_host_path: false
+      - type: bind
+        source: ./site
+        target: /var/www/site
+        read_only: true
+        bind:
+          # Prevent docker from creating a directory if it is missing because it will be owned by root.
+          create_host_path: false
+      - /home/sjf/logs/:/var/log
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider https://localhost/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  elasticsearch:
+    image: elasticsearch:8.15.0
+    environment:
+      - TZ=America/Los_Angeles
+      - ELASTIC_PASSWORD_FILE=/run/secrets/elastic-password.txt
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.license.self_generated.type=trial
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.enabled=true
+    ports:
+      - "${ES_PORT:-127.0.0.1:9200}:9200"
+      - "${ES_PORT_NODE:-127.0.0.1:9300}:9300"
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+      - elastic-config:/usr/share/elasticsearch/config
+      - /home/sjf/logs/:/var/log
+    secrets:
+      - source: elastic-password.txt
+        target: elastic-password.txt
+    healthcheck:
+      test: curl -u elastic:"$$(cat /run/secrets/elastic-password.txt)" --silent --fail 127.0.0.1:9200/_cluster/health || exit 1
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  backend:
+    build:
+      context: . # pwd for build is the same dir as the compose file.
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${BACKEND_PORT:-127.0.0.1:8000}:8000"
+    environment:
+      - TZ=America/Los_Angeles
+      - SECRET_KEY_FILE=/run/secrets/flask-secret-key.txt
+      - ELASTIC_HOST=http://elasticsearch:9200
+      - ELASTIC_API_KEY_NAME=read_only_search_key
+      - ELASTIC_API_KEY_FILE=/run/secrets/elastic-api-key.txt
+      - PYUTILS_LOG_DIR=/var/log/
+    volumes:
+      - /home/sjf/logs/:/var/log
+    secrets:
+      - flask-secret-key.txt
+      - elastic-api-key.txt
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://127.0.0.1:8000/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  kibana:
+    image: kibana:8.15.0
+    ports:
+      - "${KIBANA_PORT:-127.0.0.1:5601}:5601"
+    # Don't put this container in the default profile so it doesn't start when doing `up`.
+    profiles:
+      - kibana
+    environment:
+      - TZ=America/Los_Angeles
+      - xpack.license.self_generated.type=trial
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=${ELASTICSEARCH_SERVICEACCOUNTTOKEN}
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: curl --silent --fail http://127.0.0.1:5601/login || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  elastic-data:
+    name: ${COMPOSE_PROJECT_NAME}sbb-elastic-data
+  elastic-config:
+    name: ${COMPOSE_PROJECT_NAME}sbb-elastic-config
+
+secrets:
+  elastic-password.txt:
+    file: secrets/elastic-password.txt
+  elastic-api-key.txt:
+    file: secrets/elastic-api-key.txt
+  flask-secret-key.txt:
+    file: secrets/flask-secret-key.txt
+

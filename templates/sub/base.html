@@ -35,48 +35,39 @@
 {% endif %}
 
 <!-- Javascript -->
-{% if not DEV %}
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0BHRLPDY39');
-  </script>
+  {% if not DEV %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BHRLPDY39"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0BHRLPDY39');
+    </script>
 
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-MBGB6FFQ');</script>
-  <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MBGB6FFQ');</script>
+    <!-- End Google Tag Manager -->
 
-  <script async src="/static/script.{{VERSION}}.min.js"></script>
-{% else %}
-  <script async src="/static/script.{{VERSION}}.js"></script>
-{% endif %}
+    <script async src="/static/script.{{VERSION}}.min.js"></script>
+  {% else %}
+    <script async src="/static/script.{{VERSION}}.js"></script>
+  {% endif %}
 
-{% block head %}{% endblock %}
+  <link rel="icon" href="/static/favicon/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/static/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/static/favicon/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/android-chrome-512x512.png">
 
-<link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="/static/favicon/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="/static/favicon/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="/static/favicon/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="/static/favicon/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="/static/favicon/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/static/favicon/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192"  href="/static/favicon/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/static/favicon/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
-<link rel="manifest" href="/static/favicon/site.webmanifest">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+  <!-- page specific head section -->
+  {% block head %}{% endblock %}
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -94,15 +85,65 @@
     <a href="/">🐝 <span class="ml-2">NYT Spelling Bee Key</span></div>
   </div>
   <div class="hidden sm:flex space-x-6">
-    <a href="/" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
+    <a  href="#"
+        onclick="toggleVisible(this)"
+        data-target="searchBox"
+        class="group flex items-center text-lg font-medium text-gray-700 hover:text-yellow-600 transition">
+      <svg class="h-6 w-6 inline stroke-[1.5] text-gray-700 group-hover:fill-yellow-600 transition"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+      </svg><span class="pl-1">Search</span>
+    </a>
     <a href="/puzzles/latest" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
     <a href="/clues/a" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
-    <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
   </div>
   <div class="sm:hidden">
-    <button class="text-3xl" onclick="toggleMenu()">☰</button>
+    <button class="text-3xl"
+        id="searchButton"
+        onclick="toggleVisible(this)"
+        data-target="searchBox"
+        data-opposite-button="menuButton">
+      <svg class="h-6 w-6 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+        <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <button class="text-3xl"
+        id="menuButton"
+        onclick="toggleVisible(this)"
+        data-target="mobileMenu"
+        data-opposite-button="searchButton">☰</button>
   </div>
 </nav>
+
+<!-- Search Box -->
+{% set is_search_page = request.path == '/search' %}
+<div id="searchBox" class="{% if not is_search_page %}hidden{% endif %} flex items-center w-full pl-4 pr-2 sm:pr-4 py-4 bg-yellow-300 shadow-md">
+  <!-- Centered Search Form -->
+  <form action="/search" class="flex-1 flex justify-center">
+    <div class="w-full max-w-full sm:max-w-[570px] flex flex-row items-center rounded-md border border-gray-300 bg-white px-3 focus-within:ring-1 focus-within:ring-gray-400 focus-within:outline-none mx-auto">
+      <input
+        type="text"
+        name="q"
+        value="{{ request.args.get('q', '') if is_search_page else '' }}"
+        placeholder="Search for clues..."
+        autocomplete="off"
+        class="w-full py-2 pr-1 rounded-md outline-none"/>
+      <button type="submit">
+        <svg class="h-6 w-6 inline text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </form>
+  <!-- X Button on the Right -->
+  {% if not is_search_page %}
+    <button onclick="toggleVisible(this)" data-target="searchBox" class="ml-2">
+      <svg class="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  {% endif %}
+</div>
 
 <div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 py-4 bg-yellow-300 shadow-md">
   <a href="/" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
@@ -110,13 +151,6 @@
   <a href="/clues/a" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
   <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
 </div>
-<script>
-function toggleMenu() {
-  const menu = document.getElementById('mobileMenu');
-  menu.classList.toggle('hidden');
-}
-</script>
-
   <!-- Main Content Area -->
   <main>
   <div class="container mx-auto sm:mt-5 mt-3 p-6 max-w-4xl bg-white shadow-md rounded">
@@ -128,7 +162,9 @@ function toggleMenu() {
   <footer class="bg-white border-t mt-6 sm:mt-12">
     <div class="container mx-auto px-4 py-6 text-center text-gray-500">
       &copy; {{ current_year }} NYT Spelling Bee Key | Not affiliated with the New York Times
+      <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
     </div>
+
   </footer>
 </body>
 </html>

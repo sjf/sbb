@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import pytest
-from mbutils import *
+from pyutils import *
 from model import *
 
 def test_dictapis_to_def_dictionarydotcom():

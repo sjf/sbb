@@ -53,7 +53,7 @@
 
   {% if not is_sub %}
     <p class="mt-8 text-lg">
-      This clue appeared on
+      This clue was used on
         <a href="{{ url_for(answer.puzzle_dates[0]) }}" class="text-m text-yellow-500 hover:underline">
           {{ format_date(answer.puzzle_dates[0]) }}</a>.
     </p>
@@ -62,7 +62,7 @@
   <!-- Other puzzles that used this clue/answer combo. -->
   {% if answer.puzzle_dates|length > 1 %}
   <div class="mt-12 pt-6 border-t text-center">
-    <p class="text-lg">This clue has shown up several times with the same answer. It also appeared on these dates:</p>
+    <p class="text-lg">This clue has been used several times with the same answer. It also appeared on these dates:</p>
     {% for puzzle_date in answer.puzzle_dates[1:] %}
       <p class="text-lg mt-2">
         <a href="{{ url_for(puzzle_date) }}"

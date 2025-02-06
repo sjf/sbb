@@ -1,7 +1,8 @@
 import pytest
 from copy import deepcopy
-from mbutils import *
+from pyutils import *
 from testutils import *
+from db import *
 
 def set_id(dataclass_instance, id_):
   result = deepcopy(dataclass_instance)

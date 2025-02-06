@@ -10,3 +10,11 @@ types-humanfriendly
 types-requests
 sendgrid
 emoji
+gunicorn
+sendgrid
+flask
+elasticsearch
+langcodes
+pytest-mypy
+types-beautifulsoup4
+bs4

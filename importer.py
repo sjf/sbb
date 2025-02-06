@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from mbutils import *
 import json
 import emoji
 import sqlite3
@@ -11,9 +10,12 @@ from requests.adapters import HTTPAdapter
 from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
+from pyutils import *
 from model import *
 from db import *
+from storage import *
 from requester import *
+from es import *
 
 DIR = 'scraped/*.json'
 ARCHIVE = 'archive/'
@@ -23,17 +25,19 @@ REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 
 class Importer:
   def __init__(self):
-    self.db = DB()
     self.requester = Requester(sleep=0.5)
+    self.db = DB()
+    self.es = ElasticSearch()
 
   def import_files(self, files, archive=True) -> None:
     n = 0
     for file in files:
       log(f"Importing {file}")
       content = json.loads(read(file))
+      date = content['print_date']
       puzzle = Puzzle(
         id = content['id'],
-        date = content['print_date'],
+        date = date,
         center_letter = content['center_letter'].upper(),
         outer_letters = list(map(lambda x:x.upper(), content['outer_letters'])))
       # Re-import everything, even if rows already exist.
@@ -43,13 +47,16 @@ class Importer:
       if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:
           text = content_clue['text']
-          clue_id = None
-          if text: # Sometimes a clue will be missing, i.e. there will be no text
-            clue = Clue(text=get_clue_text(text), url=get_clue_url(text))
-            clue_id = self.db.upsert_clue(clue)
-
           word = content_clue['word']
           is_pangram = word in content['pangrams']
+
+          clue_id = None
+          if text: # Sometimes a clue will be missing, i.e. there's no text
+            url = get_clue_url(text)
+            clue = Clue(text = text, url = url)
+            clue_id = self.db.upsert_clue(clue)
+            self.es.upsert_clue(url, word, text)
+
           answer = Answer(word = word,
             puzzle_id = puzzle_id,
             clue_id = clue_id,
@@ -153,5 +160,5 @@ if __name__ == '__main__':
     log('Nothing import, exiting.')
     sys.exit(0)
   importer.import_files(files)
-  importer.import_definitions()
+  # importer.import_definitions()
   print(importer.requester.cache_status())

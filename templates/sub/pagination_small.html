@@ -13,7 +13,7 @@
     {% endif %}
   </div>
   <span class="px-2 py-1 border rounded bg-yellow-100 text-center">
-    Page {{ pagination.page }} of {{ pagination.total_pages }}
+    Page {{ pagination.page }}{% if pagination.total_pages %} of {{ pagination.total_pages }}{% endif %}
   </span>
   <div class="flex space-x-1">
     {% if pagination.has_next %}
@@ -21,7 +21,7 @@
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">Next</span>
     {% endif %}
-    {% if pagination.has_next %}
+    {% if pagination.last %}
     <a href="{{pagination.last}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Last</a>
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">Last</span>

@@ -3,20 +3,20 @@ function toggleVisible(button) {
   const targetId = button.getAttribute('data-target');
   const target = document.getElementById(targetId);
   target.classList.toggle('hidden');
-  button.innerText = button.innerText.replace(/Show|Hide/, match => match === 'Show' ? 'Hide' : 'Show');
+  replaceText(button, /Show|Hide/, match => match === 'Show' ? 'Hide' : 'Show');
 
-  const oppositeButtonId = button.getAttribute('data-opposite-button');
-  const oppositeButton = document.getElementById(oppositeButtonId);
-  hide(oppositeButton);
+  const oppositeId = button.getAttribute('data-opposite-button');
+  if (oppositeId) {
+    const oppositeButton = document.getElementById(oppositeId);
+    hide(oppositeButton);
+  }
 }
 
 function hide(button) {
-  if (button.innerText.startsWith('Hide')) {
-    const targetId = button.getAttribute('data-target');
-    const target = document.getElementById(targetId);
-    target.classList.add('hidden');
-    button.innerText = button.innerText.replace(/Hide/, 'Show');
-  }
+  const targetId = button.getAttribute('data-target');
+  const target = document.getElementById(targetId);
+  target.classList.add('hidden');
+  replaceText(button, /Hide/, 'Show');
 }
 
 function toggleClueAnswer(element) {
@@ -44,5 +44,12 @@ function toggleClueAnswer(element) {
 
   if (definition) {
     definition.classList.toggle('hidden');
+  }
+}
+
+function replaceText(e, pattern, f) {
+  let span = e.querySelector("span");
+  if (span) {
+    span.textContent = span.textContent.replace(pattern, f);
   }
 }

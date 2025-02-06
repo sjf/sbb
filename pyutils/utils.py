@@ -106,7 +106,7 @@ def url_params(url, keep_blank_values=True, query_only=False):
   if query_only:
     query = url
   else:
-    query = urllib.parse.splitquery(url)[1] # split query from url
+    query = urllib.parse.urlparse(url).query # split query from url
   params = urllib.parse.parse_qs(query, keep_blank_values=keep_blank_values)
   return dict(params)
 
@@ -129,6 +129,15 @@ def replace_url_param(url, name, value):
   parsed_url = parsed_url._replace(query=query)
   new_url = urllib.parse.urlunparse(parsed_url)
   return new_url
+
+def remove_url_param(url, param):
+  parsed_url = urllib.parse.urlparse(url)
+
+  query_params = urllib.parse.parse_qs(parsed_url.query)
+  query_params.pop(param, None) # Remove the specified parameter
+  new_query = urllib.parse.urlencode(query_params, doseq=True)
+
+  return urllib.parse.urlunparse(parsed_url._replace(query=new_query))
 
 def url_decode(s):
   return urllib.parse.unquote(s)

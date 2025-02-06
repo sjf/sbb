@@ -8,15 +8,15 @@ from collections import defaultdict
 from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
-from mbutils import *
+from pyutils import settings
+from pyutils import *
 from model import *
 from db import *
 
-OUTPUT_DIR = 'site'
-DOMAIN = os.environ.get('DOMAIN', 'https://beekey.buzz')
+OUTPUT_DIR = settings.config['OUTPUT_DIR']
+DOMAIN = settings.config['DOMAIN']
+VERSION = settings.config['VERSION']
 DEV = bool(os.environ.get('DEV', False))
-VERSION = 3
-PER_PAGE = 50
 TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
 
 def url(path: str) -> str:
@@ -57,20 +57,27 @@ def url_for(o: Any, arg=None) -> str:
 
   raise Exception(f"Unhandled url_for '{o}' arg={arg}")
 
+def set_env_globals(env: Environment) -> None:
+  env.globals.update(
+    domain=DOMAIN,
+    DEV=DEV,
+    VERSION=VERSION,
+    current_year=datetime.datetime.now().year,
+    url_for=url_for,
+    format_date=format_date,
+    sort_by_clue=sort_by_clue,
+    joinl=joinl)
+  env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
+
 class Generator:
   def __init__(self):
     self.db = DB()
-    self.env = Environment(loader=FileSystemLoader('templates'), undefined=StrictUndefined, trim_blocks=(not DEV), lstrip_blocks=(not DEV))
-    self.env.globals.update(
-      domain=DOMAIN,
-      DEV=DEV,
-      VERSION=VERSION,
-      current_year=datetime.datetime.now().year,
-      url_for=url_for,
-      format_date=format_date,
-      sort_by_clue=sort_by_clue,
-      joinl=joinl)
-    self.env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1] # Escape json, don't include quotes.
+    self.env = Environment(
+      loader=FileSystemLoader('templates'),
+      undefined=StrictUndefined,
+      trim_blocks=(not DEV),
+      lstrip_blocks=(not DEV))
+    set_env_globals(self.env)
     self.pages = []
 
   def generate_all(self) -> None:
@@ -90,14 +97,24 @@ class Generator:
       self.pages.append(Page(path=location, lastmod=lastmod))
     log(f"Generated {url(location)}")
 
-  def ln(self, src: str, dest: str, lastmod: str) -> None:
-    log(f"Linking {src} -> {dest} lastmod:{lastmod}")
-    src_file = realpath(joinp(OUTPUT_DIR, src))
-    dest_file = realpath(joinp(OUTPUT_DIR, dest))
-    log(f"Linking {src_file} -> {dest_file}")
-    ln(src_file, dest_file)
-    self.pages.append(Page(path=dest, lastmod=lastmod))
-    log(f"Generated {url(dest)}")
+  def ln(self, src: str, dst: str, lastmod: str) -> None:
+    log(f"Linking {src} -> {dst} lastmod:{lastmod}")
+    src_path = realpath(joinp(OUTPUT_DIR, src))
+    dst_path = realpath(joinp(OUTPUT_DIR, dst))
+
+    common_dir = os.path.commonpath([src_path, dst_path]) # This is guaranteed to be in the OUTPUT_DIR
+    saved_dir = os.getcwd()
+    os.chdir(common_dir)
+
+    rel_src_path = src_path[len(common_dir)+1:]
+    rel_dst_path = dst_path[len(common_dir)+1:]
+
+    log(f"Linking relative {rel_src_path} -> {rel_dst_path} in {common_dir}.")
+    ln(rel_src_path, rel_dst_path)
+    os.chdir(saved_dir)
+
+    self.pages.append(Page(path=dst, lastmod=lastmod))
+    log(f"Generated {url(dst)}")
 
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
@@ -175,7 +192,7 @@ class Generator:
         answers=answers,
         prefix=prefix,
         alphabet=prefixes,
-        pagination=PaginationBar(pages=pages, current=path),
+        pagination=PaginateList(pages=pages, current=path),
         canon_url=path)
       self.output(path, rendered, lastmod)
 
@@ -196,7 +213,11 @@ class Generator:
       path = url_for(yearmonth)
       lastmod = max(map(lambda x:x.date, puzzles))
 
-      rendered = template.render(puzzles=puzzles, period=period, pagination=PaginationBar(pages=pages, current=path), canon_url=path)
+      rendered = template.render(
+        puzzles=puzzles,
+        period=period,
+        pagination=PaginateList(pages=pages, current=path),
+        canon_url=path)
       self.output(path, rendered, lastmod)
 
     lastmod = sorted(by_yearmonth[latest])[0].date
@@ -230,15 +251,9 @@ class Generator:
       if file not in self.skip:
         cp_file(file, dest)
 
-    for file in ls("secrets/*.txt"):
-      # Copy indexnow api key
-      cp_file(file, OUTPUT_DIR)
     # Copy more files that need to be copied to multiple places
     for file, dest in self.duplicate.items():
       cp_file(file, dest)
-
-def total_pages(items):
-  return ceil(len(items) / PER_PAGE)
 
 @dataclass
 class Page:

@@ -1,0 +1,32 @@
+{
+  "number_of_shards": 1,
+  "number_of_replicas": 0,
+  "analysis": {
+    "char_filter": {
+      "replace_periods": {
+        "type": "pattern_replace",
+        "pattern": "\\.",
+        "replacement": " "
+      },
+      "remove_apostrophe": {
+        "type": "pattern_replace",
+        "pattern": "'",
+        "replacement": ""
+      }
+    },
+    "filter": {
+      "asciifolding_preserve_original": {
+        "type": "asciifolding",
+        "preserve_original": true
+      }
+    },
+    "analyzer": {
+      "search_analyser": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "char_filter": ["replace_periods", "remove_apostrophe"],
+        "filter": ["lowercase", "asciifolding_preserve_original"]
+      }
+    }
+  }
+}
