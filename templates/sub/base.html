@@ -116,7 +116,7 @@
 </nav>
 
 <!-- Search Box -->
-{% set is_search_page = request.path == '/search' %}
+{% set is_search_page = request is defined and request.path == '/search' %}
 <div id="searchBox" class="{% if not is_search_page %}hidden{% endif %} flex items-center w-full pl-4 pr-2 sm:pr-4 py-4 bg-yellow-300 shadow-md">
   <!-- Centered Search Form -->
   <form action="/search" class="flex-1 flex justify-center">
