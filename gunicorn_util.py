@@ -18,7 +18,7 @@ def access_log(mesg):
 
 def access_log_json(tag, obj):
   """ Logs a json info message to the gunicorn access log."""
-  log(f"LOG_JSON {tag} {json.dumps(obj)}")
+  access_log(f"LOG_JSON {tag} {json.dumps(obj)}")
 
 def access_log_error(mesg, level=logging.ERROR, exc_info = None):
   """ Logs to the gunicorn error log with an optional stack trace."""

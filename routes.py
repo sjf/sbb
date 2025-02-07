@@ -44,8 +44,8 @@ def _search(query):
 def handle_result(query, result):
   access_log_json('RESULTS', {
     'params': request.query_string.decode('utf-8'),
-    # 'count': len(result.pages),
-    # 'urls': list(map(lambda x:x.url, result.pages)),
+    'count': len(result.results),
+    'urls': list(map(lambda x:x.url, result.results)),
     })
   # Canonical URL for results page is the first page of results.
   return render_template('results.html', result=result, canon_url=result.pagination.first)
