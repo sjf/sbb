@@ -99,8 +99,10 @@ def test_clues():
   assert_contains(response, "NYT Spelling Bee")
 
 def test_search():
-  response = get('/search?q=foo')
-  assert_contains(response, "NYT Spelling Bee")
+  response = get('/search?q=John+Deere')
+  assert_contains(response, "/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford")
+  assert_contains(response, "Dad preferred a John Deere ____ but grandpa loved his Ford.")
+  assert_contains(response, "tractor")
 
 def test_css():
   version = settings.config['VERSION']

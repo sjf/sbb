@@ -9,14 +9,13 @@ o flask should use the same error pages as static pages
 
 o templates should support flask flash
 
-o on clue archive page, current page should be yellow, like on puzzle archive.
-
 o a permalink for the puzzle on the front page.
+
+o social media share links
 
 o Transition animation when answer is revealed.
 
-o clue page, button for reveal
-
+--
 o puzzle page: prev, next & date picker.
 
 o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
@@ -58,3 +57,6 @@ x if clues are not available, use previous clues, or create clues from dictionar
 x change archives to not change results per page
   x archive pages, pagination bar at top and bar.
 x attribute wikitonary
+x on clue archive page, current page should be yellow, like on puzzle archive.
+x clue page, button for reveal
+
