@@ -48,6 +48,9 @@
           {% endfor %}
         </ol>
       {% endfor %}
+      <div class="text-sm text-gray-500 text-right italic">Source:
+        <a href={{answer.definition.source_url}} class="underline">{{answer.definition.source}}</a>
+      </div>
     </div>
     {% endif %}
 
