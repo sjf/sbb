@@ -9,8 +9,6 @@ o flask should use the same error pages as static pages
 
 o templates should support flask flash
 
-o attribute wikitonary
-
 o on clue archive page, current page should be yellow, like on puzzle archive.
 
 o a permalink for the puzzle on the front page.
@@ -59,3 +57,4 @@ x snippets for google search results.
 x if clues are not available, use previous clues, or create clues from dictionary definitions.
 x change archives to not change results per page
   x archive pages, pagination bar at top and bar.
+x attribute wikitonary

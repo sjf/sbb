@@ -159,21 +159,36 @@ class Generator:
       rendered = template.render(code=code, status=status, message=message)
       self.output(f'/error/{code}.html', rendered, None, is_internal=True)
 
+  @staticmethod
+  def get_clue_archive_prefix(text: str) -> str:
+    text = re.sub('^[\'"“”‘ ]+', '', text) # Remove quotes and whitespace.
+    # Try to normalize unicode to ascii, fall back to original character.
+    cs = []
+    for c in text:
+      c2 = unicodedata.normalize('NFKD', c).encode('ascii', 'ignore').decode('ascii') or c
+      cs.append(c2)
+    text = ''.join(cs)
+    text = text.lower() # URLs use lowercase, uppercase is only used for display.
+
+    prefix = text[0:1]
+    if prefix.isalpha() and prefix.isascii():
+      return prefix
+    if prefix.isdigit():
+      return '0-9'
+    else:
+      return 'symbols'
+
   def generate_clue_archives(self) -> None:
     answers = self.db.fetch_ganswers()
     answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
     by_prefix = defaultdict(list)
     for answer in answers:
-      prefix = re.sub('^[\'"“”‘ ]+', '', answer.text)[0:1]
-      prefix = prefix.lower()
-      if prefix.isdigit():
-        prefix = '0-9'
-      elif not prefix or not prefix.isalpha():
-        prefix = 'symbols'
+      prefix = Generator.get_clue_archive_prefix(answer.text)
       by_prefix[prefix].append(answer)
 
+    # How the prefixes are sorted, letters, then numbers, then rest.
     def prefix_key(prefix):
-      if len(prefix) == 1 and prefix.isalpha():
+      if len(prefix) == 1 and prefix.isalpha() and prefix.isascii():
         return (0, prefix)
       elif prefix.isdigit():
         return (1, prefix)
@@ -225,7 +240,7 @@ class Generator:
 
   def generate_sitemap(self) -> None:
     if len(self.pages) > 50_000 - 300:
-      log_error(f"Site map is close maximum size of 50k: {len(self.pages)}")
+      log_error(f"Site map is close maximum size of 50k links: {len(self.pages)}")
     template = self.env.get_template('internal/sitemap.xml')
     rendered = template.render(pages=self.pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
