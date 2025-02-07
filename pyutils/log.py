@@ -11,17 +11,19 @@ import ast
 from collections import Counter, defaultdict
 
 # ISO date format.
-DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
+ISO_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
+ACCESS_LOG_DATE_FORMAT = '%m/%b/%Y:%H:%M:%S %z'
 
-def timestamp():
-  return datetime.datetime.now().astimezone().strftime(DATE_FORMAT)
+def timestamp(access_log=True):
+  fmt = ACCESS_LOG_DATE_FORMAT if access_log else ISO_DATE_FORMAT
+  return datetime.datetime.now().astimezone().strftime(fmt)
 
 def duration(start, end):
   return humanfriendly.format_timespan(end - start)
 
 list_handler = None
 logger = logging.getLogger('pyutils')
-formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s',  datefmt=DATE_FORMAT)
+formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s',  datefmt=ISO_DATE_FORMAT)
 is_initialized = False
 
 def _setup_logging(list_handler=False):

@@ -18,7 +18,7 @@ class ElasticSearch:
     host = config.get('ELASTIC_HOST')
     api_key = read_value(config.get('ELASTIC_API_KEY_FILE'))
     log(f"Connecting to Elasticsearch {host} api_key={api_key[:4]}...")
-    self.es = Elasticsearch(host, api_key = api_key)
+    self.es = Elasticsearch(host, api_key = api_key, timeout = config.get('ELASTIC_TIMEOUT_SECS'))
 
     self.page_size = config.get('PAGE_SIZE')
     self.max_page_num = config.get('MAX_PAGE_NUM')
@@ -39,6 +39,7 @@ class ElasticSearch:
       except (elasticsearch.AuthenticationException, elasticsearch.AuthorizationException) as e:
         raise e
       except Exception as ex:
+        # Update can fail if e.g. the index is closed because the mappings are being updated.
         log_error(f"Upserting failed with exception:{ex}")
         retries -= 1
         if retries > 0:
