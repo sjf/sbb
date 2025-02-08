@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 
 # ISO date format.
 ISO_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
-ACCESS_LOG_DATE_FORMAT = '%m/%b/%Y:%H:%M:%S %z'
+ACCESS_LOG_DATE_FORMAT = '%d/%b/%Y:%H:%M:%S %z'
 
 def timestamp(access_log=True):
   fmt = ACCESS_LOG_DATE_FORMAT if access_log else ISO_DATE_FORMAT

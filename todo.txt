@@ -5,6 +5,10 @@ clue archive pages shouldnt have more than 400 entries
 puzzle pages dont have enough text
 clue pages dont have enough text
 
+o fix search e2e test
+
+o add puzzle/dates to elasticsearch so they show up in results
+
 o flask should use the same error pages as static pages
 
 o templates should support flask flash
