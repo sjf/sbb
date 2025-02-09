@@ -8,6 +8,7 @@ function toggleVisible(button) {
   const oppositeId = button.getAttribute('data-opposite-button');
   if (oppositeId) {
     const oppositeButton = document.getElementById(oppositeId);
+    // Just always hide it, even if this toggle is also hidding the target.
     hide(oppositeButton);
   }
 }
@@ -45,6 +46,10 @@ function toggleClueAnswer(element) {
   if (definition) {
     definition.classList.toggle('hidden');
   }
+}
+
+function ffocus(id) {
+  document.getElementById(id).focus();
 }
 
 function replaceText(e, pattern, f) {

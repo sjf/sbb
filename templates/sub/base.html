@@ -86,7 +86,7 @@
   </div>
   <div class="hidden sm:flex space-x-6">
     <a  href="#"
-        onclick="toggleVisible(this)"
+        onclick="toggleVisible(this); ffocus('search-text-input')"
         data-target="searchBox"
         class="group flex items-center text-lg font-medium text-gray-700 hover:text-yellow-600 transition">
       <svg class="h-6 w-6 inline stroke-[1.5] text-gray-700 group-hover:fill-yellow-600 transition"
@@ -100,7 +100,7 @@
   <div class="sm:hidden">
     <button class="text-3xl"
         id="searchButton"
-        onclick="toggleVisible(this)"
+        onclick="toggleVisible(this); ffocus('search-text-input')"
         data-target="searchBox"
         data-opposite-button="menuButton">
       <svg class="h-6 w-6 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
@@ -122,6 +122,7 @@
   <form action="/search" class="flex-1 flex justify-center">
     <div class="w-full max-w-full sm:max-w-[570px] flex flex-row items-center rounded-md border border-gray-300 bg-white px-3 focus-within:ring-1 focus-within:ring-gray-400 focus-within:outline-none mx-auto">
       <input
+        id="search-text-input"
         type="text"
         name="q"
         value="{{ request.args.get('q', '') if is_search_page else '' }}"
