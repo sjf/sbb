@@ -85,16 +85,16 @@ class Importer:
     if missing:
       log_error(f"Missing definitions for {joinl(missing)}")
 
-  def import_from_api(self, url: str, words: List[str]) -> List[str]:
+  def import_from_api(self, url_fmt: str, words: List[str]) -> List[str]:
     if not words:
       return []
     n = 0
     missing = []
     log(f"Looking up {joinl(words, ', ')} in {url}")
     date = datetime.datetime.now().strftime('%Y-%m-%d')
-
+    url = url_fmt.format(word=word)
     for word in words:
-      response = self.requester.get(url.format(word = word))
+      response = self.requester.get(url)
       definition = None
       if not response:
         log(f"Didn't get definition for {word} from {url}")
@@ -160,5 +160,5 @@ if __name__ == '__main__':
     log('Nothing import, exiting.')
     sys.exit(0)
   importer.import_files(files)
-  # importer.import_definitions()
+  importer.import_definitions()
   print(importer.requester.cache_status())
