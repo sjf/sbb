@@ -130,11 +130,13 @@ def dictapis_to_def(word: str, content: str, source: str) -> Optional[GDefinitio
                 vi = filterl(lambda x:x[0] == 'vis', sense['dt']) # Verbal Illustrations
                 if vi:
                   example = format_mw(vi[0][1][0].get('t', None)) # Just take first example
-                td.meanings.append(GWordMeaning(meaning = meaning, example = example))
+                if meaning:
+                  td.meanings.append(GWordMeaning(meaning = meaning, example = example))
           if failed_to_parse:
             # Just use the short definition.
             for meaning in o['shortdef']:
-              td.meanings.append(GWordMeaning(meaning = meaning, example = None))
+              if meaning:
+                td.meanings.append(GWordMeaning(meaning = meaning, example = None))
       return result
     except Exception as e: # Just catch failures b/c the MW format is complex.
       log_error(f"Can't parse MW entry for {source}")

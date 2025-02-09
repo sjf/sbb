@@ -18,7 +18,7 @@ class ElasticSearch:
     host = config.get('ELASTIC_HOST')
     api_key = read_value(config.get('ELASTIC_API_KEY_FILE'))
     log(f"Connecting to Elasticsearch {host} api_key={api_key[:4]}...")
-    self.es = Elasticsearch(host, api_key = api_key, timeout = config.get('ELASTIC_TIMEOUT_SECS'))
+    self.es = Elasticsearch(host, api_key = api_key, request_timeout = config.get('ELASTIC_TIMEOUT_SECS'))
 
     self.page_size = config.get('PAGE_SIZE')
     self.max_page_num = config.get('MAX_PAGE_NUM')
