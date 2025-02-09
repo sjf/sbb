@@ -60,8 +60,9 @@ class Requester:
 
     if self.cache and response.from_cache:
       self.cache_hits += 1
+      log(f"Cached {url}")
     else:
-      log(f"Getting {url}")
+      log(f"Retrieved {url}")
       self.cache_misses += 1
       self.last_request_time_ms = time_ms()
 
@@ -96,6 +97,7 @@ class Requester:
     if not self.last_request_time_ms:
       return
     if time_ms() < self.last_request_time_ms + (self.sleep * 1000):
+      # print('sleeping')
       time.sleep(self.sleep)
 
 

@@ -90,10 +90,10 @@ class Importer:
       return []
     n = 0
     missing = []
-    log(f"Looking up {joinl(words, ', ')} in {url}")
+    log(f"Looking up {joinl(words, ', ')} in {url_fmt}")
     date = datetime.datetime.now().strftime('%Y-%m-%d')
-    url = url_fmt.format(word=word)
     for word in words:
+      url = url_fmt.format(word=word)
       response = self.requester.get(url)
       definition = None
       if not response:
