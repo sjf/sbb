@@ -96,7 +96,8 @@ class Importer:
       url = url_fmt.format(word=word)
       response = self.requester.get(url)
       definition = None
-      if not response:
+      if not response or isinstance(response.json(), list) and all(isinstance(item, str) for item in response.json()):
+        # MW never returns 404, it returns a list of suggested words.
         log(f"Didn't get definition for {word} from {url}")
         missing.append(word)
       else:

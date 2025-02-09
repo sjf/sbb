@@ -45,6 +45,9 @@ def dictl(d, sort_key=None, sep='\n', empty='{}', to_str_key=lambda x:x, item_se
 def mapl(f,seq):
   return list(map(f,seq))
 
+def filterl(f,seq):
+  return list(filter(f,seq))
+
 def printl(o, sort_key=None):
   if isinstance(o, dict):
     s = dictl(o, sort_key=sort_key)

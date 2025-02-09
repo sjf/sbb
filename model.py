@@ -87,22 +87,82 @@ class GSearchResult:
     if self.word == other.word:
       return self.text > other.text
 
-def dictapis_to_def(content: str, source: str) -> Optional[GDefinition]:
+def dictapis_to_def(word: str, content: str, source: str) -> Optional[GDefinition]:
   if not source or not content:
     return None
   if "api.dictionaryapi.dev" in source:
+    # Wikitionary 3rd party API.
     obj = json.loads(content)
     url = source_url=obj[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
-    result = GDefinition(word=obj[0]['word'], source_url=url, source=url_domain(url))
-    for word in obj:
-      for m in word.get('meanings',[]):
+    result = GDefinition(word=word, source_url=url, source=url_domain(url))
+    for sense in obj:
+      for m in sense.get('meanings',[]):
         td = GWordTypeDefinition(word_type = m['partOfSpeech'])
         result.word_types.append(td)
         for d in m['definitions']:
           td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
     return result
-  # todo handle merrian webster entries
+  if "dictionaryapi.com" in source:
+    # print(content, source)
+    try:
+      obj = json.loads(content)
+      url = f'https://www.merriam-webster.com/dictionary/{word}'
+      result = GDefinition(word=word, source_url=url, source=url_domain(url))
+      for o in obj:
+        td = GWordTypeDefinition(word_type = o['fl']) # functional label
+        result.word_types.append(td)
+        failed_to_parse = False
+        for d in o['def']: # definition
+          for s in d['sseq']: # sense
+            for subsense in s:
+              if subsense[0] == 'sense':
+                sense = subsense[1]
+                usage = sense.get('sls', []) # Subject/Status Labels
+                dt = filterl(lambda x:x[0] == 'text', sense['dt']) # Defining Text
+                uns = filterl(lambda x:x[0] == 'uns', sense['dt']) # Usage note
+                if not dt and len(uns) == 1:
+                  dt = filterl(lambda x:x[0] == 'text', uns[0][1][0])
+                if not len(dt) == 1:
+                  log_error(f'Cant parse td text in MW for "{word}"')
+                  failed_to_parse = True
+                meaning = format_mw(dt[0][1])
+                example = None
+                vi = filterl(lambda x:x[0] == 'vis', sense['dt']) # Verbal Illustrations
+                if vi:
+                  example = format_mw(vi[0][1][0].get('t', None)) # Just take first example
+                td.meanings.append(GWordMeaning(meaning = meaning, example = example))
+          if failed_to_parse:
+            # Just use the short definition.
+            for meaning in o['shortdef']:
+              td.meanings.append(GWordMeaning(meaning = meaning, example = None))
+      return result
+    except Exception as e: # Just catch failures b/c the MW format is complex.
+      log_error(f"Can't parse MW entry for {source}")
   return None
+
+MW_FORMAT = [
+  ('{ldquo}', '“'),
+  ('{rdquo}', '”'),
+  ('{inf}','<sub>'),
+  ('{\\/inf}','</sub>'),
+  ('{b}', '<bold>'),
+  ('{\\/b}', '</bold>'),
+  ('{sup}', '<sup>'),
+  ('{\\/sup}', '</sup>'),
+  ('{sc}', '<span style="font-variant: small-caps;">'),
+  ('{\\/sc}','</span>'),
+]
+def format_mw(s: Optional[str]) -> Optional[str]:
+  # Replace Tokens Used in Running Text
+  if not s:
+    return s
+  for pattern,replacement in MW_FORMAT:
+    s = s.replace(pattern, replacement)
+  # replace links: {d_link|linktext|}
+  s = re.sub('\\{[a-z_]+\\|([^|:]+)[^}]*\\}', '\\1', s)
+  s = re.sub('\\{[^}]+\\}','', s) # remove other formatting
+  s = s.strip()
+  return s
 
 def format_date(value: str) -> str:
   date = datetime.datetime.strptime(value, "%Y-%m-%d")

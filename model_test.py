@@ -26,12 +26,55 @@ def test_dictapis_to_def_dictionarydotcom():
         ])
     ])
 
-  assert dictapis_to_def(DICT_INPUT, DICT_SOURCE) == expected
+  assert dictapis_to_def(DICT_WORD, DICT_INPUT, DICT_SOURCE) == expected
+
+def test_dictapis_to_def_mw():
+  expected = GDefinition(word="acid",
+    source_url = "https://www.merriam-webster.com/dictionary/acid",
+    source = 'merriam-webster.com',
+    word_types=[
+      GWordTypeDefinition(word_type='noun',
+        meanings=[
+          GWordMeaning(meaning='a sour substance', example=None),
+          GWordMeaning(meaning='something incisive, biting, or sarcastic', example='a social satire dripping with acid'),
+          GWordMeaning(meaning='lsd', example=None)
+        ])
+      ])
+
+  assert dictapis_to_def(MW_WORD, MW_INPUT, MW_SOURCE) == expected
+
+def test_dictapis_to_def_mw_uns():
+  expected = GDefinition(word="lima",
+    source_url = "https://www.merriam-webster.com/dictionary/lima",
+    source = 'merriam-webster.com',
+    word_types=[
+      GWordTypeDefinition(word_type='communications code word', meanings=[
+        GWordMeaning(meaning='used as a code word for the letter l', example=None)]),
+      GWordTypeDefinition(word_type='geographical name', meanings=[
+        GWordMeaning(meaning='city south-southwest of Toledo in northwestern Ohio population 38,771', example=None),
+        GWordMeaning(meaning='city on the Rímac River and capital of Peru population 8,039,000', example=None)]),
+      GWordTypeDefinition(word_type='noun', meanings=[
+        GWordMeaning(meaning='a bushy or vining tropical American bean (Phaseolus lunatus synonym Phaseolus limensis) that is widely cultivated for its flat edible starchy seed which is usually pale green when immature and whitish or beige when mature', example=None),
+        GWordMeaning(meaning='the seed of a lima bean eaten usually cooked as a vegetable see butter bean, sieva bean', example=None)]),
+      GWordTypeDefinition(word_type='biographical name', meanings=[
+        GWordMeaning(meaning='de 1803–1880 Luiz Alves de Lima e Silva Brazilian general and statesman', example=None)])
+      ])
+  assert dictapis_to_def(MW_WORD_2, MW_INPUT_2, MW_SOURCE_2) == expected
+
+@pytest.mark.parametrize('input_str, expected', [
+  ('{bc}a sour substance', 'a sour substance'),
+  ('Middle English {it}foul{\\/it}, from Old English {it}fugel{\\/it};', 'Middle English foul, from Old English fugel;'),
+  ('domesticated {dx_def}see {dxt|domesticate:1||2}{\\/dx_def} or wild {d_link|gallinaceous|gallinaceous}birds {dx}compare {dxt|guinea fowl||}, {dxt|jungle fowl||}{\\/dx}',
+   'domesticated see domesticate or wild gallinaceousbirds compare guinea fowl, jungle fowl')
+])
+def test_format_mw(input_str, expected):
+  assert format_mw(input_str) == expected
 
 def test_dictapis_to_def_unsupported():
-  assert dictapis_to_def(DICT_SOURCE, "https://something.else/foo/bar") == None
+  assert dictapis_to_def("foo", "something", "https://something.else/foo/bar") == None
 
-DICT_SOURCE = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+DICT_WORD = "tractor"
+DICT_SOURCE = 'https://api.dictionaryapi.dev/api/v2/entries/en/tractor'
 DICT_INPUT = """
 [
   {
@@ -120,6 +163,411 @@ DICT_INPUT = """
     },
     "sourceUrls": [
       "https://en.wiktionary.org/wiki/tractor"
+    ]
+  }
+]
+"""
+
+MW_WORD = "acid"
+MW_SOURCE = 'https://dictionaryapi.com/api/v3/references/collegiate/json/acid?key=XXXXXX'
+MW_INPUT="""
+[
+  {
+    "meta": {
+      "id": "acid:1",
+      "uuid": "be36a314-75cd-4209-86fd-03e74d23c197",
+      "sort": "010555000",
+      "src": "collegiate",
+      "section": "alpha",
+      "stems": [
+        "acid",
+        "acids",
+        "acidy"
+      ],
+      "offensive": false
+    },
+    "hom": 1,
+    "hwi": {
+      "hw": "acid",
+      "prs": [
+        {
+          "mw": "ˈa-səd",
+          "sound": {
+            "audio": "acid0001",
+            "ref": "c",
+            "stat": "1"
+          }
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}a sour substance"
+                  ]
+                ],
+                "sdsense": {
+                  "sd": "specifically",
+                  "dt": [
+                    [
+                      "text",
+                      "{bc}any of various typically water-soluble and sour compounds that in solution are capable of reacting with a base {dx_def}see {dxt|base:1||6a}{/dx_def} to form a salt, redden {d_link|litmus|litmus}, and have a {d_link|pH|pH} less than 7, that are hydrogen-containing molecules or ions able to give up a {d_link|proton|proton} to a base, or that are substances able to accept an unshared pair of electrons from a base"
+                    ]
+                  ]
+                }
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}something incisive, biting, or {d_link|sarcastic|sarcastic} "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "a social satire dripping with {wi}acid{/wi}"
+                      }
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "3",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}{sx|lsd||}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "uros": [
+      {
+        "ure": "ac*idy",
+        "prs": [
+          {
+            "mw": "ˈa-sə-dē"
+          }
+        ],
+        "fl": "adjective"
+      }
+    ],
+    "et": [
+      [
+        "text",
+        "borrowed from Medieval Latin {it}acidum,{/it} going back to Latin, neuter of {it}acidus{/it} {et_link|acid:2|acid:2}"
+      ]
+    ],
+    "date": "1650{ds||1||}",
+    "shortdef": [
+      "a sour substance; specifically : any of various typically water-soluble and sour compounds that in solution are capable of reacting with a base to form a salt, redden litmus, and have a pH less than 7, that are hydrogen-containing molecules or ions able to give up a proton to a base, or that are substances able to accept an unshared pair of electrons from a base",
+      "something incisive, biting, or sarcastic",
+      "lsd"
+    ]
+  }
+]
+"""
+MW_WORD_2 = "lima"
+MW_SOURCE_2 = 'https://dictionaryapi.com/api/v3/references/collegiate/json/lima?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+MW_INPUT_2 = """
+[
+  {
+    "meta": {
+      "id": "Lima",
+      "uuid": "8d2f2f09-ab01-48f3-92b0-4efccd5350d6",
+      "sort": "120165000",
+      "src": "collegiate",
+      "section": "alpha",
+      "stems": [
+        "Lima"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "Li*ma",
+      "prs": [
+        {
+          "mw": "ˈlē-mə",
+          "sound": {
+            "audio": "lima0001",
+            "ref": "c",
+            "stat": "1"
+          }
+        }
+      ]
+    },
+    "fl": "communications code word",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "used as a code word for the letter {it}l{/it}"
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "date": "1952",
+    "shortdef": [
+      "—used as a code word for the letter l"
+    ]
+  },
+  {
+    "meta": {
+      "id": "Lima:g",
+      "uuid": "2e4a7363-e558-48c1-8193-b6f73b5425f2",
+      "sort": "280028000",
+      "src": "collegiate",
+      "section": "geog",
+      "stems": [
+        "Lima"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "Li*ma"
+    },
+    "fl": "geographical name",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "prs": [
+                  {
+                    "mw": "ˈlī-mə",
+                    "sound": {
+                      "audio": "gglim01v",
+                      "ref": "c",
+                      "stat": "1"
+                    }
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "city south-southwest of Toledo in northwestern Ohio {it}population{/it} 38,771"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "prs": [
+                  {
+                    "mw": "ˈlē-mə",
+                    "sound": {
+                      "audio": "lima0001",
+                      "ref": "c",
+                      "stat": "1"
+                    }
+                  }
+                ],
+                "dt": [
+                  [
+                    "text",
+                    "city on the Rímac River and capital of Peru {it}population{/it} 8,039,000"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "city south-southwest of Toledo in northwestern Ohio population 38,771",
+      "city on the Rímac River and capital of Peru population 8,039,000"
+    ]
+  },
+  {
+    "meta": {
+      "id": "lima bean",
+      "uuid": "3f5a7f3a-7802-411d-b2fc-58ef879929fb",
+      "sort": "120165100",
+      "src": "collegiate",
+      "section": "alpha",
+      "stems": [
+        "lima bean",
+        "lima beans"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "li*ma bean",
+      "prs": [
+        {
+          "mw": "ˈlī-mə-",
+          "sound": {
+            "audio": "limabe01",
+            "ref": "c",
+            "stat": "1"
+          }
+        }
+      ]
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}a bushy or vining tropical American bean ({it}Phaseolus lunatus{/it} synonym {it}Phaseolus limensis{/it}) that is widely cultivated for its flat edible starchy seed which is usually pale green when immature and whitish or beige when mature"
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "{bc}the seed of a lima bean eaten usually cooked as a vegetable {dx}see {dxt|butter bean||}, {dxt|sieva bean||}{/dx}"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "et": [
+      [
+        "text",
+        "{it}Lima{/it}, Peru"
+      ]
+    ],
+    "date": "1756{ds||1||}",
+    "shortdef": [
+      "a bushy or vining tropical American bean (Phaseolus lunatus synonym Phaseolus limensis) that is widely cultivated for its flat edible starchy seed which is usually pale green when immature and whitish or beige when mature",
+      "the seed of a lima bean eaten usually cooked as a vegetable"
+    ]
+  },
+  {
+    "meta": {
+      "id": "Caxias:b",
+      "uuid": "3337c2ae-8836-467d-96ae-aee172b4284d",
+      "sort": "301028000",
+      "src": "collegiate",
+      "section": "biog",
+      "stems": [
+        "Caxias",
+        "Duque Caxias",
+        "Luiz Alves de Lima e Silva",
+        "Luiz Alves de Lima e Silva, Duke of Caxias",
+        "Luiz Alves de Lima e Silva, Duque de Caxias"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "Ca*xi*as",
+      "prs": [
+        {
+          "mw": "kə-ˈshē-əs",
+          "sound": {
+            "audio": "bixcax01",
+            "ref": "c",
+            "stat": "1"
+          }
+        }
+      ]
+    },
+    "fl": "biographical name",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "bnw",
+                    {
+                      "pname": "Du*que",
+                      "prs": [
+                        {
+                          "mw": "ˈdü-kə",
+                          "sound": {
+                            "audio": "bixcax02",
+                            "ref": "c",
+                            "stat": "1"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  [
+                    "text",
+                    " de 1803–1880 {it}Luiz Alves de Lima e Silva{/it} Brazilian general and statesman"
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "Duque de 1803—1880 Luiz Alves de Lima e Silva Brazilian general and statesman"
     ]
   }
 ]

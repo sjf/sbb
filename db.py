@@ -164,7 +164,7 @@ class DB:
     result = []
     for row in self.cursor.fetchall():
       data = dict(row)
-      definition = dictapis_to_def(data['definition'], data['source'])
+      definition = dictapis_to_def(data['word'] ,data['definition'], data['source'])
       word = data['word']
       text = data['text']
       url = data['url']
