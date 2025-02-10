@@ -155,7 +155,7 @@ class Generator:
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     latest = self.db.fetch_latest_gpuzzle()
-    latest_dates = self.db.fetch_latest_puzzle_dates(14)
+    latest_dates = self.db.fetch_latest_puzzle_dates(4)
     latest_dates.remove(latest.date)
     # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
     rendered = template.render(puzzle=latest, past_dates=latest_dates, canon_url=url_for(latest))
