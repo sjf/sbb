@@ -144,18 +144,18 @@ DEFINITION_TRACTOR = Definition(word='tractor',
     retrieved_on='2025-01-01')
 
 ES_UPDATES_P1 = [
-  call(index='sbb', id='/clue/play-together', body={'doc': {'word': 'duetted', 'text': 'Play together'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot', 'text': 'Beep'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/play-together', body={'doc': {'word': 'duetted', 'text': 'Play together', 'lastused': '2024-12-18'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot', 'text': 'Beep', 'lastused': '2024-12-18'}, 'doc_as_upsert': True}),
   call(index='sbb', id='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford',
-    body={'doc': {'word': 'tractor', 'text': 'Dad preferred a John Deere ____ but grandpa loved his Ford.'}, 'doc_as_upsert': True})
+    body={'doc': {'word': 'tractor', 'text': 'Dad preferred a John Deere ____ but grandpa loved his Ford.', 'lastused': '2024-12-18'}, 'doc_as_upsert': True})
 ]
 ES_UPDATES_P2 = [
-  call(index='sbb', id='/clue/rabbit-ears-on-a-cathode-tube-tv', body={'doc': {'word': 'antenna', 'text': 'Rabbit ears on a cathode tube tv'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot_', 'text': 'Beep'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'tooted', 'text': 'beep!!'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'horn', 'text': 'beep'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'page', 'text': 'beep'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'chair', 'text': 'to sit'}, 'doc_as_upsert': True}),
-  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'recline', 'text': 'to sit'}, 'doc_as_upsert': True})
+  call(index='sbb', id='/clue/rabbit-ears-on-a-cathode-tube-tv', body={'doc': {'word': 'antenna', 'text': 'Rabbit ears on a cathode tube tv', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'toot_', 'text': 'Beep', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'tooted', 'text': 'beep!!', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'horn', 'text': 'beep', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/beep', body={'doc': {'word': 'page', 'text': 'beep', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'chair', 'text': 'to sit', 'lastused': '2024-12-24'}, 'doc_as_upsert': True}),
+  call(index='sbb', id='/clue/to-sit', body={'doc': {'word': 'recline', 'text': 'to sit', 'lastused': '2024-12-24'}, 'doc_as_upsert': True})
 ]
 ES_UPDATES = ES_UPDATES_P1 + ES_UPDATES_P2
