@@ -5,7 +5,9 @@ clue archive pages shouldnt have more than 400 entries
 puzzle pages dont have enough text
 clue pages dont have enough text
 
-o fix search e2e test
+o fix search e2e test on live site
+
+o on the search results page, show date in preview.
 
 o add puzzle/dates to elasticsearch so they show up in results
 

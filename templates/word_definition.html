@@ -1,0 +1,26 @@
+{% extends "sub/base.html" %}
+{% block title %}Definition of “{{ word }}”{% endblock %}
+{% block description %}Find out the meaning of “{{ word }}”{% endblock %}
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DefinedTerm",
+  "name": "{{ word }}",
+  "description": "Find out the meaning of “{{ word }}”",
+  "url": "{{ domain }}{{ canon_url }}",
+  "datePublished": "{{ lastmod }}",
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-bold mb-6 text-center uppercase">{{ word }}</h1>
+
+{% if definition %}
+  {% include "sub/definition.html" %}
+{% else %}
+  Couldn't find definition of {{word}}
+{% endif %}
+
+{% endblock %}

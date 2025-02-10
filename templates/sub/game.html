@@ -55,8 +55,13 @@
 <div id="answers" class="hidden mt-4">
   <h2 class="text-2xl font-semibold mb-2">Answers</h2>
   <div class="columns-2 md:columns-3 space-y-0">
-    {% for answer in puzzle.answers %}
-    <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">{{ answer.word }}</div>
+    {% for ls in split_by_start(puzzle.answers) %}
+      {% for answer in ls %}
+        <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
+          <a href="/definition/{{ answer.word }}" class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</span>
+        </div>
+      {% endfor %}
+      {% if not loop.last %}<div class="pt-4"></div>{% endif %}
     {% endfor %}
   </div>
 </div>

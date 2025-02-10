@@ -186,8 +186,29 @@ class DB:
         definition = definition)
       result.append(answer)
     result = sorted(result)
+    return result
 
-
+  def fetch_gwords(self) -> List[GWordDefinition]:
+    # Get all words and their definitions.
+    self.cursor.execute("""
+      SELECT distinct a.word, d.definition, d.source
+      FROM answers a
+      LEFT JOIN definitions d on a.word = d.word;
+      """)
+    result = []
+    for row in self.cursor.fetchall():
+      data = dict(row)
+      word = data['word']
+      if data['definition']:
+        definition = dictapis_to_def(word, data['definition'], data['source'])
+      else:
+        definition = None
+        log_error(f'No definition for {word}')
+      answer = GWordDefinition(
+        word = word,
+        definition = definition)
+      result.append(answer)
+    result = sorted(result)
     return result
 
   def fetch_gpuzzles(self, only_latest=False) -> List[GPuzzle]:

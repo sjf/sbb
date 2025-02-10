@@ -3,7 +3,7 @@
   "center_letter": "d",
   "outer_letters": "tefoux",
   "pangrams": [
-    "outfoxed"
+    "antenna"
   ],
   "answers": [
     "chair",
@@ -17,8 +17,8 @@
   "print_date": "2024-12-24",
   "clues": [
     {
-      "word": "outfoxed",
-      "text": "Smarter than a fox",
+      "word": "antenna",
+      "text": "Rabbit ears on a cathode tube tv",
       "user": "SUCCINCTLY, STEVE G",
       "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
     },

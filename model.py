@@ -79,6 +79,13 @@ class GCluePage:
     return sorted(self._clue_answers)
 
 @dataclass
+class GWordDefinition:
+  word: str
+  definition: Optional[GDefinition]
+  def __lt__(self, other):
+    return self.word < other.word
+
+@dataclass
 class GSearchResult:
   word: str
   text: str

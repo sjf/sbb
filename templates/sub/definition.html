@@ -1,0 +1,18 @@
+<div {% if index is defined %}id="definition-{{ index }}"{% endif %}
+    class="mt-6 border-l-4 border-yellow-400 pl-4 text-lg text-gray-800 text-left {% if index is defined %}hidden{% endif %}">
+  {% for word_type in definition.word_types %}
+    <p class="font-semibold uppercase mt-4 text-gray-700">{{ word_type.word_type }}</p>
+    <ol class="list-decimal pl-6">
+      {% for meaning in word_type.meanings %}
+      <li class="mt-2">
+        {{ meaning.meaning }}
+        {% if meaning.example %}
+        <p class="italic text-gray-600 mt-1">"{{ meaning.example }}"</p>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  {% endfor %}
+  <div class="text-sm text-gray-500 text-right italic">Source:
+    <a href={{definition.source_url}} class="underline">{{definition.source}}</a>
+  </div>
+</div>

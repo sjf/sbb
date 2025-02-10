@@ -55,7 +55,17 @@ def url_for(o: Any, arg=None) -> str:
       raise Exception("Unhandled url, clues archive needs arg")
     return '/clues/' + arg
 
+  if type(o) == GWordDefinition:
+    return f"/definition/{o.word}"
+
   raise Exception(f"Unhandled url_for '{o}' arg={arg}")
+
+def split_by_start(l: List[GAnswer]) -> List[List[GAnswer]]:
+  l = sorted(l)
+  d = defaultdict(list)
+  for a in l:
+    d[a.word[0]].append(a)
+  return sorted(d.values())
 
 def set_env_globals(env: Environment) -> None:
   env.globals.update(
@@ -66,7 +76,8 @@ def set_env_globals(env: Environment) -> None:
     url_for=url_for,
     format_date=format_date,
     sort_by_clue=sort_by_clue,
-    joinl=joinl)
+    joinl=joinl,
+    split_by_start=split_by_start)
   env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
 
 class Generator:
@@ -86,6 +97,7 @@ class Generator:
     self.generate_clue_archives()
     self.generate_puzzle_archives()
     self.generate_puzzle_pages()
+    self.generate_definitions()
     # These have to be last.
     self.generate_sitemap()
     self.generate_static()
@@ -237,6 +249,18 @@ class Generator:
 
     lastmod = sorted(by_yearmonth[latest])[0].date
     self.ln(latest_page, '/puzzles/latest', lastmod)
+
+  def generate_definitions(self) -> None:
+    words = self.db.fetch_gwords()
+    template = self.env.get_template('word_definition.html')
+    lastmod = "2025-01-01" # Just used a fixed date.
+    for word in words:
+      rendered = template.render(
+        word=word.word,
+        definition=word.definition,
+        canon_url=url_for(word),
+        lastmod=lastmod)
+      self.output(url_for(word), rendered, lastmod)
 
   def generate_sitemap(self) -> None:
     if len(self.pages) > 50_000 - 300:
