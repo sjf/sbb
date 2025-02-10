@@ -8,6 +8,10 @@
     "text": {
       "type": "text",
       "analyzer": "search_analyser"
+    },
+    "lastused": {
+      "type": "text",
+      "index": "false"
     }
   }
 }

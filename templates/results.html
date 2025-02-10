@@ -48,6 +48,7 @@
       {% with word=clue.word %}
         {% include "sub/word_boxes.html" %}
       {% endwith %}
+      <div class="text-sm italic text-gray-500 pt-2 text-right">{{ format_date(clue.lastused) }}</div>
       </div>
     {% endfor %}
   </div>

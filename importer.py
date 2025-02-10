@@ -30,6 +30,8 @@ class Importer:
     self.es = ElasticSearch()
 
   def import_files(self, files, archive=True) -> None:
+    # Elastic search needs the entries to be inserted in order, so the more recent entry have precedence.
+    files = sorted(files)
     n = 0
     for file in files:
       log(f"Importing {file}")
@@ -55,7 +57,7 @@ class Importer:
             url = get_clue_url(text)
             clue = Clue(text = text, url = url)
             clue_id = self.db.upsert_clue(clue)
-            self.es.upsert_clue(url, word, text)
+            self.es.upsert_clue(url, word, text, date)
 
           answer = Answer(word = word,
             puzzle_id = puzzle_id,

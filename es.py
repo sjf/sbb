@@ -26,11 +26,11 @@ class ElasticSearch:
     self.max_retries = config.get('ES_MAX_RETRIES')
     self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
 
-  def upsert_clue(self, url: str, word: str, text: str) -> None:
+  def upsert_clue(self, url: str, word: str, text: str, date: str) -> None:
     retries = self.max_retries + 1
     success = 0
 
-    doc = {'word': word, 'text': text}
+    doc = {'word': word, 'text': text, 'lastused': date}
     while retries > 0:
       try:
         body = {'doc': doc, 'doc_as_upsert': True}
@@ -46,7 +46,7 @@ class ElasticSearch:
           log(f'Retrying... (attempt {self.max_retries + 2 - retries}) after {self.retry_delay_secs} seconds', )
           time.sleep(self.retry_delay_secs)
 
-  def search(self, query):
+  def search(self, query) -> Result:
     and_terms = []
     or_terms = [] # Match any of full title, isbn or doi.
     unquoted, quoted = get_quoted_substrings(query.term)
@@ -96,7 +96,8 @@ def to_clue(hit: Dict) -> GSearchResult:
   url = hit['_id']
   word = hit['_source']['word']
   text = hit['_source']['text']
-  return GSearchResult(url=url, word=word, text=text)
+  lastused = hit['_source']['lastused']
+  return GSearchResult(url=url, word=word, text=text, lastused=lastused)
 
 def split_quotes(s):
   lex = shlex.shlex(s)

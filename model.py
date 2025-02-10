@@ -90,6 +90,7 @@ class GSearchResult:
   word: str
   text: str
   url: str
+  lastused: str
   def __lt__(self, other):
     if self.word == other.word:
       return self.text > other.text
