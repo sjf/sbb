@@ -57,6 +57,9 @@
   {% else %}
     <script async src="/static/script.{{VERSION}}.js"></script>
   {% endif %}
+  <!-- Ad sense -->
+<!--   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8196064155864881"
+     crossorigin="anonymous"></script> -->
 
   <link rel="icon" href="/static/favicon/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
@@ -68,6 +71,7 @@
 
   <!-- page specific head section -->
   {% block head %}{% endblock %}
+
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -154,9 +158,23 @@
 </div>
   <!-- Main Content Area -->
   <main>
-  <div class="container mx-auto sm:mt-5 mt-3 p-6 max-w-4xl bg-white shadow-md rounded">
-    {% block content %}{% endblock %}
-  </div>
+    <div class="container mx-auto sm:mt-5 mt-3 p-6 max-w-4xl bg-white shadow-md rounded">
+      {% block content %}{% endblock %}
+    </div>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8196064155864881"
+         crossorigin="anonymous"></script>
+    <!-- horizontal -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-8196064155864881"
+         data-ad-slot="5399954346"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
   </main>
 
   <!-- Footer -->
