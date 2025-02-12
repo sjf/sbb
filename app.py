@@ -8,6 +8,7 @@ import elasticsearch
 from es import ElasticSearch
 from http import HTTPStatus
 
+import jinja_util
 from pyutils import *
 from pyutils.settings import config
 from gunicorn_util import *
@@ -16,7 +17,7 @@ from generator import set_env_globals
 
 def configure_flask_app() -> None:
   app.jinja_env.undefined = jinja2.StrictUndefined
-  set_env_globals(app.jinja_env)
+  jinja_util.set_env_globals(app.jinja_env)
 
   if app.debug or os.getenv('FLASK_ENV') == 'development':
     app.config['TESTING'] = True
@@ -26,7 +27,7 @@ def configure_flask_app() -> None:
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     os.environ['DEBUG'] = 'True'
 
-    app.static_folder = "site/static"
+    app.static_folder = joinp(config['SERVING_DIR'], 'static')
     app.static_url_path = "/static"
 
     @app.after_request
@@ -37,8 +38,9 @@ def configure_flask_app() -> None:
   else:
     app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
     # Cant figure out how to disable static serving, point it to an empty directory.
-    mkdir('site/flask_static')
-    app.static_folder = 'site/flask_static'
+    flask_static = joinp(config['SERVING_DIR'], 'flask_static')
+    mkdir(flask_static)
+    app.static_folder = flask_static
 
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True

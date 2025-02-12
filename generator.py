@@ -11,10 +11,11 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
 from pyutils import settings
 from pyutils import *
+from jinja_util import *
 from model import *
 from db import *
 
-OUTPUT_DIR = settings.config['OUTPUT_DIR']
+OUTPUT_DIR = joinp(settings.config['OUTPUT_DIR'], datetime.datetime.now().strftime('%Y-%m-%d-%H-%m'))
 DOMAIN = settings.config['DOMAIN']
 VERSION = settings.config['VERSION']
 DEV = bool(os.environ.get('DEV', False))
@@ -34,53 +35,6 @@ def cp_file(file: str, dest: str) -> None:
     url_path = joinp(url_path,basename(file))
   log(f"Copied {file} to {url(url_path)}")
 
-def url_for(o: Any, arg=None) -> str:
-  if type(o) == GPuzzle:
-    return f"/puzzle/{o.date}"
-
-  if type(o) == str and re.match(r'^\d\d\d\d-\d\d-\d\d$', o):
-    # link to puzzle by date
-    return f"/puzzle/{o}"
-
-  if type(o) == str and re.match(r'^\d\d\d\d-\d\d$', o):
-    # link to puzzle archive by month and year
-    return '/puzzles/' + o.replace('-', '/')
-
-  if type(o) == GAnswer:
-    if not o.url:
-      raise Exception(f"Cannot create url for answer with no clue url: {o}")
-    return o.url
-
-  if o == 'clues':
-    if not arg:
-      raise Exception("Unhandled url, clues archive needs arg")
-    return '/clues/' + arg
-
-  if type(o) == GWordDefinition:
-    return f"/definition/{o.word}"
-
-  raise Exception(f"Unhandled url_for '{o}' arg={arg}")
-
-def split_by_start(l: List[GAnswer]) -> List[List[GAnswer]]:
-  # Split up the words by their first letter.
-  l = sorted(l)
-  d = defaultdict(list)
-  for a in l:
-    d[a.word[0]].append(a)
-  return sorted(d.values())
-
-def set_env_globals(env: Environment) -> None:
-  env.globals.update(
-    domain=DOMAIN,
-    DEV=DEV,
-    VERSION=VERSION,
-    current_year=datetime.datetime.now().year,
-    url_for=url_for,
-    format_date=format_date,
-    sort_by_clue=sort_by_clue,
-    joinl=joinl,
-    split_by_start=split_by_start)
-  env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
 
 class Generator:
   def __init__(self):
@@ -103,6 +57,12 @@ class Generator:
     # These have to be last.
     self.generate_sitemap()
     self.generate_static()
+    self.switch_to_serving()
+
+  def switch_to_serving(self) -> None:
+    self.rel_ln(OUTPUT_DIR, config['SERVING_DIR'])
+
+    mv(OUTPUT_DIR, 'previous')
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
     if not DEV:
@@ -119,26 +79,37 @@ class Generator:
     if not is_internal:
       # Add to site map
       self.pages.append(Page(path=location, lastmod=lastmod))
-    log(f"Generated {url(location)}")
+    log_debug(f"Generated {url(location)}")
 
-  def ln(self, src: str, dst: str, lastmod: str) -> None:
+  def ln(self, src: str, dst: str, lastmod: str, is_internal: bool=False) -> None:
     log(f"Linking {src} -> {dst} lastmod:{lastmod}")
-    src_path = realpath(joinp(OUTPUT_DIR, src))
-    dst_path = realpath(joinp(OUTPUT_DIR, dst))
+    src_path = joinp(OUTPUT_DIR, src)
+    dst_path = joinp(OUTPUT_DIR, dst)
 
-    common_dir = os.path.commonpath([src_path, dst_path]) # This is guaranteed to be in the OUTPUT_DIR
-    saved_dir = os.getcwd()
-    os.chdir(common_dir)
+    self.rel_ln(src_path, dst_path)
 
+    if not is_internal:
+      self.pages.append(Page(path=dst, lastmod=lastmod))
+    log(f"Generated {url(dst)}")
+
+  def rel_ln(self, src_path: str, dst_path: str) -> None:
+    # For serving to work properly they both need to be under the base OUTPUT_DIR.
+    base_output = realpath(settings.config['OUTPUT_DIR'])
+    src_path = realpath(src_path)
+    dst_path = realpath(dst_path)
+    print(src_path, dst_path, base_output)
+    assert src_path.startswith(base_output)
+    assert dst_path.startswith(base_output)
+
+    common_dir = os.path.commonpath([src_path, dst_path])
     rel_src_path = src_path[len(common_dir)+1:]
     rel_dst_path = dst_path[len(common_dir)+1:]
 
+    saved_dir = os.getcwd()
+    os.chdir(common_dir)
     log(f"Linking relative {rel_src_path} -> {rel_dst_path} in {common_dir}.")
     ln(rel_src_path, rel_dst_path)
     os.chdir(saved_dir)
-
-    self.pages.append(Page(path=dst, lastmod=lastmod))
-    log(f"Generated {url(dst)}")
 
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
