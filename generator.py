@@ -4,6 +4,7 @@ import unicodedata
 import re
 import os
 import datetime
+import htmlmin
 from collections import defaultdict
 from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
@@ -61,6 +62,7 @@ def url_for(o: Any, arg=None) -> str:
   raise Exception(f"Unhandled url_for '{o}' arg={arg}")
 
 def split_by_start(l: List[GAnswer]) -> List[List[GAnswer]]:
+  # Split up the words by their first letter.
   l = sorted(l)
   d = defaultdict(list)
   for a in l:
@@ -103,9 +105,19 @@ class Generator:
     self.generate_static()
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
+    if not DEV:
+      if contents.startswith('<!DOCTYPE html>') or contents.startswith('<html>'):
+        contents = htmlmin.minify(contents,
+          remove_comments=True,        # Remove all HTML comments
+          remove_empty_space=True,     # Collapse unnecessary whitespace
+          remove_all_empty_space=False,  # Preserve essential spaces in inline elements
+          reduce_boolean_attributes=False,  # Keep `checked="checked"` for compatibility
+          remove_optional_attribute_quotes=False)  # Keep quotes around attributes for safety
+
     path = joinp(OUTPUT_DIR, location)
     write(path, contents, create_dirs = True)
     if not is_internal:
+      # Add to site map
       self.pages.append(Page(path=location, lastmod=lastmod))
     log(f"Generated {url(location)}")
 

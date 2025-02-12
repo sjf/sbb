@@ -19,3 +19,4 @@ pytest-mypy
 types-beautifulsoup4
 bs4
 wheel
+htmlmin
