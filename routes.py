@@ -11,6 +11,7 @@ from http import HTTPStatus
 import urllib.parse as ul
 
 from pyutils import *
+from pyutils.settings import config
 from gunicorn_util import *
 from query import Query
 
@@ -53,9 +54,10 @@ def handle_result(query, result):
 if os.getenv('FLASK_ENV') == 'development':
   @bp.route('/', defaults={'filename': 'index.html'})
   @bp.route('/<path:filename>')
-  def send_from_site_directory(filename):
-    if exists('site/' + filename):
-      return send_from_directory('site', filename, mimetype='text/html')
+  def send_from_serving_directory(filename):
+    SERVING_DIR = config['SERVING_DIR']
+    if exists(joinp(SERVING_DIR, filename)):
+      return send_from_directory(SERVING_DIR, filename, mimetype='text/html')
     return abort(404)
 
 @bp.route('/health')
