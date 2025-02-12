@@ -12,13 +12,7 @@ export DEV=1
 mypy generator.py && ./generator.py || true
 date
 
-while inotifywait -r -e modify,create,delete \
-templates/ \
-static/ \
-generator.py \
-model.py \
-db.py \
-; do
+while inotifywait -r -e modify,create,delete templates/ static/ *.py; do
  mypy generator.py && ./generator.py || true;
  date
  echo "-----------------------------------------------------------"
