@@ -65,7 +65,7 @@ def get_results(response):
 
 def test_index():
   response = get('/')
-  assert_contains(response, "Today's NYT Spelling Bee")
+  assert_contains(response, "Today's Spelling Bee")
 
 def test_index_http_redirect():
   if config['IS_FLASK'] or config['IS_GUNICORN'] or BACKEND.startswith('http://'):
@@ -83,7 +83,7 @@ def test_index_http_redirect():
 def test_index_invalid_param_ignored():
   response = get('/', params={'foo': 'bar'})
   response2 = get('/')
-  assert_contains(response, "Today's NYT Spelling Bee")
+  assert_contains(response, "Today's Spelling Bee")
   assert response.text == response2.text
 
 def test_puzzles():
