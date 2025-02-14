@@ -16,7 +16,7 @@ from model import *
 from db import *
 
 SITE_DIR = settings.config['OUTPUT_DIR']
-OUTPUT_DIR = joinp(SITE_DIR, f'sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}')
+OUTPUT_DIR = joinp(SITE_DIR, f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
 DOMAIN = settings.config['DOMAIN']
 VERSION = settings.config['VERSION']
 DEV = settings.config['DEV']
