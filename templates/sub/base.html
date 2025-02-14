@@ -42,7 +42,7 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-0BHRLPDY39', {'content_group':{{ get_content_group(request.url) }} });
+      gtag('config', 'G-0BHRLPDY39', {'content_group':'{{ get_content_group(url) }}' });
     </script>
 
     <!-- Google Tag Manager -->
@@ -53,9 +53,10 @@
     })(window,document,'script','dataLayer','GTM-MBGB6FFQ');</script>
     <!-- End Google Tag Manager -->
 
+    <!-- Site Javascript -->
     <script async src="/static/script.{{VERSION}}.min.js"></script>
   {% else %}
-    <!-- Unminified js for DEV. -->
+    <!-- Unminified site javacript for DEV. -->
     <script async src="/static/script.{{VERSION}}.js"></script>
   {% endif %}
 

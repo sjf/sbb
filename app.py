@@ -27,7 +27,7 @@ def configure_flask_app() -> None:
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     os.environ['DEBUG'] = 'True'
 
-    app.static_folder = joinp(config['SERVING_DIR'], 'static')
+    app.static_folder = joinp(config['SERVING_DEST'], 'static')
     app.static_url_path = "/static"
 
     @app.after_request
@@ -38,7 +38,7 @@ def configure_flask_app() -> None:
   else:
     app.config['SECRET_KEY'] = read(config['FLASK_SECRET_KEY_FILE'])
     # Cant figure out how to disable static serving, point it to an empty directory.
-    flask_static = joinp(config['SERVING_DIR'], 'flask_static')
+    flask_static = joinp(config['SERVING_DEST'], 'flask_static')
     mkdir(flask_static)
     app.static_folder = flask_static
 

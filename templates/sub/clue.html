@@ -25,10 +25,14 @@
       <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
         {{ answer.word[0] }}
       </div>
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
+        {{ answer.word[1] }}
+      </div>
 
       <!-- Empty Boxes for Remaining Letters -->
-      {% for _ in answer.word[1:] %}
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box">
+      {% for c in answer.word[2:] %}
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box"
+        data-letter="{{c}}">
       </div>
       {% endfor %}
     </div>

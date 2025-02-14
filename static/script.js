@@ -21,14 +21,13 @@ function hide(button) {
 }
 
 function toggleClueAnswer(element) {
-  const answer = element.getAttribute('data-answer');
   const emptyBoxes = element.querySelectorAll('.empty-box');
   const filledBoxes = element.querySelectorAll('.filled-box');
   const icons = element.querySelectorAll('.eye');
   const definition = document.getElementById(element.dataset.definition);
 
   emptyBoxes.forEach((box, index) => {
-    box.textContent = answer[index + 1];  // Fill box with letter
+    box.textContent = box.getAttribute('data-letter');
     box.classList.remove('empty-box');
     box.classList.add('filled-box');
   });

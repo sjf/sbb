@@ -6,9 +6,8 @@ from pyutils import *
 from model import *
 
 def set_env_globals(env: Environment) -> None:
-  DEV = bool(os.environ.get('DEV', False))
   env.globals.update(
-    DEV=DEV,
+    DEV=config['DEV'],
     domain=config['DOMAIN'],
     VERSION=config['VERSION'],
     current_year=datetime.datetime.now().year,
@@ -49,14 +48,22 @@ def url_for(o: Any, arg=None) -> str:
 
 def get_content_group(url: str) -> str:
   prefixes = {
+    '/index.html':     'Home Page',
+
     '/puzzle/latest':  'Latest Puzzle',
     '/puzzle/':        'Puzzle Page',
     '/puzzles/latest': 'Latest Puzzle',
     '/puzzles/':       'Puzzle Archive',
+
     '/clue/':          'Clue Page',
     '/clues/':         'Clue Archive',
-    '/about':          'About',
+
+    '/definition/':    'Definition',
+
     '/search':         'Search Results',
+
+    '/about':          'About',
+    '/error/':         'Error Page',
   }
   path = url_path(url)
   for prefix,content_group in prefixes.items():
