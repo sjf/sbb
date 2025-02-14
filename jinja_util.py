@@ -16,7 +16,8 @@ def set_env_globals(env: Environment) -> None:
     format_date=format_date,
     sort_by_clue=sort_by_clue,
     joinl=joinl,
-    split_by_start=split_by_start)
+    split_by_start=split_by_start,
+    get_content_group=get_content_group)
   env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
 
 def url_for(o: Any, arg=None) -> str:
@@ -45,6 +46,25 @@ def url_for(o: Any, arg=None) -> str:
     return f"/definition/{o.word}"
 
   raise Exception(f"Unhandled url_for '{o}' arg={arg}")
+
+def get_content_group(url: str) -> str:
+  prefixes = {
+    '/puzzle/latest':  'Latest Puzzle',
+    '/puzzle/':        'Puzzle Page',
+    '/puzzles/latest': 'Latest Puzzle',
+    '/puzzles/':       'Puzzle Archive',
+    '/clue/':          'Clue Page',
+    '/clues/':         'Clue Archive',
+    '/about':          'About',
+    '/search':         'Search Results',
+  }
+  path = url_path(url)
+  for prefix,content_group in prefixes.items():
+    if path.startswith(prefix):
+      return content_group
+  if path == '/':
+    return 'Home Page'
+  raise Exception(f'No content group for {url}')
 
 def format_date(value: str) -> str:
   date = datetime.datetime.strptime(value, "%Y-%m-%d")

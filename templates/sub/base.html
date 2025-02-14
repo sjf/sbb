@@ -42,7 +42,7 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-0BHRLPDY39', {'content_group':{% get_content_group(request.url) %}});
+      gtag('config', 'G-0BHRLPDY39', {'content_group':{{ get_content_group(request.url) }} });
     </script>
 
     <!-- Google Tag Manager -->
