@@ -1,12 +1,12 @@
 {% extends "sub/base.html" %}
-{% block title %}NYT Spelling Bee Clue: {{page.clue_answers[0].text}}{% endblock %}
+{% block title %}“{{page.clue_answers[0].text}}” NYT Spelling Bee Clue{% endblock %}
 {% block description %}See the answer to '{{page.clue_answers[0].text}}' from the NYT Spelling Bee.{% endblock %}
 {% block head %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "NYT Spelling Bee clue: “{{ page.clue_answers[0].text | json_esc}}”",
+  "name": "“{{ page.clue_answers[0].text | json_esc}}” NYT Spelling Bee clue.",
   "description": "Solve the clue “{{ page.clue_answers[0].text | json_esc }}” from the NYT Spelling Bee.",
   "url": "{{ domain }}{{ page.url }}",
   "datePublished": "{{ page.clue_answers[0].puzzle_dates[0] }}",
