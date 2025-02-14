@@ -9,7 +9,7 @@ PORT=8002
 HOST=`hostname`
 LOG_DIR=/tmp/logs
 
-export DEV=1
+export DEV=${DEV:-True}
 export FLASK_ENV=development
 export ELASTIC_API_KEY_FILE=secrets/elastic-api-key.txt
 export PYUTILS_LOG_DIR=$LOG_DIR

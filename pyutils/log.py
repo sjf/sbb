@@ -51,7 +51,7 @@ def _setup_logging(list_handler=False):
     handler.setLevel(logging.INFO)
     logger.addHandler(handler)
 
-  console_handler.setLevel(logging.DEBUG)
+  console_handler.setLevel(logging.INFO)
   is_initialized = True
 
 def get_logged_messages():
@@ -86,7 +86,7 @@ def log_fatal(message, ex=None):
   log_error(message, ex)
   sys.exit(1)
 
-def debug(message, ex=None):
+def log_debug(message, ex=None):
   if ex:
     logger.debug(format_ex(ex))
   logger.debug(message)

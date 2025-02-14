@@ -11,6 +11,7 @@ from http import HTTPStatus
 import urllib.parse as ul
 
 from pyutils import *
+from pyutils.settings import config
 from gunicorn_util import *
 from query import Query
 
@@ -48,14 +49,15 @@ def handle_result(query, result):
     'urls': list(map(lambda x:x.url, result.results)),
     })
   # Canonical URL for results page is the first page of results.
-  return render_template('results.html', result=result, canon_url=result.pagination.first)
+  return render_template('results.html', url=request.url, canon_url=result.pagination.first, result=result)
 
 if os.getenv('FLASK_ENV') == 'development':
   @bp.route('/', defaults={'filename': 'index.html'})
   @bp.route('/<path:filename>')
-  def send_from_site_directory(filename):
-    if exists('site/' + filename):
-      return send_from_directory('site', filename, mimetype='text/html')
+  def send_from_serving_directory(filename):
+    SERVING_DEST = config['SERVING_DEST']
+    if exists(joinp(SERVING_DEST, filename)):
+      return send_from_directory(SERVING_DEST, filename, mimetype='text/html')
     return abort(404)
 
 @bp.route('/health')

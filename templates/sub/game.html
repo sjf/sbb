@@ -58,7 +58,7 @@
     {% for ls in split_by_start(puzzle.answers) %}
       {% for answer in ls %}
         <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
-          <a href="/definition/{{ answer.word }}" class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</span>
+          <a href="/definition/{{ answer.word }}" class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
         </div>
       {% endfor %}
       {% if not loop.last %}<div class="pt-4"></div>{% endif %}

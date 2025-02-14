@@ -174,16 +174,9 @@ def format_mw(s: Optional[str]) -> Optional[str]:
   s = s.strip()
   return s
 
-def format_date(value: str) -> str:
-  date = datetime.datetime.strptime(value, "%Y-%m-%d")
-  return date.strftime("%B %-d, %Y")
-
 def format_yearmonth(value: str) -> str:
   date = datetime.datetime.strptime(value, "%Y-%m")
   return date.strftime("%B, %Y")
-
-def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
-  return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
 
 @dataclass
 class PaginateList:

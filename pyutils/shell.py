@@ -94,6 +94,12 @@ def mv(a: str, b: str) -> None:
     b = b + basename(a)
   os.rename(a,b)
 
+def rm_rf(path, verbose=False):
+  if not exists(path):
+    return
+  vflag = "-v" if verbose else ""
+  shell(f'rm -rf {vflag} {path}')
+
 def cp(a: str, b: str) -> None:
   shutil.copy(a, b)
 

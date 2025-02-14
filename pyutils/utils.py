@@ -123,6 +123,11 @@ def url_domain(url: str) -> str:
   extracted = tldextract.extract(url)
   return extracted.registered_domain
 
+def url_path(url):
+  """ Returns the URL path (without the parameters). """
+  parsed_url = urllib.parse.urlparse(url)
+  return parsed_url.path
+
 def replace_url_param(url, name, value):
   params = url_params(url)
   params[name] = [value]
