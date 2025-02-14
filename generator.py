@@ -49,14 +49,16 @@ class Generator:
     self.pages = []
 
   def generate_all(self) -> None:
-    log(f"Generating: {OUTPUT_DIR} DEV:{DEV}")
+    log(f"Generating: {OUTPUT_DIR}")
+    log(f"Config:\n{dictl(config)}")
     self.generate_main()
     self.generate_clue_pages()
     self.generate_clue_archives()
     self.generate_puzzle_archives()
     self.generate_puzzle_pages()
     self.generate_definitions()
-    # # These have to be last.
+
+    # These have to be last.
     self.generate_sitemap()
     self.generate_static()
     self.switch_to_serving()
@@ -66,7 +68,8 @@ class Generator:
     self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
-    if not DEV:
+    if not DEV or config['HTML_MIN']:
+      # print('min')
       if contents.startswith('<!DOCTYPE html>') or contents.startswith('<html>'):
         contents = htmlmin.minify(contents,
           remove_comments=True,        # Remove all HTML comments
@@ -263,30 +266,17 @@ class Generator:
     rendered = template.render(pages=self.pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
 
-  skip = ['static/input.css']
-  special = {
-    'static/robots.txt': f'{OUTPUT_DIR}/robots.txt',
-    'static/script.js': f'{OUTPUT_DIR}/static/script.{VERSION}.js',
-    'static/custom.css': f'{OUTPUT_DIR}/static/custom.{VERSION}.css',
-  }
-  duplicate = {
-    'static/favicon/favicon.ico': f'{OUTPUT_DIR}/favicon.ico',
-  }
   def generate_static(self) -> None:
     if not DEV:
-      shell(f'npx tailwindcss -i ./static/input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css --minify')
-      shell(f'terser static/script.js --mangle -o {OUTPUT_DIR}/static/script.{VERSION}.min.js')
+      shell(f'npx tailwindcss -i input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css --minify')
+      shell(f'terser static_files/static/script.js --mangle -o {OUTPUT_DIR}/static/script.{VERSION}.min.js')
+    else:
+      mkdir(f'{OUTPUT_DIR}/static/')
+      cp('static_files/static/script.js',  f'{OUTPUT_DIR}/static/script.{VERSION}.js')
+      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{VERSION}.css')
 
-    for file in ls('static/*'):
-      dest = joinp(OUTPUT_DIR, 'static/')
-      if file in self.special:
-        dest = self.special[file]
-      if file not in self.skip:
-        cp_file(file, dest)
-
-    # Copy more files that need to be copied to multiple places
-    for file, dest in self.duplicate.items():
-      cp_file(file, dest)
+    for file in ls('static_files/*'):
+      cp_file(file, OUTPUT_DIR)
 
 @dataclass
 class Page:

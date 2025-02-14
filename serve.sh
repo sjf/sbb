@@ -14,7 +14,7 @@ export DEV
 mypy generator.py && ./generator.py || true
 date
 
-while inotifywait -r -e modify,create,delete templates/ static/ *.py *.ini; do
+while inotifywait -r -e modify,create,delete templates/ static_files/ *.py *.ini; do
  mypy generator.py && ./generator.py || true;
  date
  echo "-----------------------------------------------------------"

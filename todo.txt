@@ -5,10 +5,6 @@ clue archive pages shouldnt have more than 400 entries
 puzzle pages dont have enough text
 clue pages dont have enough text
 
-o fix search e2e test on live site
-
-o on the search results page, show date in preview.
-
 o add puzzle/dates to elasticsearch so they show up in results
 
 o flask should use the same error pages as static pages
@@ -65,4 +61,6 @@ x change archives to not change results per page
 x attribute wikitonary
 x on clue archive page, current page should be yellow, like on puzzle archive.
 x clue page, button for reveal
+o fix search e2e test on live site
+o on the search results page, show date in preview.
 

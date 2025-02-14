@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     './templates/**/*.html',  // Scan Jinja templates for class usage
-    './static/**/*.css'
+    './static_files/**/*.css'
   ],
   theme: {
     extend: {
