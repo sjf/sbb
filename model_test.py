@@ -63,8 +63,8 @@ def test_dictapis_to_def_mw_uns():
 
 @pytest.mark.parametrize('input_str, expected', [
   ('{bc}a sour substance', 'a sour substance'),
-  ('Middle English {it}foul{\\/it}, from Old English {it}fugel{\\/it};', 'Middle English foul, from Old English fugel;'),
-  ('domesticated {dx_def}see {dxt|domesticate:1||2}{\\/dx_def} or wild {d_link|gallinaceous|gallinaceous}birds {dx}compare {dxt|guinea fowl||}, {dxt|jungle fowl||}{\\/dx}',
+  ('Middle English {it}foul{/it}, from Old English {inf}fugel{/inf};', 'Middle English foul, from Old English <sub>fugel</sub>;'),
+  ('domesticated {dx_def}see {dxt|domesticate:1||2}{/dx_def} or wild {d_link|gallinaceous|gallinaceous}birds {dx}compare {dxt|guinea fowl||}, {dxt|jungle fowl||}{/dx}',
    'domesticated see domesticate or wild gallinaceousbirds compare guinea fowl, jungle fowl')
 ])
 def test_format_mw(input_str, expected):

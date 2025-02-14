@@ -154,13 +154,13 @@ MW_FORMAT = [
   ('{ldquo}', '“'),
   ('{rdquo}', '”'),
   ('{inf}','<sub>'),
-  ('{\\/inf}','</sub>'),
+  ('{/inf}','</sub>'),
   ('{b}', '<bold>'),
-  ('{\\/b}', '</bold>'),
+  ('{/b}', '</bold>'),
   ('{sup}', '<sup>'),
-  ('{\\/sup}', '</sup>'),
+  ('{/sup}', '</sup>'),
   ('{sc}', '<span style="font-variant: small-caps;">'),
-  ('{\\/sc}','</span>'),
+  ('{/sc}','</span>'),
 ]
 def format_mw(s: Optional[str]) -> Optional[str]:
   # Replace Tokens Used in Running Text
