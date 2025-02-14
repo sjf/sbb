@@ -1,9 +1,11 @@
 seo:
 h1 heading on clue pages is too short
-some clue page titles are too long (Rm nyt spelling bee...)
 clue archive pages shouldnt have more than 400 entries
 puzzle pages dont have enough text
 clue pages dont have enough text
+
+o puzzle pages need to be unique, add stats, numner of words, number of panagrams, bingos.
+  word origins/etymology for foreign words, words in MW but not included. Compare to previous days puzzle.
 
 o add puzzle/dates to elasticsearch so they show up in results
 
@@ -63,4 +65,5 @@ x on clue archive page, current page should be yellow, like on puzzle archive.
 x clue page, button for reveal
 o fix search e2e test on live site
 o on the search results page, show date in preview.
+some clue page titles are too long (Rm nyt spelling bee...)
 

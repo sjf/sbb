@@ -137,7 +137,7 @@ def dictapis_to_def(word: str, content: str, source: str) -> Optional[GDefinitio
                 example = None
                 vi = filterl(lambda x:x[0] == 'vis', sense['dt']) # Verbal Illustrations
                 if vi:
-                  example = format_mw(vi[0][1][0].get('t', None)) # Just take first example
+                  example = format_mw(vi[0][1][0].get('t', None), capitalize=False) # Just take first example
                 if meaning:
                   td.meanings.append(GWordMeaning(meaning = meaning, example = example))
           if failed_to_parse:
@@ -162,7 +162,7 @@ MW_FORMAT = [
   ('{sc}', '<span style="font-variant: small-caps;">'),
   ('{/sc}','</span>'),
 ]
-def format_mw(s: Optional[str]) -> Optional[str]:
+def format_mw(s: Optional[str], capitalize: bool=True) -> Optional[str]:
   # Replace Tokens Used in Running Text
   if not s:
     return s
@@ -172,6 +172,8 @@ def format_mw(s: Optional[str]) -> Optional[str]:
   s = re.sub('\\{[a-z_]+\\|([^|:]+)[^}]*\\}', '\\1', s)
   s = re.sub('\\{[^}]+\\}','', s) # remove other formatting
   s = s.strip()
+  if capitalize:
+    s = s[0].upper() + s[1:]
   return s
 
 def format_yearmonth(value: str) -> str:
