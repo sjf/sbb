@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-DEV=${DEV:-1}
+DEV=${DEV:-True}
 
 # cd site
 # httpserver_w_headers.py &
