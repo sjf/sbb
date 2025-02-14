@@ -7,6 +7,8 @@ clue pages dont have enough text
 o puzzle pages need to be unique, add stats, numner of words, number of panagrams, bingos.
   word origins/etymology for foreign words, words in MW but not included. Compare to previous days puzzle.
 
+o puzzle page, link from clue to definition
+
 o add puzzle/dates to elasticsearch so they show up in results
 
 o flask should use the same error pages as static pages
