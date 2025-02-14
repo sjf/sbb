@@ -16,7 +16,7 @@ from model import *
 from db import *
 
 SITE_DIR = settings.config['OUTPUT_DIR']
-OUTPUT_DIR = joinp(SITE_DIR, datetime.datetime.now().strftime('%Y-%m-%d-%H-%M'))
+OUTPUT_DIR = joinp(SITE_DIR, f'sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}')
 DOMAIN = settings.config['DOMAIN']
 VERSION = settings.config['VERSION']
 DEV = settings.config['DEV']
@@ -66,6 +66,12 @@ class Generator:
   def switch_to_serving(self) -> None:
     log(f"*** Switching serving '{config['SERVING_DEST']}' to '{OUTPUT_DIR}' ***")
     self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
+
+    dirs = ls(f'{SITE_DIR}/sbb-*')
+    dirs = sorted(dirs, reverse=True)
+    for d in dirs[6:]: # keep last six generations
+      log(f"Removing old generated site {d}")
+      rm_rf(d)
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
     if not DEV or config['HTML_MIN']:
