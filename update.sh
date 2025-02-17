@@ -11,6 +11,11 @@ pip3 install -qr requirements.txt
 export PYUTILS_LOG_DIR=$HOME/logs
 export PYUTILS_LOG_FILE=sbb.log
 
-./scraper.py
-./importer.py
-./generator.py
+CMD=${1:-all}
+if [[ $CMD == 'all' ]]; then
+  ./scraper.py
+  ./importer.py
+  ./generator.py
+elif [[ $CMD == 'generator' ]]; then
+  ./generator.py
+fi
