@@ -80,12 +80,11 @@ class Importer:
     log(f"Imported {n} files.")
 
   def import_definitions(self) -> None:
-    words = self.db.fetch_undefined_words(only_new=True)
-    words = self.import_from_api(DICT_API, words)
-    words = self.db.fetch_undefined_words()
-    missing = self.import_from_api(MW_API, words)
-    if missing:
-      log_error(f"Missing definitions for {joinl(missing)}")
+    undefined = self.db.fetch_undefined_words(only_new=True)
+    missing1 = self.import_from_api(MW_API, undefined)
+    missing2 = self.import_from_api(DICT_API, missing1)
+    if missing2:
+      log_error(f"Missing definitions for {joinl(missing2, sep=', ')}")
 
   def import_from_api(self, url_fmt: str, words: List[str]) -> List[str]:
     if not words:
@@ -110,7 +109,7 @@ class Importer:
       self.db.upsert_definition(d)
       self.db.conn.commit()
       # log(f"Commited definition for {word}")
-    log(f"Got definitions for {n} words, could not find {len(missing)}.")
+    log(f"Got definitions for {n} words, could not find {len(missing)}: {joinl(missing, sep=', ')}.")
     return missing
 
   def archive_file(self,file):

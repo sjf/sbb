@@ -92,6 +92,10 @@ def percent(n,d):
   pc = int((n / d) * 100)
   return f'{pc}%'
 
+def smquote(s: str) -> str:
+  """ Smart quote. """
+  return f"“{s}”"
+
 def file_line_reader(file_path):
   """ Generator to read file line by line, returns the line number and stripped line."""
   # DEBUG and log(f"Opening {file_path}")

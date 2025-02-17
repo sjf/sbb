@@ -30,7 +30,7 @@ CREATE TABLE clues (
 
 CREATE TABLE definitions (
   word TEXT PRIMARY KEY
-  ,definition TEXT -- can be null if no defintion was found.
+  ,definition TEXT -- can be null if no definition was found.
   ,source TEXT NOT NULL
   ,retrieved_on TEXT NOT NULL
 );

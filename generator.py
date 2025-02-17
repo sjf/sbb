@@ -74,8 +74,7 @@ class Generator:
       rm_rf(d)
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
-    if not DEV or config['HTML_MIN']:
-      # print('min')
+    if not DEV and config['HTML_MIN']: # Only in prod and when enable because this is slow.
       if contents.startswith('<!DOCTYPE html>') or contents.startswith('<html>'):
         contents = htmlmin.minify(contents,
           remove_comments=True,        # Remove all HTML comments

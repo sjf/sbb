@@ -9,12 +9,12 @@ from collections import defaultdict
 from pyutils import *
 from storage import *
 from model import *
+from mw import *
 
 DIR = 'scraped/*.json'
 DB_FILE = 'nyt.db'
 SCHEMA = 'schema.sql'
 DEBUG = os.environ.get('DEBUG', False)
-
 MAPPING = {Puzzle: 'puzzles', Answer: 'answers', Clue: 'clues', Definition: 'definitions'}
 
 class DB:
@@ -35,7 +35,7 @@ class DB:
       self.conn.executescript(read(SCHEMA))
       self.conn.commit()
 
-  def insert(self, dataclass_instance, ignore_dups = False, replace_term = '') -> int:
+  def insert(self, dataclass_instance, ignore_dups=False, replace_term='') -> int:
     data = DB.to_dict(dataclass_instance)
     table_name = MAPPING[type(dataclass_instance)]
     columns = ', '.join(data.keys())
@@ -203,7 +203,7 @@ class DB:
         definition = dictapis_to_def(word, data['definition'], data['source'])
       else:
         definition = None
-        log_error(f'No definition for {word}')
+        # log_error(f'No definition for {word}')
       answer = GWordDefinition(
         word = word,
         definition = definition)
@@ -228,12 +228,14 @@ class DB:
     self.cursor.execute(query.format(latest_term = latest_term))
     result = []
     for row in self.cursor.fetchall():
-      data = dict(row)
+      answers = by_date[row['date']]
       puzzle = GPuzzle(
           date=row['date'],
           center_letter=row['center_letter'],
           outer_letters=split(row['outer_letters']),
-          _answers=by_date[row['date']])
+          _answers=answers,
+          hints=[])
+          # hints=get_puzzle_hints(answers))
       result.append(puzzle)
     return result
 
