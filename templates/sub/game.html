@@ -94,3 +94,45 @@
   </div>
 </div>
 
+<!-- Navigation Section -->
+<div class="mt-5 flex flex-row justify-between items-end sm:space-x-4">
+  {% if prev %}
+  <a href="{{url_for(prev)}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+    ⟨⟨ <span class="hidden sm:inline">{{format_date(prev.date)}}</span>
+  </a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
+    ⟨⟨ <span class="hidden sm:inline">>2025-01-01</span>
+  </span>
+  {% endif %}
+
+  <div class="flex flex-col items-center">
+    <label for="datepicker" class="text-sm text-gray-700 mb-1">Jump to date:</label>
+    <input
+      id="datepicker"
+      type="date"
+      value="{{puzzle.date}}"
+      max="{{max_date}}"
+      min="{{min_date}}"
+      onkeydown="return false"
+      class="border border-gray-300 rounded px-4 py-2">
+  </div>
+  <script>
+    document.getElementById("datepicker").addEventListener("change", function() {
+      const selectedDate = this.value; // Get the selected date (YYYY-MM-DD)
+      if (selectedDate) {
+        window.location.href = `/puzzle/${selectedDate}`; // Navigate to the new URL
+      }
+    });
+  </script>
+
+  {% if next_ %}
+  <a href="{{url_for(next_)}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+    <span class="hidden sm:inline">{{format_date(next_.date)}}</span> ⟩⟩
+  </a>
+  {% else %}
+  <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
+    <span class="hidden sm:inline">2025-01-01</span> ⟩⟩
+  </span>
+  {% endif %}
+</div>

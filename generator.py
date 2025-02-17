@@ -123,9 +123,23 @@ class Generator:
   def generate_puzzle_pages(self) -> None:
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
-    for puzzle in puzzles:
+    max_date = puzzles[0].date
+    min_date = puzzles[-1].date
+    for i, puzzle in enumerate(puzzles):
       url = url_for(puzzle)
-      rendered = template.render(url=url, canon_url=url_for(puzzle), puzzle=puzzle)
+      next_ = None
+      if i > 0:
+        next_ = puzzles[i-1]
+      prev = None
+      if i < len(puzzles) - 1:
+        prev = puzzles[i+1]
+      rendered = template.render(url=url,
+        canon_url=url_for(puzzle),
+        puzzle=puzzle,
+        next_=next_,
+        prev=prev,
+        min_date=min_date,
+        max_date=max_date)
       self.output(url, rendered, puzzle.date)
     latest = puzzles[0]
     self.ln(url_for(latest), '/puzzle/latest', latest.date)
@@ -148,11 +162,18 @@ class Generator:
   }
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
-    latest = self.db.fetch_latest_gpuzzle()
-    latest_dates = self.db.fetch_latest_puzzle_dates(config['PREVOUS_DAYS_ON_HOMEPAGE'])
-    latest_dates.remove(latest.date)
-    # latest_dates = sorted(set(latest_dates) - set(),reverse=True)
-    rendered = template.render(url='/index.html', canon_url=url_for(latest), puzzle=latest, past_dates=latest_dates)
+    puzzles = self.db.fetch_gpuzzles()
+    latest = puzzles[0]
+    prev = puzzles[1]
+    max_date = puzzles[0].date
+    min_date = puzzles[-1].date
+    rendered = template.render(url='/index.html',
+      canon_url=url_for(latest),
+      puzzle=latest,
+      prev=prev,
+      next_=None,
+      max_date=max_date,
+      min_date=min_date)
     self.output('/index.html', rendered, TODAY)
 
     template = self.env.get_template('about.html')

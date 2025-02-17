@@ -25,9 +25,6 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
     assert puzzles[i] == GPUZZLES[i]
   assert puzzles == GPUZZLES
 
-  latest = importer.db.fetch_latest_gpuzzle()
-  assert latest == GPUZZLE_2
-
   answers = importer.db.fetch_ganswers()
   assert answers == ANSWERS
 

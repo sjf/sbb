@@ -1,4 +1,5 @@
 scraped/
+scraped.*/
 archive/
 site/
 sbb.db

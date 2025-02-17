@@ -4,7 +4,7 @@ import sqlite3
 import unicodedata
 import re
 from dataclasses import dataclass, asdict, fields, field
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict, Optional, Tuple
 from collections import defaultdict
 from pyutils import *
 from storage import *
@@ -210,7 +210,7 @@ class DB:
     result = sorted(result)
     return result
 
-  def fetch_gpuzzles(self, only_latest=False) -> List[GPuzzle]:
+  def fetch_gpuzzles(self, limit=None) -> List[GPuzzle]:
     # The answers group by url.
     by_date = defaultdict(list)
     for answer in self.fetch_ganswers():
@@ -219,12 +219,12 @@ class DB:
     query = """
       SELECT date, center_letter, outer_letters
       FROM puzzles p
-      {latest_term}
-      ORDER BY p.date DESC;
+      ORDER BY p.date DESC
+      {limit_term};
     """
-    latest_term = " WHERE p.date = (SELECT MAX(date) FROM puzzles)" if only_latest else ""
+    limit_term = f"LIMIT {limit}" if limit else ""
 
-    self.cursor.execute(query.format(latest_term = latest_term))
+    self.cursor.execute(query.format(limit_term = limit_term))
     result = []
     for row in self.cursor.fetchall():
       answers = by_date[row['date']]
@@ -235,20 +235,6 @@ class DB:
           _answers=answers)
       result.append(puzzle)
     return result
-
-  def fetch_latest_gpuzzle(self) -> GPuzzle:
-    puzzles = self.fetch_gpuzzles(only_latest=True)
-    assert len(puzzles) == 1, puzzles
-    return puzzles[0]
-
-  def fetch_latest_puzzle_dates(self, n: int) -> List[str]:
-    query = """
-      SELECT date
-      FROM puzzles
-      ORDER BY date DESC
-      LIMIT {n};"""
-    query = query.format(n = n)
-    return self._fetch_values(query)
 
   def fetch_undefined_words(self, only_new: bool = False) -> List[str]:
     only_new_term = " AND d.source IS NULL" if only_new else ''

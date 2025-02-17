@@ -17,14 +17,4 @@
 <p class="text-center italic text-gray-500">{{ format_date(puzzle.date) }}</p>
 {% include "sub/game.html" %}
 
-<div class="mt-8">
-  <h2 class="text-2xl font-semibold mb-6 text-center">Previous Games</h2>
-  <div class="flex flex-col justify-center gap-y-4 text-center">
-    {% for date in past_dates %}
-    <a href="{{url_for(date)}}" class="text-m text-yellow-500 hover:underline">
-      {{ format_date(date) }}
-    </a>
-    {% endfor %}
-  </div>
-</div>
 {% endblock %}
