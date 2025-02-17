@@ -9,7 +9,6 @@ from collections import defaultdict
 from pyutils import *
 from storage import *
 from model import *
-from mw import *
 
 DIR = 'scraped/*.json'
 DB_FILE = 'nyt.db'
@@ -233,9 +232,7 @@ class DB:
           date=row['date'],
           center_letter=row['center_letter'],
           outer_letters=split(row['outer_letters']),
-          _answers=answers,
-          hints=[])
-          # hints=get_puzzle_hints(answers))
+          _answers=answers)
       result.append(puzzle)
     return result
 
