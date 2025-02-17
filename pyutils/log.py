@@ -9,6 +9,7 @@ import traceback
 import re
 import ast
 from collections import Counter, defaultdict
+from pathlib import Path
 
 # ISO date format.
 ISO_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
@@ -32,8 +33,9 @@ def _setup_logging(list_handler=False):
   # console handler
   console_handler = logging.StreamHandler()
 
-  log_dir = os.environ.get('PYUTILS_LOG_DIR', 'logs/')
+  log_dir = os.environ.get('PYUTILS_LOG_DIR', f'{Path.home()}/logs/')
   if not os.path.isdir(log_dir):
+    log_warn(f'Creating log file directory {log_dir}')
     os.makedirs(log_dir, exist_ok=True)
   log_file = os.environ.get('PYUTILS_LOG_FILE', 'pyutils.log')
 

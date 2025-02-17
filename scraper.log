@@ -1,0 +1,835 @@
+[09/Jan/2025:00:01:01 -0800] [INFO] Requesting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[09/Jan/2025:00:01:01 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12235.json
+[09/Jan/2025:00:01:01 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12235.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2024-12-30.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27097.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27097.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2024-12-31.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18910.json
+[09/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18910.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-01.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/13912.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/13912.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-02.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23461.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23461.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-03.json
+[09/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15892.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15892.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-04.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18209.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18209.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-05.json
+[09/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18666.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18666.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-06.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15849.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15849.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-07.json
+[09/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/20171.json
+[09/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/20171.json
+[09/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-08.json
+[09/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25240.json
+[09/Jan/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25240.json: Got:
+<Response [404]> Not Found
+[09/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25240.json
+[09/Jan/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25240.json: Got:
+<Response [404]> Not Found
+[09/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-09.json
+[10/Jan/2025:00:01:01 -0800] [INFO] Requesting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[10/Jan/2025:00:01:01 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12235.json
+[10/Jan/2025:00:01:01 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12235.json
+[10/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2024-12-30.json
+[10/Jan/2025:00:01:01 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27097.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27097.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2024-12-31.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18910.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18910.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-01.json
+[10/Jan/2025:00:01:02 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/13912.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/13912.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-02.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23461.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23461.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-03.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15892.json
+[10/Jan/2025:00:01:03 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15892.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-04.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18209.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18209.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-05.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18666.json
+[10/Jan/2025:00:01:04 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18666.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-06.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15849.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15849.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-07.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/20171.json
+[10/Jan/2025:00:01:05 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/20171.json
+[10/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-08.json
+[10/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25240.json
+[10/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25240.json
+[10/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-09.json
+[10/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21465.json
+[10/Jan/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21465.json: Got:
+<Response [404]> Not Found
+[10/Jan/2025:00:01:06 -0800] [INFO] Requesting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21465.json
+[10/Jan/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21465.json: Got:
+<Response [404]> Not Found
+[10/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-10.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2024-12-30.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2024-12-31.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-01.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-02.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-03.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-04.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-05.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-06.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-07.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-08.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-09.json
+[11/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-10.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2024-12-30.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2024-12-31.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-01.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-02.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-03.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-04.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-05.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-06.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-07.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-08.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-09.json
+[12/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-10.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2024-12-30.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2024-12-31.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-01.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-02.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-03.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-04.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-05.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-06.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-07.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-08.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-09.json
+[13/Jan/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-10.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2024-12-30.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2024-12-31.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-01.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-02.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-03.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-04.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-05.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-06.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-07.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-08.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-09.json
+[13/Jan/2025:13:48:22 -0800] [INFO] Saved to scraped/2025-01-10.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2024-12-30.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2024-12-31.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-01.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-02.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-03.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-04.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-05.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-06.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-07.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-08.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-09.json
+[13/Jan/2025:13:51:20 -0800] [INFO] Saved to scraped/2025-01-10.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2024-12-30.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2024-12-31.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-01.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-02.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-03.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-04.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-05.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-06.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-07.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-08.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-09.json
+[13/Jan/2025:14:07:03 -0800] [INFO] Saved to scraped/2025-01-10.json
+[29/Jan/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21609.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21609.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-20.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/24338.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/24338.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-21.json
+[29/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15005.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15005.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-22.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/10826.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/10826.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-23.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/9681.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/9681.json
+[29/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-24.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12678.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12678.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-25.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19143.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19143.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-26.json
+[29/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-27.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-28.json
+[29/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[29/Jan/2025:00:01:05 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json: Got:<Response [404]> Not Found
+[29/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[29/Jan/2025:00:01:05 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json: Got:<Response [404]> Not Found
+[29/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-29.json
+[30/Jan/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[30/Jan/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21609.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21609.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-20.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/24338.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/24338.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-21.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15005.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15005.json
+[30/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-22.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/10826.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/10826.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-23.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/9681.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/9681.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-24.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12678.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12678.json
+[30/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-25.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19143.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19143.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-26.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-27.json
+[30/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-28.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-29.json
+[30/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[30/Jan/2025:00:01:05 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json: Got:<Response [404]> Not Found
+[30/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[30/Jan/2025:00:01:05 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json: Got:<Response [404]> Not Found
+[30/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-30.json
+[31/Jan/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21609.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21609.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-20.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/24338.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/24338.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-21.json
+[31/Jan/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15005.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15005.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-22.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/10826.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/10826.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-23.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/9681.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/9681.json
+[31/Jan/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-24.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12678.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12678.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-25.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19143.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19143.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-26.json
+[31/Jan/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-27.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-28.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-29.json
+[31/Jan/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[31/Jan/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[31/Jan/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-30.json
+[01/Feb/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[01/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21609.json
+[01/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21609.json
+[01/Feb/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-20.json
+[01/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/24338.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/24338.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-21.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15005.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15005.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-22.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/10826.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/10826.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-23.json
+[01/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/9681.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/9681.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-24.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12678.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12678.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-25.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19143.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19143.json
+[01/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-26.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-27.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-28.json
+[01/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-29.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-30.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-31.json
+[01/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[01/Feb/2025:00:01:05 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json: Got:<Response [404]> Not Found
+[01/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[01/Feb/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json: Got:<Response [404]> Not Found
+[01/Feb/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-02-01.json
+[02/Feb/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[02/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21609.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21609.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-20.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/24338.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/24338.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-21.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15005.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15005.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-22.json
+[02/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/10826.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/10826.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-23.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/9681.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/9681.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-24.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12678.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12678.json
+[02/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-25.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19143.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19143.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-26.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-01-27.json
+[02/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-28.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-29.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[02/Feb/2025:00:01:05 -0800] [INFO] Saved to scraped/2025-01-30.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-01-31.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Saved to scraped/2025-02-01.json
+[02/Feb/2025:00:01:06 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[02/Feb/2025:00:01:06 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json: Got:<Response [404]> Not Found
+[02/Feb/2025:00:01:07 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[02/Feb/2025:00:01:07 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json: Got:<Response [404]> Not Found
+[02/Feb/2025:00:01:07 -0800] [INFO] Saved to scraped/2025-02-02.json
+[03/Feb/2025:00:01:01 -0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[03/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[03/Feb/2025:00:01:01 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[03/Feb/2025:00:01:01 -0800] [INFO] Saved to scraped/2025-01-27.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-28.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Saved to scraped/2025-01-29.json
+[03/Feb/2025:00:01:02 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-30.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-01-31.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Saved to scraped/2025-02-01.json
+[03/Feb/2025:00:01:03 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[03/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[03/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-02-02.json
+[03/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[03/Feb/2025:00:01:04 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json: Got:<Response [404]> Not Found
+[03/Feb/2025:00:01:04 -0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[03/Feb/2025:00:01:04 -0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json: Got:<Response [404]> Not Found
+[03/Feb/2025:00:01:04 -0800] [INFO] Saved to scraped/2025-02-03.json
+[04/Feb/2025:00:01:02-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[04/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[04/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[04/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-27.json
+[04/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[04/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[04/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-28.json
+[04/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[04/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[04/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-29.json
+[04/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[04/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[04/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-30.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[04/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-01-31.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[04/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-01.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[04/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[04/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[04/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[04/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[04/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-03.json
+[04/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[04/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json: Got:<Response [404]> Not Found
+[04/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[04/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json: Got:<Response [404]> Not Found
+[04/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-04.json
+[05/Feb/2025:00:01:01-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[05/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[05/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[05/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-27.json
+[05/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[05/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[05/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-28.json
+[05/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[05/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[05/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-29.json
+[05/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[05/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[05/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-30.json
+[05/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[05/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[05/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-31.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[05/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-01.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[05/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[05/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[05/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-03.json
+[05/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[05/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[05/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-04.json
+[05/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[05/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json: Got:<Response [404]> Not Found
+[05/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[05/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json: Got:<Response [404]> Not Found
+[05/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-05.json
+[06/Feb/2025:00:01:01-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[06/Feb/2025:00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[06/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[06/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-27.json
+[06/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[06/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[06/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-28.json
+[06/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[06/Feb/2025:00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[06/Feb/2025:00:01:02-0800] [INFO] Saved to scraped/2025-01-29.json
+[06/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[06/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[06/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-30.json
+[06/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[06/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[06/Feb/2025:00:01:03-0800] [INFO] Saved to scraped/2025-01-31.json
+[06/Feb/2025:00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[06/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[06/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-01.json
+[06/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[06/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[06/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[06/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[06/Feb/2025:00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[06/Feb/2025:00:01:04-0800] [INFO] Saved to scraped/2025-02-03.json
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[06/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-04.json
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[06/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-05.json
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[06/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json: Got:<Response [404]> Not Found
+[06/Feb/2025:00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[06/Feb/2025:00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json: Got:<Response [404]> Not Found
+[06/Feb/2025:00:01:05-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-07T00:01:01-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-07T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[2025-02-07T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[2025-02-07T00:01:01-0800] [INFO] Saved to scraped/2025-01-27.json
+[2025-02-07T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[2025-02-07T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[2025-02-07T00:01:02-0800] [INFO] Saved to scraped/2025-01-28.json
+[2025-02-07T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[2025-02-07T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[2025-02-07T00:01:02-0800] [INFO] Saved to scraped/2025-01-29.json
+[2025-02-07T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[2025-02-07T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[2025-02-07T00:01:03-0800] [INFO] Saved to scraped/2025-01-30.json
+[2025-02-07T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[2025-02-07T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[2025-02-07T00:01:03-0800] [INFO] Saved to scraped/2025-01-31.json
+[2025-02-07T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[2025-02-07T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[2025-02-07T00:01:03-0800] [INFO] Saved to scraped/2025-02-01.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[2025-02-07T00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-07T00:01:04-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-07T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-07T00:01:04-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-07T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-07T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-07T00:01:05-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-07T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-07T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-07T00:01:05-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-08T00:01:01-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-08T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[2025-02-08T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[2025-02-08T00:01:01-0800] [INFO] Saved to scraped/2025-01-27.json
+[2025-02-08T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[2025-02-08T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[2025-02-08T00:01:02-0800] [INFO] Saved to scraped/2025-01-28.json
+[2025-02-08T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[2025-02-08T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[2025-02-08T00:01:02-0800] [INFO] Saved to scraped/2025-01-29.json
+[2025-02-08T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[2025-02-08T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[2025-02-08T00:01:02-0800] [INFO] Saved to scraped/2025-01-30.json
+[2025-02-08T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[2025-02-08T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[2025-02-08T00:01:03-0800] [INFO] Saved to scraped/2025-01-31.json
+[2025-02-08T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[2025-02-08T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[2025-02-08T00:01:03-0800] [INFO] Saved to scraped/2025-02-01.json
+[2025-02-08T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[2025-02-08T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[2025-02-08T00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[2025-02-08T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-08T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-08T00:01:04-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-08T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-08T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-08T00:01:04-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-08T00:01:05-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-08T00:01:05-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-08T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-08T00:01:05-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-08T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-08T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json: Got:<Response [404]> Not Found
+[2025-02-08T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-08T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json: Got:<Response [404]> Not Found
+[2025-02-08T00:01:06-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-09T00:01:01-0800] [INFO] Getting https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-09T00:01:01-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19243.json
+[2025-02-09T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19243.json
+[2025-02-09T00:01:02-0800] [INFO] Saved to scraped/2025-01-27.json
+[2025-02-09T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12292.json
+[2025-02-09T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12292.json
+[2025-02-09T00:01:02-0800] [INFO] Saved to scraped/2025-01-28.json
+[2025-02-09T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16175.json
+[2025-02-09T00:01:02-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16175.json
+[2025-02-09T00:01:02-0800] [INFO] Saved to scraped/2025-01-29.json
+[2025-02-09T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18831.json
+[2025-02-09T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18831.json
+[2025-02-09T00:01:03-0800] [INFO] Saved to scraped/2025-01-30.json
+[2025-02-09T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18734.json
+[2025-02-09T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18734.json
+[2025-02-09T00:01:03-0800] [INFO] Saved to scraped/2025-01-31.json
+[2025-02-09T00:01:03-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25158.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25158.json
+[2025-02-09T00:01:04-0800] [INFO] Saved to scraped/2025-02-01.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/23130.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/23130.json
+[2025-02-09T00:01:04-0800] [INFO] Saved to scraped/2025-02-02.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-09T00:01:04-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-09T00:01:04-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-09T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-09T00:01:05-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-09T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-09T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-09T00:01:05-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-09T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-09T00:01:05-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-09T00:01:05-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-09T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-09T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-09T00:01:06-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-09T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-09T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-09T00:01:06-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-09T00:01:06-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-09T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json: Got:<Response [404]> Not Found
+[2025-02-09T00:01:07-0800] [INFO] Getting https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-09T00:01:07-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json: Got:<Response [404]> Not Found
+[2025-02-09T00:01:07-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-10T00:01:02-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-10T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-10T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-10T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-10T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-10T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-10T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-10T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-10T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-10T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-10T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-10T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-10T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-10T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-10T00:01:04-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-10T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-10T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-10T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-10T00:01:04-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json: Got:<Response [404]> Not Found
+[2025-02-10T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-10T00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json: Got:<Response [404]> Not Found
+[2025-02-10T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-11T00:01:02-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-11T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-11T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-11T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-11T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-11T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-11T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-11T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-11T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-11T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-11T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-11T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-11T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-11T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-11T00:01:04-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-11T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-11T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-11T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-11T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-11T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-11T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-11T00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json: Got:<Response [404]> Not Found
+[2025-02-11T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-11T00:01:05-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json: Got:<Response [404]> Not Found
+[2025-02-11T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-12T00:01:01-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-12T00:01:01-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-12T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-12T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-12T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-12T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-12T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-12T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-12T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-12T00:01:02-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-12T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-12T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-12T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-12T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-12T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-12T00:01:03-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-12T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-12T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-12T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-12T00:01:04-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-12T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-12T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-12T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-13T00:01:02-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-13T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-13T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-13T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-13T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-13T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-13T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-13T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-13T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-13T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-13T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-13T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-13T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-13T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-13T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-13T00:01:04-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-13T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-13T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-13T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-13T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-13T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-13T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-13T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-13T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-13T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-13T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-13T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-13T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-13T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12982.json
+[2025-02-13T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12982.json
+[2025-02-13T00:01:06-0800] [INFO] Saved to scraped/2025-02-12.json
+[2025-02-13T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16221.json
+[2025-02-13T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16221.json: Got:<Response [404]> Not Found
+[2025-02-13T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16221.json
+[2025-02-13T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16221.json: Got:<Response [404]> Not Found
+[2025-02-13T00:01:06-0800] [INFO] Saved to scraped/2025-02-13.json
+[2025-02-14T00:01:01-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-14T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-14T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-14T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-14T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-14T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-14T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-14T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-14T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-14T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-14T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-14T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-14T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-14T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-14T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-14T00:01:03-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-14T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-14T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-14T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-14T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-14T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-14T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-14T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-14T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-14T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12982.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12982.json
+[2025-02-14T00:01:05-0800] [INFO] Saved to scraped/2025-02-12.json
+[2025-02-14T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16221.json
+[2025-02-14T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16221.json
+[2025-02-14T00:01:06-0800] [INFO] Saved to scraped/2025-02-13.json
+[2025-02-14T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16617.json
+[2025-02-14T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16617.json: Got:<Response [404]> Not Found
+[2025-02-14T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16617.json
+[2025-02-14T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16617.json: Got:<Response [404]> Not Found
+[2025-02-14T00:01:06-0800] [INFO] Saved to scraped/2025-02-14.json
+[2025-02-15T00:01:01-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-15T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-15T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-15T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-15T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-15T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-15T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-15T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-15T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-15T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-15T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-15T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-15T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-15T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-15T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-15T00:01:03-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-15T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-15T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-15T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-15T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-15T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-15T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-15T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-15T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-15T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-15T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-15T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-15T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-15T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12982.json
+[2025-02-15T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12982.json
+[2025-02-15T00:01:05-0800] [INFO] Saved to scraped/2025-02-12.json
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16221.json
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16221.json
+[2025-02-15T00:01:06-0800] [INFO] Saved to scraped/2025-02-13.json
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16617.json
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16617.json
+[2025-02-15T00:01:06-0800] [INFO] Saved to scraped/2025-02-14.json
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/4117.json
+[2025-02-15T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/4117.json: Got:<Response [404]> Not Found
+[2025-02-15T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/4117.json
+[2025-02-15T00:01:06-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/4117.json: Got:<Response [404]> Not Found
+[2025-02-15T00:01:06-0800] [INFO] Saved to scraped/2025-02-15.json
+[2025-02-16T00:01:01-0800] [INFO] Retrieved https://www.nytimes.com/svc/spelling-bee/v1/active.json
+[2025-02-16T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/11338.json
+[2025-02-16T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/11338.json
+[2025-02-16T00:01:02-0800] [INFO] Saved to scraped/2025-02-03.json
+[2025-02-16T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/25606.json
+[2025-02-16T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/25606.json
+[2025-02-16T00:01:02-0800] [INFO] Saved to scraped/2025-02-04.json
+[2025-02-16T00:01:02-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/15156.json
+[2025-02-16T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/15156.json
+[2025-02-16T00:01:03-0800] [INFO] Saved to scraped/2025-02-05.json
+[2025-02-16T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/19118.json
+[2025-02-16T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/19118.json
+[2025-02-16T00:01:03-0800] [INFO] Saved to scraped/2025-02-06.json
+[2025-02-16T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18531.json
+[2025-02-16T00:01:03-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18531.json
+[2025-02-16T00:01:03-0800] [INFO] Saved to scraped/2025-02-07.json
+[2025-02-16T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/27442.json
+[2025-02-16T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/27442.json
+[2025-02-16T00:01:04-0800] [INFO] Saved to scraped/2025-02-08.json
+[2025-02-16T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/22339.json
+[2025-02-16T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/22339.json
+[2025-02-16T00:01:04-0800] [INFO] Saved to scraped/2025-02-09.json
+[2025-02-16T00:01:04-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/21824.json
+[2025-02-16T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/21824.json
+[2025-02-16T00:01:05-0800] [INFO] Saved to scraped/2025-02-10.json
+[2025-02-16T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/14158.json
+[2025-02-16T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/14158.json
+[2025-02-16T00:01:05-0800] [INFO] Saved to scraped/2025-02-11.json
+[2025-02-16T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/12982.json
+[2025-02-16T00:01:05-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/12982.json
+[2025-02-16T00:01:05-0800] [INFO] Saved to scraped/2025-02-12.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16221.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16221.json
+[2025-02-16T00:01:06-0800] [INFO] Saved to scraped/2025-02-13.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/16617.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/16617.json
+[2025-02-16T00:01:06-0800] [INFO] Saved to scraped/2025-02-14.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/4117.json
+[2025-02-16T00:01:06-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/4117.json
+[2025-02-16T00:01:06-0800] [INFO] Saved to scraped/2025-02-15.json
+[2025-02-16T00:01:07-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18674.json
+[2025-02-16T00:01:07-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/clues/18674.json: Got:<Response [404]> Not Found
+[2025-02-16T00:01:07-0800] [INFO] Retrieved https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18674.json
+[2025-02-16T00:01:07-0800] [ERROR] Could not retrieve https://static01.nyt.com/newsgraphics/2023-01-18-spelling-bee-buddy/stats/18674.json: Got:<Response [404]> Not Found
+[2025-02-16T00:01:07-0800] [INFO] Saved to scraped/2025-02-16.json
