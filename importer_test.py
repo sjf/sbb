@@ -82,6 +82,12 @@ def test_import_definitions(temp_db, fake_files, mock_es):
 def test_to_path_safe_name(input_str, expected):
   assert imp.to_path_safe_name(input_str) == expected
 
+@pytest.mark.parametrize('input_str, expected', [
+  ('Moving to and fro💎', 'Moving to and fro')
+])
+def test_get_clue_text(input_str, expected):
+  assert imp.get_clue_text(input_str) == expected
+
 def test_to_path_safe_name_truncates():
   assert imp.to_path_safe_name('foo bar buz', 10) == 'foo-bar'
   assert imp.to_path_safe_name('foo bar buz', 11) == 'foo-bar-buz'

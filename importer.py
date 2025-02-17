@@ -48,7 +48,7 @@ class Importer:
 
       if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:
-          text = content_clue['text']
+          text = get_clue_text(content_clue['text'])
           word = content_clue['word']
           is_pangram = word in content['pangrams']
 
