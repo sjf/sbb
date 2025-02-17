@@ -85,6 +85,7 @@ services:
       - ELASTIC_API_KEY_NAME=read_only_search_key
       - ELASTIC_API_KEY_FILE=/run/secrets/elastic-api-key.txt
       - PYUTILS_LOG_DIR=/var/log/
+      - PYUTILS_LOG_FILE=backend-docker.log
     volumes:
       - /home/sjf/logs/:/var/log
     secrets:

@@ -33,7 +33,7 @@ def _setup_logging(list_handler=False):
   # console handler
   console_handler = logging.StreamHandler()
 
-  log_dir = os.environ.get('PYUTILS_LOG_DIR', f'{Path.home()}/logs/')
+  log_dir = os.environ.get('PYUTILS_LOG_DIR', f'{Path.home()}/log/')
   if not os.path.isdir(log_dir):
     log_warn(f'Creating log file directory {log_dir}')
     os.makedirs(log_dir, exist_ok=True)
