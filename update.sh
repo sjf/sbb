@@ -1,5 +1,5 @@
 #!/bin/bash
-set -uex
+set -ue
 
 cd ~/sbb
 if [ ! -f .venv/bin/activate ]; then
@@ -18,4 +18,6 @@ if [[ $CMD == 'all' ]]; then
   ./generator.py
 elif [[ $CMD == 'generator' ]]; then
   ./generator.py
+elif [[ $CMD == 'e2e' ]]; then
+  pytest e2e_test.py
 fi
