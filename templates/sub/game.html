@@ -1,5 +1,5 @@
 <div class="flex justify-center items-center relative">
-<div class="sb-hive w-full md:w-[400px]">
+<div class="sb-hive w-4/5 max-w-[400px]">
 <div class="hive">
   <svg class="hive-cell center" viewBox="0 0 120 103.92304845413263">
     <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
@@ -51,6 +51,18 @@
     <span>Show Answers</span>
   </button>
 </div>
+
+<div id="hints" class="mt-4">
+  <h2 class="text-2xl font-semibold mb-2">Hints</h2>
+  <div class="space-y-6">
+    {% for hint in puzzle.hints %}
+      <div class="grid grid-cols-1">
+        <div class="text-lg">
+            {{ hint }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 
 <!-- Hidden Sections for Clues and Answers -->
 <div id="answers" class="hidden mt-4">

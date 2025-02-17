@@ -149,18 +149,18 @@
   {% endif %}
 </div>
 
-<div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 py-4 bg-yellow-300 shadow-md">
-  <a href="/" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
-  <a href="/puzzles/latest" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
-  <a href="/clues/a" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
-  <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
-</div>
+  <div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 py-4 bg-yellow-300 shadow-md">
+    <a href="/" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
+    <a href="/puzzles/latest" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
+    <a href="/clues/a" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
+    <a href="/about" class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
+  </div>
+
   <!-- Main Content Area -->
   <main class="flex-grow">
-    <div class="container mx-auto sm:mt-5 mt-3 p-6 max-w-4xl bg-white shadow-md rounded">
+    <div class="container mx-auto sm:mt-5 mt-3 py-4 px-6 max-w-4xl bg-white shadow-md rounded">
       {% block content %}{% endblock %}
     </div>
-
     {% if USE_ADSENSE %}
       <!-- Ad sense -->
       <div class="center mt-4" align="center">
@@ -177,7 +177,6 @@
         </script>
       </div>
     {% endif %}
-
   </main>
 
   <!-- Footer -->
