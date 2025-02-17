@@ -161,20 +161,22 @@
       {% block content %}{% endblock %}
     </div>
 
-    <!-- Ad sense -->
-    <div class="center mt-4" align="center">
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8196064155864881"
-           crossorigin="anonymous"></script>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-8196064155864881"
-           data-ad-slot="5399954346"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
+    {% if USE_ADSENSE %}
+      <!-- Ad sense -->
+      <div class="center mt-4" align="center">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8196064155864881"
+             crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8196064155864881"
+             data-ad-slot="5399954346"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    {% endif %}
 
   </main>
 
