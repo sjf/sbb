@@ -2,6 +2,7 @@
 import pytest
 from pyutils import *
 from model import *
+from mw import *
 
 def test_dictapis_to_def_dictionarydotcom():
   expected = GDefinition(word="tractor",

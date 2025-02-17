@@ -104,12 +104,14 @@ GPUZZLE_1 = GPuzzle(
   date='2024-12-18',
   center_letter='T',
   outer_letters=['A', 'C', 'F', 'K', 'O', 'R'],
-  _answers=ANSWERS_P1)
+  _answers=ANSWERS_P1,
+  hints=[])
 GPUZZLE_2 = GPuzzle(
   date='2024-12-24',
   center_letter='D',
   outer_letters=['T', 'E', 'F', 'O', 'U', 'X'],
-  _answers=ANSWERS_P2)
+  _answers=ANSWERS_P2,
+  hints=[])
 
 GPUZZLES = [GPUZZLE_2, GPUZZLE_1]
 
