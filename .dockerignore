@@ -3,7 +3,7 @@ archive/
 site/
 sbb.db
 *.sublime-*
-secrets/
+#secrets/
 actions-runner/
 nyt.db*
 
