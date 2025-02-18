@@ -205,7 +205,7 @@ class DB:
     result = sorted(result)
     return result
 
-  def fetch_gpuzzles(self, limit=None) -> List[GPuzzle]:
+  def fetch_gpuzzles(self, limit=None, with_hints=True) -> List[GPuzzle]:
     # The answers group by url.
     by_date = defaultdict(list)
     for answer in self.fetch_ganswers():
@@ -223,12 +223,13 @@ class DB:
     result = []
     for row in self.cursor.fetchall():
       answers = by_date[row['date']]
+      hints = get_puzzle_hints(answers) if with_hints else []
       puzzle = GPuzzle(
           date=row['date'],
           center_letter=row['center_letter'],
           outer_letters=split(row['outer_letters']),
           _answers=answers,
-          hints=get_puzzle_hints(answers))
+          hints=hints)
       result.append(puzzle)
     return result
 

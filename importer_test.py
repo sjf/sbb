@@ -20,7 +20,7 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == GCLUE_PAGES
 
-  puzzles = importer.db.fetch_gpuzzles()
+  puzzles = importer.db.fetch_gpuzzles(with_hints=False)
   for i in range(len(puzzles)):
     assert puzzles[i] == GPUZZLES[i]
   assert puzzles == GPUZZLES
@@ -35,7 +35,7 @@ def test_reimportfiles_succeeds(temp_db, fake_files, mock_es):
   importer.import_files(FILES)
 
   mock_es["update"].assert_has_calls(ES_UPDATES + ES_UPDATES)
-  assert importer.db.fetch_gpuzzles() == GPUZZLES
+  assert importer.db.fetch_gpuzzles(with_hints=False) == GPUZZLES
   assert importer.db.fetch_ganswers() == ANSWERS
 
 def test_reimportfiles_without_clues(temp_db, fake_files, mock_es):
@@ -49,7 +49,7 @@ def test_reimportfiles_without_clues(temp_db, fake_files, mock_es):
   assert importer.db.fetch_ganswers() == sorted(ANSWERS_P2_NO_CLUE)
   puzzle = deepcopy(GPUZZLE_2)
   puzzle._answers = ANSWERS_P2_NO_CLUE
-  assert importer.db.fetch_gpuzzles() == [puzzle]
+  assert importer.db.fetch_gpuzzles(with_hints=False) == [puzzle]
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == []
 
@@ -58,7 +58,7 @@ def test_reimportfiles_without_clues(temp_db, fake_files, mock_es):
 
   mock_es["update"].assert_has_calls(ES_UPDATES_P2)
   assert importer.db.fetch_ganswers() == ANSWERS_P2
-  assert importer.db.fetch_gpuzzles() == [GPUZZLE_2]
+  assert importer.db.fetch_gpuzzles(with_hints=False) == [GPUZZLE_2]
 
 def test_import_definitions(temp_db, fake_files, mock_es):
   importer = imp.Importer()
