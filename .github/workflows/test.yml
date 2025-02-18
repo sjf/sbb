@@ -43,6 +43,8 @@ jobs:
           wait_for_containers.sh 2 45 frontend
 
       - name: Import
+        env:
+          REQUESTS_SQLITE_CACHE: test-data/requests_cache.sqlite
         run: |
           ./importer.py test-data/*.json
 

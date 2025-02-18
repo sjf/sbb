@@ -9,8 +9,7 @@ from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
 from pyutils import *
-
-REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
+from pyutils.settings import config
 
 class Requester:
   """
@@ -30,7 +29,7 @@ class Requester:
     # Set up cache for http requests.
     if cache:
       self.session = requests_cache.CachedSession(
-        REQUESTS_SQLITE_CACHE,  # Cache stored on disk
+        config['REQUESTS_SQLITE_CACHE'],  # Cache stored on disk
         backend='sqlite',
         allowable_codes=(200, 404),
         expire_after=None,  # No expiration
