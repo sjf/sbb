@@ -121,6 +121,7 @@ class Generator:
     os.chdir(saved_dir)
 
   def generate_puzzle_pages(self) -> None:
+    min_mod = '2025-02-18' # when puzzle template changed.
     template = self.env.get_template('puzzle.html')
     puzzles = self.db.fetch_gpuzzles()
     max_date = puzzles[0].date
@@ -140,7 +141,7 @@ class Generator:
         prev=prev,
         min_date=min_date,
         max_date=max_date)
-      self.output(url, rendered, puzzle.date)
+      self.output(url, rendered, max(puzzle.date, min_mod))
     latest = puzzles[0]
     self.ln(url_for(latest), '/puzzle/latest', latest.date)
 

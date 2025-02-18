@@ -1,7 +1,9 @@
 import json
+import re
 from typing import List, Any, Dict, Optional, Tuple
 from pyutils import *
 from model import *
+from text_templates import *
 
 def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
   if not defs.has_def:
@@ -44,7 +46,7 @@ def get_prefix_counts(words: List[str],
   return longest
 
 def get_prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
-  """ Returns a list hints relating to the prefixes/suffixes. They are scored by
+  """ Returns a list of scored hints relating to the prefixes/suffixes. They are scored by
     the length of the prefix/suffix and the number of occurrences."""
   result = []
   for is_prefix in (True,False):
@@ -58,57 +60,161 @@ def get_prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
     for prefix,count in prefix_counts.items():
       verb = 'start' if is_prefix else 'end'
       score = len(prefix) * count
-      result.append((score, f"There are {count} words that {verb} with {smquote(prefix)}."))
+      result.append((score, render_text(PREFIX_TEMPLATES, count=count, verb=verb, prefix=smquote(prefix))))
   result = sorted(result, reverse=True)
   return result
 
-def get_et(word: str, definition: GDefinition) -> str:
-  return ''
+def get_tag_values(json_object: Any, target_key: str) -> List[str]:
+  result = []
+  def parse_json_recursively(json_object, target_key):
+    if type(json_object) is dict and json_object:
+      for key in json_object:
+        if key == target_key:
+          val = json_object[key]
+          result.append(val)
+        parse_json_recursively(json_object[key], target_key)
+    elif type(json_object) is list and json_object:
+      for item in json_object:
+        parse_json_recursively(item, target_key)
+  parse_json_recursively(json_object, target_key)
+  return result
 
-def get_et_hints(answers: List[GAnswer]) -> List[Tuple[int,str]]:
-  # for answer in answers:
-  #   if not answer.definition:
-  #     continue
-  #   if not MW in answer.definition.source:
-  #     continue
-  #   et = get_et(answer.word, answer.definition)
+def filter_et(et: str) -> bool:
+  # Remove etmyologies of Middle English, unknown or cross-referenced.
+  if et.startswith('{et_link|'):
+    return False
+  et = format_mw(et)
+  if et.lower().startswith('see '):
+    return False
+  if et.lower() == 'origin unknown':
+    return False
+  if et.startswith('Middle English'):
+    return False
+  return True
 
-  # result:List[Tuple[int,str]] = []
-  # return result
-  return []
+# Removed: Latin, French, English, German, Dutch, Greek
+langs=['Abkhazian', 'Afrikaans', 'Akan', 'Albanian', 'Amharic', 'Arabic', 'Aragonese', 'Armenian', 'Assamese', 'Avaric', 'Avestan', 'Aymara', 'Azerbaijani',
+'Bambara', 'Bashkir', 'Basque', 'Belarusian', 'Bengali', 'Bislama', 'Bosnian', 'Breton', 'Bulgarian', 'Burmese', 'Catalan', 'Valencian', 'Chamorro',
+'Chechen', 'Chinese', 'Chuvash', 'Cornish', 'Corsican', 'Croatian', 'Czech', 'Danish', 'Divehi', 'Maldivian', 'Flemish', 'Dzongkha',
+'Esperanto', 'Estonian', 'Faroese', 'Fijian', 'Finnish', 'Frisian', 'Fulah', 'Gaelic', 'Scottish', 'Scotts', 'Galician', 'Ganda', 'Georgian',
+'Kalaallisut', 'Greenlandic', 'Guarani', 'Gujarati', 'Haitian', 'Creole', 'Hausa', 'Hebrew', 'Herero', 'Hindi', 'Hiri', 'Motu',
+'Hungarian', 'Icelandic', 'Indonesian', 'Inuktitut', 'Inupiaq', 'Irish', 'Italian', 'Japanese', 'Javanese', 'Kannada', 'Kanuri', 'Kashmiri', 'Kazakh',
+'Khmer', 'Kinyarwanda', 'Kirghiz', 'Kyrgyz', 'Kongo', 'Korean', 'Kurdish', 'Lao', 'Latvian', 'Limburgan', 'Lingala', 'Lithuanian', 'Luba-Katanga',
+'Luxembourgish', 'Macedonian', 'Malagasy', 'Malay', 'Malayalam', 'Maltese', 'Manx', 'Maori', 'Marathi', 'Marshallese', 'Mongolian', 'Nauru', 'Navajo',
+'Navaho', 'Ndebele', 'Ndonga', 'Nepali', 'Norwegian', 'Occitan', 'Ojibwa', 'Oriya', 'Ossetian', 'Pashto', 'Persian', 'Polish', 'Portuguese', 'Punjabi',
+'Quechua', 'Romanian', 'Moldavian', 'Romansh', 'Russian', 'Sami', 'Samoan', 'Sango', 'Sanskrit', 'Sardinian', 'Serbian', 'Shona', 'Sindhi', 'Sinhala',
+'Slovak', 'Slovenian', 'Somali', 'Sotho', 'Spanish', 'Sundanese', 'Swahili', 'Swedish', 'Tagalog', 'Tahitian', 'Tajik', 'Tamil', 'Tatar', 'Telugu', 'Thai',
+'Tibetan', 'Tigrinya', 'Tonga', 'Tsonga', 'Tswana', 'Turkish', 'Turkmen', 'Uighur', 'Uyghur', 'Ukrainian', 'Urdu', 'Uzbek', 'Venda', 'Vietnamese', 'Walloon',
+'Welsh', 'Wolof', 'Xhosa', 'Sichuan', 'Yiddish', 'Yoruba', 'Zhuang', 'Chuang', 'Zulu']
+def get_lang_from_et(et: str) -> Optional[str]:
+  positions = []
+  for lang in langs:
+    match = re.search(rf'\b{lang}\b', format_mw(et), re.IGNORECASE)
+    if match:
+      positions.append((match.start(),lang))
+  positions = sorted(positions)
+  if positions:
+    return positions[0][1] # Get the lang that occurred first.
+  return None
 
-def get_puzzle_hints(answers: List[GAnswer]) -> list:
-  # answers = puzzle.answers
+def get_etymology(defs: GDefinitions) -> Optional[str]:
+  if not defs.mw:
+    return None
+  ets = get_tag_values(defs.mw.raw, 'et')
+  # The etymology is in the form [['text', 'actual description etc']]
+  ets = mapl(lambda x:x[0][1], ets)
+  ets = filterl(filter_et, ets)
+  for et in ets:
+    lang = get_lang_from_et(et)
+    if lang:
+      # Return the first detected language.
+      return lang
+  return None
+
+def get_et_hints(answers: List[GAnswer], min_count=2) -> List[Tuple[int,str]]:
+  counter:Dict[str,int] = Counter()
+  words:Dict[str,List[str]] = defaultdict(list)
+  for answer in answers:
+    lang = get_etymology(answer.definitions)
+    if lang:
+      counter[lang] += 1
+      words[lang].append(answer.word)
+  result = []
+  for lang,count in counter.items():
+    if count < min_count:
+      continue
+    score = sum(map(len, words[lang]))
+    result.append((score, render_text(ET_TEMPLATES, count=count, lang=lang)))
+  result = sorted(result, reverse=True)
+  return result
+
+def get_usage(defs: GDefinitions, max_usages=3) -> Optional[str]:
+  if not defs.mw:
+    return None
+  usages = get_tag_values(defs.mw.raw, 'sls')
+  if len(usages) > max_usages:
+    # Too many usages means most are bogus.
+    return None
+  usages = filterl(filter_usage, usages)
+  usage = mapl(lambda x:x[0], usages)
+  if usage:
+    return usage[0]
+  return None
+
+def filter_usage(usage: List[str]) -> bool:
+  # result = []
+  # whitelist = ['law', 'gardening', 'anatomy','of a ship','of a playing card','medical','baseball','of an airplane',
+  # 'of fish','mathematics','psychoanalytic theory','botany']
+  whitelist = [['law'], ['gardening'], ['anatomy'], ['mathematics']]
+  # if 'law' in usage:
+  #   return joinl(usage, sep=' ')
+  # if 'gardening' in usage
+  for w in whitelist:
+    if usage == w:
+      # if w in usage and not 'informal' in usage:
+      return True
+  return False
+  # denylist = ['informal','vulgar','archaic','British','Scottish', 'dialectal', 'Scotland','obsolete','dated','dialect','slang','literary','formal']
+  # for part in usage:
+  #   for word in denylist:
+  #     if word in part:
+  #       return False
+  # if usage == ['US']:
+  #   return False
+  # return True
+
+def get_usage_hints(answers: List[GAnswer], min_count=1) -> List[Tuple[int,str]]:
+  counter:Dict[str,int] = Counter()
+  words:Dict[str,List[str]] = defaultdict(list)
+  for answer in answers:
+    usage = get_usage(answer.definitions)
+    if usage:
+      counter[usage] += 1
+      words[usage].append(answer.word)
+  result = []
+  for usage,count in counter.items():
+    if count < min_count:
+      continue
+    score = sum(map(len, words[usage]))
+    if count == 1:
+      text = render_text(USAGE_TEMPLATES_SINGLE, count=count, usage=usage)
+    else:
+      text = render_text(USAGE_TEMPLATES, count=count, usage=usage)
+    result.append((score, text))
+  result = sorted(result, reverse=True)
+  return result
+
+def get_puzzle_hints(answers: List[GAnswer]) -> List[str]:
   hints = []
-
-  # # Word length analysis
-  # lengths = [len(word) for word in words]
-  # most_common_length, count = Counter(lengths).most_common(1)[0]
-  # hints.append(f"Many words in this puzzle are {most_common_length} letters long.")
-
-  # Common prefixes and suffixes
   words = mapl(lambda x:x.word, answers)
   hints.extend(get_prefix_hints(words))
   hints.extend(get_et_hints(answers))
-  # # Syllable structure analysis
-  # syllable_counts = [len(re.findall(r'·', definitions[word]['hwi']['hw'])) + 1 for word in words if word in definitions and 'hwi' in definitions[word]]
-  # if syllable_counts:
-  #     most_common_syllable, count = Counter(syllable_counts).most_common(1)[0]
-  #     hints.append(f"Many words in this puzzle have {most_common_syllable} syllables.")
-
-  # # Common origins
-  # origins = [definitions[word]['et'][0][1] for word in words if word in definitions and 'et' in definitions[word] and isinstance(definitions[word]['et'][0], list)]
-  # if origins:
-  #     most_common_origin, count = Counter(origins).most_common(1)[0]
-  #     hints.append(f"Many words originate from {most_common_origin}.")
-
-  # # Common fields of use
-  # fields = [field for word in words if word in definitions and 'sls' in definitions[word] for field in definitions[word]['sls']]
-  # if fields:
-  #     most_common_field, count = Counter(fields).most_common(1)[0]
-  #     hints.append(f"Several words are commonly used in {most_common_field} contexts.")
-  print(hints)
-  return hints
+  hints.extend(get_usage_hints(answers))
+  hints = sorted(hints, reverse=True)
+  # if hints:
+  #   print(hints)
+  #   print()
+  return mapl(lambda x:x[1], hints) # remove score
 
 def parse_dict_entry(deff: GDefinition) -> None:
   fromm = deff.retrieved_from
@@ -179,10 +285,10 @@ MW_FORMAT = [
   ('{sc}', '<span style="font-variant: small-caps;">'),
   ('{/sc}','</span>'),
 ]
-def format_mw(s: Optional[str], capitalize: bool=True) -> Optional[str]:
+def format_mw(s: Optional[str], capitalize: bool=True) -> str:
   # Replace Tokens Used in Running Text
   if not s:
-    return s
+    return ''
   for pattern,replacement in MW_FORMAT:
     s = s.replace(pattern, replacement)
   # replace links: {d_link|linktext|}
@@ -192,3 +298,5 @@ def format_mw(s: Optional[str], capitalize: bool=True) -> Optional[str]:
   if capitalize:
     s = s[0].upper() + s[1:]
   return s
+
+

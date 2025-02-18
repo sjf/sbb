@@ -10,7 +10,7 @@ def set_env_globals(env: Environment) -> None:
     DEV=config['DEV'],
     domain=config['DOMAIN'],
     VERSION=config['VERSION'],
-    USE_ADSENSE=config['USE_ADSENSE'],
+    config=config,
     current_year=datetime.datetime.now().year,
     url_for=url_for,
     format_date=format_date,
