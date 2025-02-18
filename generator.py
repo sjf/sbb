@@ -82,11 +82,12 @@ class Generator:
           remove_all_empty_space=False,  # Preserve essential spaces in inline elements
           reduce_boolean_attributes=False,  # Keep `checked="checked"` for compatibility
           remove_optional_attribute_quotes=False)  # Keep quotes around attributes for safety
-
     path = joinp(OUTPUT_DIR, location)
     write(path, contents, create_dirs = True)
     if not is_internal:
       # Add to site map
+      if location == '/index.html':
+        location = '/'
       self.pages.append(Page(path=location, lastmod=lastmod))
     log_debug(f"Generated {url(location)}")
 
@@ -160,7 +161,7 @@ class Generator:
     prev = puzzles[1]
     max_date = puzzles[0].date
     min_date = puzzles[-1].date
-    rendered = template.render(url='/index.html',
+    rendered = template.render(url='/',
       canon_url=url_for(latest),
       puzzle=latest,
       prev=prev,
