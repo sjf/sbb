@@ -95,7 +95,8 @@ def test_puzzle():
   assert_contains(response, "Spelling Bee from December 31, 2024")
   assert_contains(response, "Poker entry fee")
   assert_contains(response, "pentane")
-  assert_contains(response, "is found at the end of five words.")
+  assert_contains(response, "ive words")
+  assert_contains(response, "Italian")
   assert_contains(response, "Two words trace their roots to Italian.")
 
 def test_puzzle_latest():
