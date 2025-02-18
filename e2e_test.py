@@ -91,6 +91,14 @@ def test_puzzles():
   assert_contains(response, "NYT Spelling Bee")
 
 def test_puzzle():
+  response = get('/puzzle/2024-12-31')
+  assert_contains(response, "Spelling Bee from December 31, 2024")
+  assert_contains(response, "Poker entry fee")
+  assert_contains(response, "pentane")
+  assert_contains(response, "is found at the end of five words.")
+  assert_contains(response, "Two words trace their roots to Italian.")
+
+def test_puzzle_latest():
   response = get('/puzzle/latest')
   assert_contains(response, "NYT Spelling Bee")
 
