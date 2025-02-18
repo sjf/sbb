@@ -16,7 +16,7 @@ TEST_SETTINGS = {
   'PYTEST_TIMEOUT': 2,
   'VERIFY_SSL': True
 }
-config = settings.load_config(TEST_SETTINGS)
+config = load_config(TEST_SETTINGS)
 print(dictl(config))
 
 ###### Test utils

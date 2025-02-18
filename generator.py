@@ -153,14 +153,6 @@ class Generator:
       rendered = template.render(url=url, canon_url=url, page=page)
       self.output(url, rendered, page.clue_answers[0].puzzle_dates[0])
 
-  error_messages = {
-      400: "Your request could not be processed. Please check the URL or try again later.",
-      403: "Access denied. You don't have permission to view this page.",
-      404: "We couldn't find the page you were looking for.",
-      500: "Something went wrong on our end. Please try again later.",
-      502: "The server received an invalid response from the upstream server.",
-      503: "The server is temporarily unable to handle the request. Please try again later."
-  }
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     puzzles = self.db.fetch_gpuzzles()
@@ -182,7 +174,7 @@ class Generator:
     self.output('/about', rendered, '2025-01-01')
 
     template = self.env.get_template('internal/error.html')
-    for code,message in self.error_messages.items():
+    for code,message in http_error_messages.items():
       status = HTTPStatus(code).phrase
       url = f'/error/{code}.html'
       rendered = template.render(url=url, code=code, status=status, message=message)

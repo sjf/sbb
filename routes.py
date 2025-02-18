@@ -2,17 +2,16 @@ import sys
 import logging
 import os
 import json
-from flask import Flask, render_template, request, flash, redirect, send_from_directory
-from markupsafe import escape
-from flask import Blueprint, current_app
 import elasticsearch
-from es import ElasticSearch
+from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app
+from markupsafe import escape
 from http import HTTPStatus
-import urllib.parse as ul
 
 from pyutils import *
 from pyutils.settings import config
 from gunicorn_util import *
+from jinja_util import http_error_messages
+from es import ElasticSearch
 from query import Query
 
 bp = Blueprint('main', __name__)
@@ -21,26 +20,8 @@ es = ElasticSearch()
 @bp.route('/search')
 def search():
   query = Query(request.args)
-  result = _search(query)
-  # if result:
+  result = es.search(query)
   return handle_result(query, result)
-  # else:
-  # pass
-  # handle error
-
-def _search(query):
-  try:
-    return es.search(query)
-  except Exception as e:
-    flash("Something went wrong")
-    info = ''
-    if isinstance(e, elasticsearch.BadRequestError):
-      info = e.info
-    access_log_error(f"Error handling search request: {info}", exc_info = e)
-    if current_app.debug:
-      raise e
-    # In production swallow the exception and let the parent handle the error.
-    return None
 
 def handle_result(query, result):
   access_log_json('RESULTS', {
@@ -68,3 +49,11 @@ def health():
 def add_header(response):
   response.headers['X-SBB'] = f'{maybe_read("build_time.txt", "n/a")} {maybe_read("git.txt", "n/a") }'
   return response
+
+@bp.errorhandler(Exception)
+def error_handler(error):
+  code = getattr(error, "code", 500)
+  log_error(f'Exception caught by routes.error_handler, returning code:{code}', error)
+  message = http_error_messages[code]
+  status = HTTPStatus(code).phrase
+  return render_template("internal/error.html", url=f'/error/{code}', code=code, message=message, status=status), code

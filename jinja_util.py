@@ -89,4 +89,11 @@ def split_by_start(l: List[GAnswer]) -> List[List[GAnswer]]:
 def sort_by_clue(answers: List[GAnswer]) -> List[GAnswer]:
   return sorted(answers, key=lambda x: (x.word[0], len(x.word)))
 
-
+http_error_messages = {
+    400: "Your request could not be processed. Please check the URL or try again later.",
+    403: "Access denied. You don't have permission to view this page.",
+    404: "We couldn't find the page you were looking for.",
+    500: "Something went wrong on our end. Please try again later.",
+    502: "The server received an invalid response from the upstream server.",
+    503: "The server is temporarily unable to handle the request. Please try again later."
+}
