@@ -80,6 +80,12 @@ class GDefinitions:
   def has_def(self) -> bool:
     # At least one prased definition.
     return bool(filterl(lambda x:x.parsed, self.defs))
+  @property
+  def mw(self) -> Optional[GDefinition]:
+    for d in self.defs:
+      if d.is_mw and d.parsed:
+        return d
+    return None
 
 # Game dataclasses.
 @dataclass

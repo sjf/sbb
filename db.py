@@ -228,8 +228,7 @@ class DB:
           center_letter=row['center_letter'],
           outer_letters=split(row['outer_letters']),
           _answers=answers,
-          hints=[])
-          # hints=get_puzzle_hints(answers))
+          hints=get_puzzle_hints(answers))
       result.append(puzzle)
     return result
 
