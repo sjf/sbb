@@ -33,7 +33,6 @@ ET_TEMPLATES = [
 '{count} words can be linked to {lang}.',
 '{count} words have their etymological roots in {lang}.',
 '{count} words find their origin in {lang}.',
-'{lang} has influenced {count} words in this set.',
 'You’ll find {count} words here that come from {lang}.',
 'This collection includes {count} words derived from {lang}.',
 '{count} of these words trace their origins to {lang}.',

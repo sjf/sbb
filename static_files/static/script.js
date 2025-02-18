@@ -4,6 +4,7 @@ function toggleVisible(button) {
   const target = document.getElementById(targetId);
   target.classList.toggle('hidden');
   replaceText(button, /Show|Hide/, match => match === 'Show' ? 'Hide' : 'Show');
+  replaceText(button, /▶|▼/, match => match === '▶' ? '▼' : '▶');
 
   const oppositeId = button.getAttribute('data-opposite-button');
   if (oppositeId) {
@@ -18,6 +19,7 @@ function hide(button) {
   const target = document.getElementById(targetId);
   target.classList.add('hidden');
   replaceText(button, /Hide/, 'Show');
+  replaceText(button, /▶/, '▼');
 }
 
 function toggleClueAnswer(element) {

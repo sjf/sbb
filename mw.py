@@ -45,7 +45,7 @@ def get_prefix_counts(words: List[str],
       longest[p1] = count
   return longest
 
-def get_prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
+def get_prefix_hints(words: List[str], max_hints=4) -> List[Tuple[int,str]]:
   """ Returns a list of scored hints relating to the prefixes/suffixes. They are scored by
     the length of the prefix/suffix and the number of occurrences."""
   result = []
@@ -62,6 +62,7 @@ def get_prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
       score = len(prefix) * count
       result.append((score, render_text(PREFIX_TEMPLATES, count=count, verb=verb, prefix=smquote(prefix))))
   result = sorted(result, reverse=True)
+  result = result[:max_hints]
   return result
 
 def get_tag_values(json_object: Any, target_key: str) -> List[str]:

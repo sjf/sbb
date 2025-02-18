@@ -10,6 +10,7 @@ from collections import defaultdict
 from pyutils import *
 from storage import *
 from model import *
+from mw import *
 
 DIR = 'scraped/*.json'
 DB_FILE = 'nyt.db'
