@@ -12,6 +12,7 @@ import csv
 import urllib.parse
 import pprint
 import tldextract
+from typing import List, Any, Dict, Optional, Tuple, TypeVar,TypeAlias
 from collections.abc import Iterable
 from collections import Counter, defaultdict
 from .log import *
@@ -194,6 +195,5 @@ def canonnn(s, lower=True, rm_whitespace=False, rm_punctuation=True):
   if rm_punctuation:
     s = re.sub(r'[^\w\s]', '', s) # remove chars that are not letters, digits or whitespace.
   return s
-
 
 

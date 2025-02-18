@@ -3,6 +3,7 @@ import json
 import sqlite3
 import unicodedata
 import re
+import dacite
 from dataclasses import dataclass, asdict, fields, field
 from typing import List, Any, Dict, Optional, Tuple
 from collections import defaultdict
@@ -83,11 +84,9 @@ class DB:
     last_id = self.insert(clue, replace_term=replace_term)
     return self._last_inserted_or_get_id(last_id, 'clues', {'text': clue.text})
 
-  def upsert_definition(self, d: Definition) -> None:
-    columns = DB.to_dict(d).keys()
-    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
-    replace_term = f"ON CONFLICT(word) DO UPDATE SET {updates}"
-    self.insert(d, replace_term=replace_term)
+  def insert_definition(self, gdefs: GDefinitions) -> None:
+    d = Definition(word=gdefs.word, definitions=json.dumps(asdict(gdefs)))
+    self.insert(d)
 
   def _last_inserted_or_get_id(self, last_id: int, table: str, where_terms: Dict[str, int | str]) -> int:
     if last_id:
@@ -130,7 +129,7 @@ class DB:
           word=anss[0].word,
           text=anss[0].text, # I am assuming the clue text is the same if the url is the same.
           puzzle_dates=puzzle_dates,
-          definition=anss[0].definition))
+          definitions=anss[0].definitions))
       result.append(GCluePage(url=url, _clue_answers=clue_answers))
     result = sorted(result, key=lambda x:x.url)
     return result
@@ -153,7 +152,7 @@ class DB:
   def fetch_ganswers(self) -> List[GAnswer]:
     # Get all answers and their clue.
     self.cursor.execute("""
-      SELECT a.word, a.is_pangram, p.date as puzzle_date, c.text, c.url, d.definition, d.source
+      SELECT a.word, a.is_pangram, p.date as puzzle_date, c.text, c.url, d.definitions
       FROM answers a
       LEFT JOIN clues c ON a.clue_id = c.id
       JOIN puzzles p on a.puzzle_id = p.id
@@ -163,26 +162,26 @@ class DB:
     result = []
     for row in self.cursor.fetchall():
       data = dict(row)
-      definition = dictapis_to_def(data['word'] ,data['definition'], data['source'])
       word = data['word']
       text = data['text']
       url = data['url']
+      definitions = DB.deserialize_gdefs(word, data['definitions'])
       if not text:
         # Clue is not available, try to come up with one.
         clue = self.get_clue_by_word(word)
         if clue:
           text = clue.text
           url = clue.url
-        elif definition:
-          text = definition.word_types[0].meanings[0].meaning
-          url = None # f'/define/{word}' # NOT AVAIL YET
+        else:
+          text = get_clue_from_def(definitions)
+          url = None # No URL for generated clues.
       answer = GAnswer(
         word = word,
         is_pangram = bool(data['is_pangram']),
         text = text,
         puzzle_date = data['puzzle_date'],
         url = url,
-        definition = definition)
+        definitions = definitions)
       result.append(answer)
     result = sorted(result)
     return result
@@ -190,7 +189,7 @@ class DB:
   def fetch_gwords(self) -> List[GWordDefinition]:
     # Get all words and their definitions.
     self.cursor.execute("""
-      SELECT distinct a.word, d.definition, d.source
+      SELECT distinct a.word, d.definitions
       FROM answers a
       LEFT JOIN definitions d on a.word = d.word;
       """)
@@ -198,14 +197,9 @@ class DB:
     for row in self.cursor.fetchall():
       data = dict(row)
       word = data['word']
-      if data['definition']:
-        definition = dictapis_to_def(word, data['definition'], data['source'])
-      else:
-        definition = None
-        # log_error(f'No definition for {word}')
-      answer = GWordDefinition(
-        word = word,
-        definition = definition)
+      definitions = DB.deserialize_gdefs(word, data['definitions'])
+      definition = definitions.deff if definitions.has_def else None
+      answer = GWordDefinition(word=word, definition=definition)
       result.append(answer)
     result = sorted(result)
     return result
@@ -236,16 +230,14 @@ class DB:
       result.append(puzzle)
     return result
 
-  def fetch_undefined_words(self, only_new: bool = False) -> List[str]:
-    only_new_term = " AND d.source IS NULL" if only_new else ''
+  def fetch_undefined_words(self) -> List[str]:
     query = """
-      SELECT a.word
+      SELECT DISTINCT a.word
       FROM answers a
       LEFT JOIN definitions d ON a.word = d.word
-      WHERE d.definition IS NULL
-      {only_new_term}
+      WHERE d.definitions IS NULL
       ORDER BY a.word;"""
-    return self._fetch_values(query.format(only_new_term = only_new_term))
+    return self._fetch_values(query)
 
   def _fetch_values(self, query: str) -> List[str]:
     """
@@ -283,6 +275,13 @@ class DB:
       else:
         raise Exception(f"Cannot write {value} of type {type(value)} to DB.")
     return data
+
+  @staticmethod
+  def deserialize_gdefs(word: str, gdefs_json: str) -> GDefinitions:
+    if not gdefs_json:
+      return GDefinitions(word=word, defs=[])
+    data = json.loads(gdefs_json)
+    return dacite.from_dict(data_class=GDefinitions, data=data)
 
   @staticmethod
   def columns(dataclass_instance) -> List[str]:

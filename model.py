@@ -20,9 +20,66 @@ class GWordTypeDefinition:
 @dataclass
 class GDefinition:
   word: str
-  source: str # Attribution name
-  source_url: str
+  retrieved_on: str
+  retrieved_from: str # The API endpoint.
+  raw: Any # The unparsed json received from the API.
+
+  # These are only present if the definition was parsed
+  source_url: Optional[str] = None # Attribution URL
+  # Parsed definition, ready for frontend.
   word_types: List[GWordTypeDefinition] = field(default_factory=list)
+
+  @property
+  def is_mw(self) -> bool:
+    return "https://dictionaryapi.com" in self.retrieved_from
+
+  @property
+  def parsed(self) -> bool:
+    # Was parsed correctly.
+    return bool(self.word_types)
+
+  @property
+  def source(self) -> Optional[str]:
+    # Attribution name (different than the API endpoint)
+    if not self.source_url:
+      return None
+    return url_domain(self.source_url)
+
+  def __repr__(self):
+    return self.__str__()
+
+  def __str__(self):
+    l = []
+    for field in fields(self):
+      max_len = 10
+      val = getattr(self, field.name)
+      if field.name == 'raw' and val:
+        val = repr(val)[:max_len-3] + '...'
+      l.append(f'{field.name}={val}')
+    l.append(f'is_mw={self.is_mw}')
+    l.append(f'parsed={self.parsed}')
+    return f"GDefinition({joinl(l, sep=', ')})"
+
+
+@dataclass
+class GDefinitions:
+  word: str
+  defs: List[GDefinition]
+  @property
+  def deff(self) -> GDefinition:
+    for d in self.defs:
+      if d.is_mw and d.parsed:
+        # Prefer MW results
+        return d
+    for d in self.defs:
+      # Otherwise, return first parsed entry.
+      if d.parsed:
+        return d
+    raise Exception(f"No definition for {self.word}")
+  @property
+  def has_def(self) -> bool:
+    # At least one prased definition.
+    return bool(filterl(lambda x:x.parsed, self.defs))
 
 # Game dataclasses.
 @dataclass
@@ -32,7 +89,7 @@ class GAnswer:
   text: Optional[str] # Clue text.
   url: Optional[str] # URL of the clue page for this answer, multiple answers can have the same url.
   puzzle_date: str
-  definition: Optional[GDefinition]
+  definitions: GDefinitions
   def __lt__(self, other):
     if self.word == other.word:
       return self.puzzle_date > other.puzzle_date
@@ -66,7 +123,7 @@ class GClueAnswer:
   text: Optional[str] # Clue text.
   puzzle_dates: list[str] # The dates on which this clue/anwer combo appeared.
   # The same clue can hava different answers.
-  definition: Optional[GDefinition]
+  definitions: GDefinitions
   def __lt__(self, other):
     if self.word == other.word:
       return self.puzzle_dates > other.puzzle_dates

@@ -50,50 +50,50 @@ DB_TEST = 'scraped/db-test.json'
 IMPORTER_TEST = 'scraped/importer-test.json'
 IMPORTER_TEST_NO_CLUES = 'scraped/importer-test-no-clues.json'
 
-P1_TOOT = GAnswer(word='toot', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-18', definition=None)
+P1_TOOT = GAnswer(word='toot', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-18', definitions=GDefinitions(word='toot',defs=[]))
 P1_TRACTOR = GAnswer(word='tractor', is_pangram=False, text='Dad preferred a John Deere ____ but grandpa loved his Ford.',
-      url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', puzzle_date='2024-12-18', definition=None)
-P1_DUETTED = GAnswer(word='duetted', is_pangram=False, text='Play together', url='/clue/play-together', puzzle_date='2024-12-18', definition=None)
+      url='/clue/dad-preferred-a-john-deere-but-grandpa-loved-his-ford', puzzle_date='2024-12-18', definitions=GDefinitions(word='tractor',defs=[]))
+P1_DUETTED = GAnswer(word='duetted', is_pangram=False, text='Play together', url='/clue/play-together', puzzle_date='2024-12-18', definitions=GDefinitions(word='duetted',defs=[]))
 
-P2_TOOT_ = GAnswer(word='toot_', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
-P2_TOOTED = GAnswer(word='tooted', is_pangram=False, text='beep!!', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
-P2_HORN = GAnswer(word='horn', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
-P2_PAGE = GAnswer(word='page', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definition=None)
-P2_CHAIR = GAnswer(word='chair', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definition=None)
-P2_RECLINE = GAnswer(word='recline', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definition=None)
-P2_ANTENNA = GAnswer(word='antenna', is_pangram=True, text='Rabbit ears on a cathode tube tv', url='/clue/rabbit-ears-on-a-cathode-tube-tv', puzzle_date='2024-12-24', definition=None)
+P2_TOOT_ = GAnswer(word='toot_', is_pangram=False, text='Beep', url='/clue/beep', puzzle_date='2024-12-24', definitions=GDefinitions(word='toot_',defs=[]))
+P2_TOOTED = GAnswer(word='tooted', is_pangram=False, text='beep!!', url='/clue/beep', puzzle_date='2024-12-24', definitions=GDefinitions(word='tooted',defs=[]))
+P2_HORN = GAnswer(word='horn', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definitions=GDefinitions(word='horn',defs=[]))
+P2_PAGE = GAnswer(word='page', is_pangram=False, text='beep', url='/clue/beep', puzzle_date='2024-12-24', definitions=GDefinitions(word='page',defs=[]))
+P2_CHAIR = GAnswer(word='chair', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definitions=GDefinitions(word='chair',defs=[]))
+P2_RECLINE = GAnswer(word='recline', is_pangram=False, text='to sit', url='/clue/to-sit', puzzle_date='2024-12-24', definitions=GDefinitions(word='recline',defs=[]))
+P2_ANTENNA = GAnswer(word='antenna', is_pangram=True, text='Rabbit ears on a cathode tube tv', url='/clue/rabbit-ears-on-a-cathode-tube-tv', puzzle_date='2024-12-24',
+  definitions=GDefinitions(word='antenna',defs=[]))
 
+P2_TOOT__NO_CLUE = GAnswer(word='toot_', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='toot_',defs=[]))
+P2_TOOTED_NO_CLUE = GAnswer(word='tooted', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='tooted',defs=[]))
+P2_HORN_NO_CLUE = GAnswer(word='horn', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='horn',defs=[]))
+P2_PAGE_NO_CLUE = GAnswer(word='page', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='page',defs=[]))
+P2_CHAIR_NO_CLUE = GAnswer(word='chair', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='chair',defs=[]))
+P2_RECLINE_NO_CLUE = GAnswer(word='recline', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='recline',defs=[]))
+P2_ANTENNA_NO_CLUE = GAnswer(word='antenna', is_pangram=True, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='antenna',defs=[]))
+P2_NOCLUE_NO_CLUE = GAnswer(word='noclue', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definitions=GDefinitions(word='noclue',defs=[]))
 
-P2_TOOT__NO_CLUE = GAnswer(word='toot_', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_TOOTED_NO_CLUE = GAnswer(word='tooted', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_HORN_NO_CLUE = GAnswer(word='horn', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_PAGE_NO_CLUE = GAnswer(word='page', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_CHAIR_NO_CLUE = GAnswer(word='chair', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_RECLINE_NO_CLUE = GAnswer(word='recline', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_ANTENNA_NO_CLUE = GAnswer(word='antenna', is_pangram=True, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-P2_NOCLUE_NO_CLUE = GAnswer(word='noclue', is_pangram=False, text=None, url=None, puzzle_date='2024-12-24', definition=None)
-
-C1_TOOT = GClueAnswer(word='toot', text='Beep', puzzle_dates=['2024-12-18'], definition=None)
+C1_TOOT = GClueAnswer(word='toot', text='Beep', puzzle_dates=['2024-12-18'], definitions=GDefinitions(word='toot',defs=[]))
 C1_TRACTOR = GClueAnswer(word='tractor', text='Dad preferred a John Deere ____ but grandpa loved his Ford.',
-      puzzle_dates=['2024-12-18'], definition=None)
-C1_DUETTED = GClueAnswer(word='duetted', text='Play together', puzzle_dates=['2024-12-18'], definition=None)
+      puzzle_dates=['2024-12-18'], definitions=GDefinitions(word='tractor',defs=[]))
+C1_DUETTED = GClueAnswer(word='duetted', text='Play together', puzzle_dates=['2024-12-18'], definitions=GDefinitions(word='duetted',defs=[]))
 
-C2_TOOT_ = GClueAnswer(word='toot_', text='Beep', puzzle_dates=['2024-12-24'], definition=None)
-C2_TOOTED = GClueAnswer(word='tooted', text='beep!!', puzzle_dates=['2024-12-24'], definition=None)
-C2_HORN = GClueAnswer(word='horn', text='beep', puzzle_dates=['2024-12-24'], definition=None)
-C2_PAGE = GClueAnswer(word='page', text='beep', puzzle_dates=['2024-12-24'], definition=None)
-C2_CHAIR = GClueAnswer(word='chair', text='to sit', puzzle_dates=['2024-12-24'], definition=None)
-C2_RECLINE = GClueAnswer(word='recline', text='to sit', puzzle_dates=['2024-12-24'], definition=None)
-C2_ANTENNA = GClueAnswer(word='antenna', text='Rabbit ears on a cathode tube tv', puzzle_dates=['2024-12-24'], definition=None)
+C2_TOOT_ = GClueAnswer(word='toot_', text='Beep', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='toot_',defs=[]))
+C2_TOOTED = GClueAnswer(word='tooted', text='beep!!', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='tooted',defs=[]))
+C2_HORN = GClueAnswer(word='horn', text='beep', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='horn',defs=[]))
+C2_PAGE = GClueAnswer(word='page', text='beep', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='page',defs=[]))
+C2_CHAIR = GClueAnswer(word='chair', text='to sit', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='chair',defs=[]))
+C2_RECLINE = GClueAnswer(word='recline', text='to sit', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='recline',defs=[]))
+C2_ANTENNA = GClueAnswer(word='antenna', text='Rabbit ears on a cathode tube tv', puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='antenna',defs=[]))
 
-C2_TOOT__NO_CLUE = GClueAnswer(word='toot_', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_TOOTED_NO_CLUE = GClueAnswer(word='tooted', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_HORN_NO_CLUE = GClueAnswer(word='horn', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_PAGE_NO_CLUE = GClueAnswer(word='page', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_CHAIR_NO_CLUE = GClueAnswer(word='chair', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_RECLINE_NO_CLUE = GClueAnswer(word='recline', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_ANTENNA_NO_CLUE = GClueAnswer(word='antenna', text=None, puzzle_dates=['2024-12-24'], definition=None)
-C2_NOCLUE_NO_CLUE = GClueAnswer(word='noclue', text=None, puzzle_dates=['2024-12-24'], definition=None)
+C2_TOOT__NO_CLUE = GClueAnswer(word='toot_', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='toot_',defs=[]))
+C2_TOOTED_NO_CLUE = GClueAnswer(word='tooted', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='tooted',defs=[]))
+C2_HORN_NO_CLUE = GClueAnswer(word='horn', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='horn',defs=[]))
+C2_PAGE_NO_CLUE = GClueAnswer(word='page', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='page',defs=[]))
+C2_CHAIR_NO_CLUE = GClueAnswer(word='chair', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='chair',defs=[]))
+C2_RECLINE_NO_CLUE = GClueAnswer(word='recline', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='recline',defs=[]))
+C2_ANTENNA_NO_CLUE = GClueAnswer(word='antenna', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='antenna',defs=[]))
+C2_NOCLUE_NO_CLUE = GClueAnswer(word='noclue', text=None, puzzle_dates=['2024-12-24'], definitions=GDefinitions(word='noclue',defs=[]))
 
 ANSWERS = sorted([P2_CHAIR, P1_DUETTED, P2_HORN, P2_ANTENNA, P2_PAGE, P2_NOCLUE_NO_CLUE, P2_RECLINE, P1_TOOT, P2_TOOT_, P2_TOOTED, P1_TRACTOR])
 ANSWERS_P1 = sorted([P1_DUETTED, P1_TOOT, P1_TRACTOR])
@@ -140,10 +140,14 @@ ANSWER_TOOT = Answer(word='toot', is_pangram=False, puzzle_id=1, clue_id=None)
 ANSWER_DUETTED = Answer(word='duetted', is_pangram=False, puzzle_id=1, clue_id=None)
 ANSWER_TRACTOR = Answer(word='tractor', is_pangram=False, puzzle_id=1, clue_id=None)
 
-DEFINITION_TRACTOR = Definition(word='tractor',
-    definition="A defintion of tractor",
-    source='http://example.com/tractor',
-    retrieved_on='2025-01-01')
+GDEFINITIONS_TRACTOR = GDefinitions(word='tractor',
+  defs=[GDefinition(word='tractor',
+      retrieved_on='2024-01-01',
+      retrieved_from='https://dictionaryapi.com/api/v3/references/collegiate/json/tractor?key=96fd70b1-b580-4119-b2ce-25e0988a2252',
+      raw={"source-def":"trator-def"},
+      source_url='https://merrian-webster.com/dict/tractor',
+      word_types=[GWordTypeDefinition(word_type='noun', meanings=[])])
+  ])
 
 ES_UPDATES_P1 = [
   call(index='sbb', id='/clue/play-together', body={'doc': {'word': 'duetted', 'text': 'Play together', 'lastused': '2024-12-18'}, 'doc_as_upsert': True}),

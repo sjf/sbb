@@ -58,49 +58,36 @@ def test_upsert_clue(temp_db):
   clues = list(db.fetch(Clue, ids=[id_1]))
   assert clues == [clue_b]
 
-def test_upsert_definition(temp_db):
+def test_insert_definition(temp_db):
   db = DB()
-  db.upsert_definition(DEFINITION_TRACTOR)
+  db.insert_definition(GDEFINITIONS_TRACTOR)
 
   definitions = list(db.fetch(Definition))
-  assert definitions == [DEFINITION_TRACTOR]
 
-  tractor_2 = Definition(word='tractor',
-    definition="A second meaning of this",
-    source='http://foobar.com/tractor',
-    retrieved_on='2024-12-31')
-  db.upsert_definition(tractor_2)
+  assert definitions == [Definition(word='tractor', definitions=json.dumps(asdict(GDEFINITIONS_TRACTOR)))]
 
-  definitions = list(db.fetch(Definition))
-  assert definitions == [tractor_2]
+def test_reinsert_definition_fails(temp_db):
+  db = DB()
+  db.insert_definition(GDEFINITIONS_TRACTOR)
+  tractor_2 = GDefinitions(word='tractor',
+    defs=[GDefinition(word='tractor',
+        retrieved_on='2024-01-01',
+        raw=None,
+        retrieved_from='https://something.com')])
 
-def test_fetch_undefined_words_none_defined(temp_db):
+  with pytest.raises(Exception):
+    db.insert_definition(tractor_2)
+
+def test_fetch_undefined(temp_db):
   db = DB()
   db.insert(PUZZLE_1)
   db.insert(ANSWER_TRACTOR)
   db.insert(ANSWER_TOOT)
   db.insert(ANSWER_DUETTED)
-  db.upsert_definition(DEFINITION_TRACTOR)
+  db.insert_definition(GDEFINITIONS_TRACTOR)
 
   undefined = db.fetch_undefined_words()
 
   assert undefined == ['duetted', 'toot']
 
-def test_fetch_undefined_words_only_new(temp_db):
-  db = DB()
-  db.insert(PUZZLE_1)
-  db.insert(ANSWER_TRACTOR)
-  db.insert(ANSWER_TOOT)
-  db.insert(ANSWER_DUETTED)
-  # Definition that could not be found.
-  d = Definition(word='tractor',
-    definition=None,
-    source='http://example.com/tractor',
-    retrieved_on='2025-01-01')
-  db.upsert_definition(d)
-  undefined = db.fetch_undefined_words()
-  only_new = db.fetch_undefined_words(only_new=True)
-
-  assert undefined == ['duetted', 'toot', 'tractor']
-  assert only_new == ['duetted', 'toot']
 

@@ -1,14 +1,20 @@
 import json
 from typing import List, Any, Dict, Optional, Tuple
-from functools import lru_cache
 from pyutils import *
 from model import *
+
+def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
+  if not defs.has_def:
+    return None
+  # TODO: Don't produce clue text that contains the word.
+  return defs.deff.word_types[0].meanings[0].meaning
 
 def get_prefix_counts(words: List[str],
     is_prefix: bool=True,
     min_count: int=3,
     min_length: int=4,
     max_length: int=5) -> Dict[str,int]:
+  """ Returns a mapping of prefix/suffix to the number of words where it occurs."""
   counter: Dict[str,int] = Counter()
   for word in words:
     for i in range(min_length, min(max_length+1, len(word))):  # Avoid single-letter prefixes
@@ -37,7 +43,9 @@ def get_prefix_counts(words: List[str],
       longest[p1] = count
   return longest
 
-def prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
+def get_prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
+  """ Returns a list hints relating to the prefixes/suffixes. They are scored by
+    the length of the prefix/suffix and the number of occurrences."""
   result = []
   for is_prefix in (True,False):
     prefix_counts = get_prefix_counts(words, is_prefix=is_prefix)
@@ -54,6 +62,21 @@ def prefix_hints(words: List[str]) -> List[Tuple[int,str]]:
   result = sorted(result, reverse=True)
   return result
 
+def get_et(word: str, definition: GDefinition) -> str:
+  return ''
+
+def get_et_hints(answers: List[GAnswer]) -> List[Tuple[int,str]]:
+  # for answer in answers:
+  #   if not answer.definition:
+  #     continue
+  #   if not MW in answer.definition.source:
+  #     continue
+  #   et = get_et(answer.word, answer.definition)
+
+  # result:List[Tuple[int,str]] = []
+  # return result
+  return []
+
 def get_puzzle_hints(answers: List[GAnswer]) -> list:
   # answers = puzzle.answers
   hints = []
@@ -65,8 +88,8 @@ def get_puzzle_hints(answers: List[GAnswer]) -> list:
 
   # Common prefixes and suffixes
   words = mapl(lambda x:x.word, answers)
-  hints.extend(prefix_hints(words))
-
+  hints.extend(get_prefix_hints(words))
+  hints.extend(get_et_hints(answers))
   # # Syllable structure analysis
   # syllable_counts = [len(re.findall(r'·', definitions[word]['hwi']['hw'])) + 1 for word in words if word in definitions and 'hwi' in definitions[word]]
   # if syllable_counts:
@@ -87,62 +110,62 @@ def get_puzzle_hints(answers: List[GAnswer]) -> list:
   print(hints)
   return hints
 
+def parse_dict_entry(deff: GDefinition) -> None:
+  fromm = deff.retrieved_from
+  if "api.dictionaryapi.dev" in fromm:
+    parse_wiktionary(deff)
+  elif "dictionaryapi.com" in fromm:
+    parse_mw(deff)
+  else:
+    raise Exception(f"Unhandled dict source {fromm}")
 
-@lru_cache(maxsize=None)
-def dictapis_to_def(word: str, content: str, source: str) -> Optional[GDefinition]:
-  if not source or not content:
-    return None
-  if "api.dictionaryapi.dev" in source:
-    # Wikitionary 3rd party API.
-    obj = json.loads(content)
-    url = source_url=obj[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
-    result = GDefinition(word=word, source_url=url, source=url_domain(url))
-    for sense in obj:
-      for m in sense.get('meanings',[]):
-        td = GWordTypeDefinition(word_type = m['partOfSpeech'])
-        result.word_types.append(td)
-        for d in m['definitions']:
-          td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
-    return result
-  if "dictionaryapi.com" in source:
-    # print(content, source)
-    try:
-      obj = json.loads(content)
-      url = f'https://www.merriam-webster.com/dictionary/{word}'
-      result = GDefinition(word=word, source_url=url, source=url_domain(url))
-      for o in obj:
-        td = GWordTypeDefinition(word_type = o['fl']) # functional label
-        result.word_types.append(td)
-        failed_to_parse = False
-        for d in o['def']: # definition
-          for s in d['sseq']: # sense
-            for subsense in s:
-              if subsense[0] == 'sense':
-                sense = subsense[1]
-                usage = sense.get('sls', []) # Subject/Status Labels
-                dt = filterl(lambda x:x[0] == 'text', sense['dt']) # Defining Text
-                uns = filterl(lambda x:x[0] == 'uns', sense['dt']) # Usage note
-                if not dt and len(uns) == 1:
-                  dt = filterl(lambda x:x[0] == 'text', uns[0][1][0])
-                if not len(dt) == 1:
-                  log_error(f'Cant parse td text in MW for "{word}"')
-                  failed_to_parse = True
-                meaning = format_mw(dt[0][1])
-                example = None
-                vi = filterl(lambda x:x[0] == 'vis', sense['dt']) # Verbal Illustrations
-                if vi:
-                  example = format_mw(vi[0][1][0].get('t', None), capitalize=False) # Just take first example
-                if meaning:
-                  td.meanings.append(GWordMeaning(meaning = meaning, example = example))
-          if failed_to_parse:
-            # Just use the short definition.
-            for meaning in o['shortdef']:
+def parse_mw(deff: GDefinition) -> None:
+  try:
+    deff.source_url = f'https://www.merriam-webster.com/dictionary/{deff.word}'
+    for o in deff.raw:
+      td = GWordTypeDefinition(word_type = o['fl']) # functional label
+      failed_to_parse = False
+      for d in o['def']: # definition
+        for s in d['sseq']: # sense
+          for subsense in s:
+            if subsense[0] == 'sense':
+              sense = subsense[1]
+              usage = sense.get('sls', []) # Subject/Status Labels
+              dt = filterl(lambda x:x[0] == 'text', sense['dt']) # Defining Text
+              uns = filterl(lambda x:x[0] == 'uns', sense['dt']) # Usage note
+              if not dt and len(uns) == 1:
+                dt = filterl(lambda x:x[0] == 'text', uns[0][1][0])
+              if not len(dt) == 1:
+                log_debug(f'Cant parse td text in MW for "{deff.word}"')
+                failed_to_parse = True
+              meaning = format_mw(dt[0][1])
+              example = None
+              vi = filterl(lambda x:x[0] == 'vis', sense['dt']) # Verbal Illustrations
+              if vi:
+                example = format_mw(vi[0][1][0].get('t', None), capitalize=False) # Just take first example
               if meaning:
-                td.meanings.append(GWordMeaning(meaning = meaning, example = None))
-      return result
-    except Exception as e: # Just catch failures b/c the MW format is complex.
-      log_error(f"Can't parse MW entry for {source}")
-  return None
+                td.meanings.append(GWordMeaning(meaning = meaning, example = example))
+        if failed_to_parse:
+          # Just use the short definition.
+          for meaning in o['shortdef']:
+            if meaning:
+              td.meanings.append(GWordMeaning(meaning = meaning, example = None))
+      if td.meanings:
+        # Keep the result if there were some parsed meanings.
+        deff.word_types.append(td)
+  except Exception as ex:
+    # Just catch failures b/c the MW format is complex.
+    log_debug(f"Can't parse MW entry for {deff.retrieved_from}", ex)
+
+def parse_wiktionary(deff: GDefinition) -> None:
+  # Wikitionary 3rd party API.
+  deff.source_url = deff.raw[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
+  for sense in deff.raw:
+    for m in sense.get('meanings',[]):
+      td = GWordTypeDefinition(word_type = m['partOfSpeech'])
+      deff.word_types.append(td)
+      for d in m['definitions']:
+        td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
 
 MW_FORMAT = [
   ('{ldquo}', '“'),
