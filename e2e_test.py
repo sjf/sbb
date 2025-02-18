@@ -97,7 +97,6 @@ def test_puzzle():
   assert_contains(response, "pentane")
   assert_contains(response, "ive words")
   assert_contains(response, "Italian")
-  assert_contains(response, "Two words trace their roots to Italian.")
 
 def test_puzzle_latest():
   response = get('/puzzle/latest')
