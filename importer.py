@@ -19,8 +19,9 @@ from es import *
 
 DIR = 'scraped/*.json'
 ARCHIVE = 'archive/'
-DICT_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+DICT_APIS = [MW_API, WIKTIONARY_API]
 REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 
 class Importer:
@@ -80,37 +81,41 @@ class Importer:
     log(f"Imported {n} files.")
 
   def import_definitions(self) -> None:
-    undefined = self.db.fetch_undefined_words(only_new=True)
-    missing1 = self.import_from_api(MW_API, undefined)
-    missing2 = self.import_from_api(DICT_API, missing1)
-    if missing2:
-      log_error(f"Missing definitions for {joinl(missing2, sep=', ')}")
+    undefined = self.db.fetch_undefined_words()
+    not_found = self.import_from_dict_apis(undefined)
+    if not_found:
+      log_error(f"Missing definitions for {joinl(not_found, sep=', ')}")
 
-  def import_from_api(self, url_fmt: str, words: List[str]) -> List[str]:
-    if not words:
-      return []
+  def import_from_dict_apis(self, words: List[str]) -> List[str]:
+    if not words: return []
     n = 0
     missing = []
-    log(f"Looking up {joinl(words, ', ')} in {url_fmt}")
-    date = datetime.datetime.now().strftime('%Y-%m-%d')
+    log(f"Looking up {joinl(words, ', ')}")
     for word in words:
-      url = url_fmt.format(word=word)
-      response = self.requester.get(url)
-      definition = None
-      if not response or isinstance(response.json(), list) and all(isinstance(item, str) for item in response.json()):
-        # MW never returns 404, it returns a list of suggested words.
-        log(f"Didn't get definition for {word} from {url}")
-        missing.append(word)
-      else:
-        definition = json.dumps(response.json())
+      defs = [self.retrieve_from_dict_api(word, url_fmt) for url_fmt in DICT_APIS]
+      d = GDefinitions(word=word, defs=defs)
+      if d.has_def:
         n += 1
-
-      d = Definition(word=word, definition=definition, source=url, retrieved_on=date)
-      self.db.upsert_definition(d)
-      self.db.conn.commit()
-      # log(f"Commited definition for {word}")
+      else:
+        missing.append(word)
+      self.db.insert_definition(d)
+    self.db.conn.commit() # Commit at the end because this is very slow otherwise.
     log(f"Got definitions for {n} words, could not find {len(missing)}: {joinl(missing, sep=', ')}.")
     return missing
+
+  def retrieve_from_dict_api(self, word: str, url_fmt: str) -> GDefinition:
+    url = url_fmt.format(word=word)
+    response = self.requester.get(url)
+    date = datetime.datetime.now().strftime('%Y-%m-%d')
+    raw = response.json() if response else []
+    result = GDefinition(word=word, retrieved_on=date, retrieved_from=url, raw=raw)
+    if not response:
+      return result
+    if isinstance(response.json(), list) and all(isinstance(item, str) for item in response.json()):
+      # MW never returns 404, it returns a list of suggested words.
+      return result
+    parse_dict_entry(result)
+    return result
 
   def archive_file(self,file):
     if not exists_dir(ARCHIVE):

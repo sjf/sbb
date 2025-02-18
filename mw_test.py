@@ -4,10 +4,16 @@ from pyutils import *
 from model import *
 from mw import *
 
-def test_dictapis_to_def_dictionarydotcom():
+def test_dictapis_to_def_wiktionary():
+  inputt = GDefinition(word="tractor",
+    retrieved_from = WIKTIONARY_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(WIKTIONARY_INPUT))
   expected = GDefinition(word="tractor",
+    retrieved_from = WIKTIONARY_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(WIKTIONARY_INPUT),
     source_url = "https://en.wiktionary.org/wiki/tractor",
-    source = 'wiktionary.org',
     word_types=[
       GWordTypeDefinition(word_type="noun",
         meanings=[
@@ -27,12 +33,20 @@ def test_dictapis_to_def_dictionarydotcom():
         ])
     ])
 
-  assert dictapis_to_def(DICT_WORD, DICT_INPUT, DICT_SOURCE) == expected
+  parse_dict_entry(inputt)
+
+  assert inputt == expected
 
 def test_dictapis_to_def_mw():
+  inputt = GDefinition(word="acid",
+    retrieved_from = MW_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(MW_INPUT))
   expected = GDefinition(word="acid",
+    retrieved_from = MW_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(MW_INPUT),
     source_url = "https://www.merriam-webster.com/dictionary/acid",
-    source = 'merriam-webster.com',
     word_types=[
       GWordTypeDefinition(word_type='noun',
         meanings=[
@@ -42,12 +56,20 @@ def test_dictapis_to_def_mw():
         ])
       ])
 
-  assert dictapis_to_def(MW_WORD, MW_INPUT, MW_SOURCE) == expected
+  parse_dict_entry(inputt)
+
+  assert inputt == expected
 
 def test_dictapis_to_def_mw_uns():
+  inputt = GDefinition(word="lima",
+    retrieved_from = MW_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(MW_INPUT_2))
   expected = GDefinition(word="lima",
+    retrieved_from = MW_SOURCE,
+    retrieved_on = '2025-10-10',
+    raw = json.loads(MW_INPUT_2),
     source_url = "https://www.merriam-webster.com/dictionary/lima",
-    source = 'merriam-webster.com',
     word_types=[
       GWordTypeDefinition(word_type='communications code word', meanings=[
         GWordMeaning(meaning='Used as a code word for the letter l', example=None)]),
@@ -60,7 +82,19 @@ def test_dictapis_to_def_mw_uns():
       GWordTypeDefinition(word_type='biographical name', meanings=[
         GWordMeaning(meaning='De 1803–1880 Luiz Alves de Lima e Silva Brazilian general and statesman', example=None)])
       ])
-  assert dictapis_to_def(MW_WORD_2, MW_INPUT_2, MW_SOURCE_2) == expected
+
+  parse_dict_entry(inputt)
+
+  assert inputt == expected
+
+def test_dictapis_to_def_unsupported():
+  inputt = GDefinition(word="lima",
+    retrieved_from = 'foo-bar.com/something/lima',
+    retrieved_on = '2025-10-10',
+    raw = json.loads(MW_INPUT_2))
+
+  with pytest.raises(Exception):
+    parse_dict_entry(inputt)
 
 @pytest.mark.parametrize('input_str, expected', [
   ('{bc}a sour substance', 'A sour substance'),
@@ -71,12 +105,8 @@ def test_dictapis_to_def_mw_uns():
 def test_format_mw(input_str, expected):
   assert format_mw(input_str) == expected
 
-def test_dictapis_to_def_unsupported():
-  assert dictapis_to_def("foo", "something", "https://something.else/foo/bar") == None
-
-DICT_WORD = "tractor"
-DICT_SOURCE = 'https://api.dictionaryapi.dev/api/v2/entries/en/tractor'
-DICT_INPUT = """
+WIKTIONARY_SOURCE = 'https://api.dictionaryapi.dev/api/v2/entries/en/tractor'
+WIKTIONARY_INPUT = """
 [
   {
     "word": "tractor",

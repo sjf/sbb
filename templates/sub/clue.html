@@ -38,8 +38,8 @@
     </div>
 
     <!-- Definition Section (Hidden Initially) -->
-    {% if answer.definition %}
-      {% with definition = answer.definition %}
+    {% if answer.definitions.has_def %}
+      {% with definition = answer.definitions.deff %}
         {% include "sub/definition.html" %}
       {% endwith %}
     {% endif %}

@@ -26,6 +26,5 @@ class Clue:
 @dataclass
 class Definition:
   word: str
-  definition: Optional[str]
-  source: str
-  retrieved_on: str
+  # JSON serialized GDefinitions
+  definitions: str
