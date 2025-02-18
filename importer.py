@@ -22,7 +22,6 @@ ARCHIVE = 'archive/'
 WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
 DICT_APIS = [MW_API, WIKTIONARY_API]
-REQUESTS_SQLITE_CACHE = 'scraped/requests_cache.sqlite'
 
 class Importer:
   def __init__(self):

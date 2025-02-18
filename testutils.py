@@ -28,7 +28,7 @@ def temp_db(fs, monkeypatch) -> None:
   fs.resume()
   write('schema.sql', schema)
   monkeypatch.setattr(db, 'DB_FILE', ':memory:')
-  monkeypatch.setattr(requester, 'REQUESTS_SQLITE_CACHE', ':memory:')
+  config['REQUESTS_SQLITE_CACHE'] = ':memory:'
 
 @pytest.fixture
 def mock_es(fs) -> Generator:
