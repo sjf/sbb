@@ -54,10 +54,8 @@
       </div>
     {% endfor %}
   </div>
-  {% if pagination.has_next or pagination.has_prev %}
-    {% include 'sub/pagination_small.html' %}
-    {% include 'sub/pagination_large.html' %}
-  {% endif %}
+  {% include 'sub/pagination_small.html' %}
+  {% include 'sub/pagination_large.html' %}
 {% else %}
   <p class="text-gray-600 text-center">No results found for “{{ result.term }}”.</p>
 {% endif %}
