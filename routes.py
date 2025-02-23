@@ -3,7 +3,7 @@ import logging
 import os
 import json
 import elasticsearch
-from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app
+from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app, abort
 from markupsafe import escape
 from http import HTTPStatus
 

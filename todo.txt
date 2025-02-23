@@ -1,3 +1,12 @@
+https://www.lexiconnexxions.com/data/
+
+some people search for dates
+some people search for puzzle letters
+
+-> build a dictionary of valid words
+-> show not included words
+-> show how common words are
+
 seo:
 h1 heading on clue pages is too short
 clue archive pages shouldnt have more than 400 entries
@@ -68,4 +77,5 @@ x clue page, button for reveal
 o fix search e2e test on live site
 o on the search results page, show date in preview.
 some clue page titles are too long (Rm nyt spelling bee...)
-
+on search results, dont show navigation if no more results-
+most search queries have ~1 result.

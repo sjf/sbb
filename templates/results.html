@@ -37,8 +37,10 @@
 
 {% if result.results %}
 
-  {% include 'sub/pagination_small.html' %}
-  {% include 'sub/pagination_large.html' %}
+  {% if pagination.has_next or pagination.has_prev %}
+    {% include 'sub/pagination_small.html' %}
+    {% include 'sub/pagination_large.html' %}
+  {% endif %}
   <div class="grid grid-cols-1 gap-6">
     {% for clue in result.results %}
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
@@ -52,9 +54,10 @@
       </div>
     {% endfor %}
   </div>
-  {% include 'sub/pagination_small.html' %}
-  {% include 'sub/pagination_large.html' %}
-
+  {% if pagination.has_next or pagination.has_prev %}
+    {% include 'sub/pagination_small.html' %}
+    {% include 'sub/pagination_large.html' %}
+  {% endif %}
 {% else %}
   <p class="text-gray-600 text-center">No results found for “{{ result.term }}”.</p>
 {% endif %}
