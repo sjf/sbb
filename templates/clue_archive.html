@@ -40,7 +40,13 @@
 
 
 {% include 'sub/pagination_alphabet.html' %}
-{% include 'sub/pagination_small.html' %}
+
+{% if sub_pagination.total_pages > 1 %}
+  {% with pagination=sub_pagination %}
+    {% include 'sub/pagination_large.html' %}
+    {% include 'sub/pagination_small.html' %}
+  {% endwith %}
+{% endif %}
 
 <div class="grid grid-cols-1 gap-6">
   {% for answer in answers %}
@@ -55,8 +61,13 @@
   {% endfor %}
 </div>
 
+{% if sub_pagination.total_pages > 1 %}
+  {% with pagination=sub_pagination %}
+    {% include 'sub/pagination_large.html' %}
+    {% include 'sub/pagination_small.html' %}
+  {% endwith %}
+{% endif %}
 
-{% include 'sub/pagination_small.html' %}
 {% include 'sub/pagination_alphabet.html' %}
 
 {% endblock %}
