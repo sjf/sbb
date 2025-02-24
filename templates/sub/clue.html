@@ -15,39 +15,42 @@
     </p>
   {% endif %}
 
-    <div class="mt-4 flex justify-center gap-2 text-5xl font-bold answer-box cursor-pointer"
-         data-answer="{{ answer.word }}"
-         data-definition="definition-{{ index }}"
-         onclick="toggleClueAnswer(this)"
-         data-nosnippet>
+  <div class="mt-4 flex justify-center gap-2 text-5xl font-bold answer-box cursor-pointer"
+       id="clue-toggle"
+       data-answer="{{ answer.word }}"
+       data-definition="definition-{{ index }}"
+       onclick="toggleClueAnswer(this)"
+       data-nosnippet>
 
-      <!-- First Letter Always Visible -->
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
-        {{ answer.word[0] }}
-      </div>
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
-        {{ answer.word[1] }}
-      </div>
-
-      <!-- Empty Boxes for Remaining Letters -->
-      {% for c in answer.word[2:] %}
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box"
-        data-letter="{{c}}">
-      </div>
-      {% endfor %}
+    <!-- First Letter Always Visible -->
+    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
+      {{ answer.word[0] }}
+    </div>
+    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
+      {{ answer.word[1] }}
     </div>
 
-    <!-- Definition Section (Hidden Initially) -->
-    {% if answer.definitions.has_def %}
-      {% with definition = answer.definitions.deff %}
-        {% include "sub/definition.html" %}
-      {% endwith %}
-    {% endif %}
+    <!-- Empty Boxes for Remaining Letters -->
+    {% for c in answer.word[2:] %}
+    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box"
+      data-letter="{{c}}">
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Definition Section (Hidden Initially) -->
+  {% if answer.definitions.has_def %}
+    {% with definition = answer.definitions.deff %}
+      {% include "sub/definition.html" %}
+    {% endwith %}
+  {% endif %}
 
   {% if not is_sub %}
     <p class="mt-8 text-lg">
       This clue was used on
-        <a href="{{ url_for(answer.puzzle_dates[0]) }}" class="text-m text-yellow-500 hover:underline">
+        <a  href="{{ url_for(answer.puzzle_dates[0]) }}"
+            id="clue-used-on-date"
+            class="text-m text-yellow-500 hover:underline">
           {{ format_date(answer.puzzle_dates[0]) }}</a>.
     </p>
   {% endif %}
@@ -58,8 +61,9 @@
     <p class="text-lg">This clue has been used several times with the same answer. It also appeared on these dates:</p>
     {% for puzzle_date in answer.puzzle_dates[1:] %}
       <p class="text-lg mt-2">
-        <a href="{{ url_for(puzzle_date) }}"
-          class="text-m text-yellow-500 hover:underline">
+        <a  href="{{ url_for(puzzle_date) }}"
+            id="clue-used-on-other-date"
+            class="text-m text-yellow-500 hover:underline">
           {{ format_date(puzzle_date) }}
         </a>
       </p>

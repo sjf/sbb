@@ -41,17 +41,17 @@
 
 <!-- Buttons to Reveal Clues and Answers -->
 <div class="w-full flex justify-center space-x-6 mt-2 sm:mt-1">
-  <button id="show-clues"
+  <button id="puzzle-show-clues"
           data-target="clues"
-          data-opposite-button="show-answers"
+          data-opposite-button="puzzle-show-answers"
           onclick="toggleVisible(this)"
           class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
     <span>Show Clues</span>
   </button>
 
-  <button id="show-answers"
+  <button id="puzzle-show-answers"
           data-target="answers"
-          data-opposite-button="show-clues"
+          data-opposite-button="puzzle-show-clues"
           onclick="toggleVisible(this)"
           class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
     <span>Show Answers</span>
@@ -65,7 +65,9 @@
     {% for ls in split_by_start(puzzle.answers) %}
       {% for answer in ls %}
         <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
-          <a href="/definition/{{ answer.word }}" class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
+          <a  href="/definition/{{ answer.word }}"
+              id="puzzle-answer-definition"
+              class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
         </div>
       {% endfor %}
       {% if not loop.last %}<div class="pt-4"></div>{% endif %}
@@ -84,7 +86,9 @@
       {% if answer.text %}
         <div class="text-lg">
           {% if answer.url %}
-            <a class="hover:underline" href="{{ answer.url }}">{{ answer.text }}</a>
+            <a  href="{{ answer.url }}"
+                class="hover:underline"
+                id="puzzle-clue-page">{{ answer.text }}</a>
           {% else %}
             {{ answer.text }} <!-- no url temporary clues -->
           {% endif %}
@@ -104,7 +108,7 @@
 <div class="mt-4 w-full md:max-w-[400px] mx-auto flex-col items-center">
   <div class="flex flex-row items-start">
     <h2 class="text-2xl font-semibold mb-2 inline">Hints</h2>
-      <button id="show-hints"
+      <button id="puzzle-show-hints"
             data-target="hints"
             onclick="toggleVisible(this)"
             class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
@@ -121,7 +125,9 @@
 <!-- Navigation Section -->
 <div class="w-full flex flex-row justify-between items-end sm:space-x-4 mt-4">
   {% if prev %}
-  <a href="{{url_for(prev)}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+  <a  href="{{url_for(prev)}}"
+      id="puzzle-prev"
+      class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
     ⟨⟨ <span class="hidden sm:inline">{{format_date(prev.date)}}</span>
   </a>
   {% else %}
@@ -131,9 +137,9 @@
   {% endif %}
 
   <div class="flex flex-col items-center">
-    <label for="datepicker" class="text-sm text-gray-700 mb-1">Jump to date:</label>
+    <label for="puzzle-date-picker" class="text-sm text-gray-700 mb-1">Jump to date:</label>
     <input
-      id="datepicker"
+      id="puzzle-date-picker"
       type="date"
       value="{{puzzle.date}}"
       max="{{max_date}}"
@@ -142,7 +148,7 @@
       class="border border-gray-300 rounded px-4 py-2">
   </div>
   <script>
-    document.getElementById("datepicker").addEventListener("change", function() {
+    document.getElementById("puzzle-date-picker").addEventListener("change", function() {
       const selectedDate = this.value; // Get the selected date (YYYY-MM-DD)
       if (selectedDate) {
         window.location.href = `/puzzle/${selectedDate}`; // Navigate to the new URL
@@ -151,7 +157,9 @@
   </script>
 
   {% if next_ %}
-  <a href="{{url_for(next_)}}" class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+  <a  href="{{url_for(next_)}}"
+      id="puzzle-next"
+      class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
     <span class="hidden sm:inline">{{format_date(next_.date)}}</span> ⟩⟩
   </a>
   {% else %}

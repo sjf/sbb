@@ -1,24 +1,13 @@
 <!-- Pagination Section above sm (larger)-->
-<div class="my-5 flex flex-wrap justify-center items-center gap-2 hidden sm:flex">
-  <div class="flex flex-wrap justify-center items-center gap-1">
-    {% for letter in alphabet %}
-      {% if prefix == letter %}
-        <span class="px-1 py-2 border rounded text-gray-400 text-center select-none bg-yellow-100">{{ letter | upper }}</span>
-      {% else %}
-        <a href="{{ url_for('clues', letter) }}" class="px-1 py-2 border rounded hover:bg-gray-100">{{ letter | upper }}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
-  <div class="flex space-x-4">
-    {% if pagination.has_prev %}
-    <a href="{{ pagination.prev }}" class="px-6 py-2 border rounded hover:bg-gray-100 text-center">Previous</a>
+<div class="my-5 flex flex-wrap justify-center items-center gap-1">
+  {% for letter in alphabet %}
+    {% if prefix == letter %}
+      <span
+        class="min-w-[24px] px-1 py-2 border rounded text-gray-400 text-center select-none bg-yellow-100 text-center block">{{ letter | upper }}</span>
     {% else %}
-    <span class="px-6 py-2 border rounded text-gray-400 text-center select-none">Previous</span>
+      <a  href="{{ url_for('clues', letter, 1) }}"
+          id="clue-nav-letter"
+          class="min-w-[24px] px-1 py-2 border rounded hover:bg-gray-100 text-center">{{ letter | upper }}</a>
     {% endif %}
-    {% if pagination.has_next %}
-    <a href="{{ pagination.next }}" class="px-6 py-2 border rounded hover:bg-gray-100 text-center">Next</a>
-    {% else %}
-    <span class="px-6 py-2 border rounded text-gray-400 text-center select-none">Next</span>
-    {% endif %}
-  </div>
+  {% endfor %}
 </div>

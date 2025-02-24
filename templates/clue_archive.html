@@ -44,7 +44,9 @@
 
 <div class="grid grid-cols-1 gap-6">
   {% for answer in answers %}
-  <a href="{{ answer.url }}" class="hover:underline">
+  <a  href="{{ answer.url }}"
+      id="archive-clue-page"
+      class="hover:underline">
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
       <p class="text-lg font-medium">{{ answer.text }}</p>
       <p class="text-sm italic mt-2">{{ format_date(answer.puzzle_date) }}</p>

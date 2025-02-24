@@ -46,12 +46,9 @@ o ssl cert updater- expires April 6
 o output to a temp dir and swap with site/
 ----
 Search:
-x 1 You should be able to search for clues.
 2 You should be able to search by puzzle letters.
 3 You should be able to search for answer, and see all clues and puzzles where it occurred.
   - This needs to be answer pages.
-x Add potentialAction for site search – Allow users to search directly from Google.
-x [ ] Implement the JSON-LD.
 Verify search action
 
 ----
@@ -79,3 +76,6 @@ o on the search results page, show date in preview.
 some clue page titles are too long (Rm nyt spelling bee...)
 on search results, dont show navigation if no more results-
 most search queries have ~1 result.
+x 1 You should be able to search for clues.
+x Add potentialAction for site search – Allow users to search directly from Google.
+x [ ]search Implement the JSON-LD.

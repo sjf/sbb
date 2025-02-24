@@ -44,7 +44,9 @@
   <div class="grid grid-cols-1 gap-6">
     {% for clue in result.results %}
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
-      <a href="{{ clue.url }}" class="hover:underline">
+      <a  href="{{ clue.url }}"
+          id="results-clue-page"
+          class="hover:underline">
         <p class="text-lg font-medium">{{ clue.text }}</p>
       </a>
       {% with word=clue.word %}

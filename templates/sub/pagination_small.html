@@ -1,13 +1,17 @@
 <!-- Pagination Section small screens -->
-<div class="mt-5 mb-1 flex justify-between items-center text-sm w-full block sm:hidden">
+<div class="my-5 flex justify-between items-center text-sm w-full block sm:hidden">
   <div class="flex space-x-1">
     {% if pagination.has_prev %}
-    <a href="{{pagination.first}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">First</a>
+    <a  href="{{pagination.first}}"
+        id="page-first"
+        class="px-2 py-1 border rounded hover:bg-gray-100 text-center">First</a>
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">First</span>
     {% endif %}
     {% if pagination.has_prev %}
-    <a href="{{pagination.prev}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Prev</a>
+    <a  href="{{pagination.prev}}"
+        id="page-prev"
+        class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Prev</a>
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">Prev</span>
     {% endif %}
@@ -17,12 +21,16 @@
   </span>
   <div class="flex space-x-1">
     {% if pagination.has_next %}
-    <a href="{{pagination.next}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Next</a>
+    <a  href="{{pagination.next}}"
+        id="page-next"
+        class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Next</a>
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">Next</span>
     {% endif %}
     {% if pagination.last %}
-    <a href="{{pagination.last}}" class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Last</a>
+    <a  href="{{pagination.last}}"
+        id="page-last"
+        class="px-2 py-1 border rounded hover:bg-gray-100 text-center">Last</a>
     {% else %}
     <span class="px-2 py-1 border rounded text-gray-400 select-none text-center">Last</span>
     {% endif %}

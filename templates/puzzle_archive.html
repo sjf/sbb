@@ -41,7 +41,9 @@
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {% for puzzle in puzzles %}
-  <a href="{{ url_for(puzzle.date) }}" class="group hover:underline">
+  <a  href="{{ url_for(puzzle.date) }}"
+      id="archive-puzzle-page"
+      class="group hover:underline">
     <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
       <p class="text-lg font-medium uppercase flex items-center">
         <svg class="hive-cell-standalone center" viewBox="0 0 120 103.92304845413263">

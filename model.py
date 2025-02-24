@@ -177,9 +177,10 @@ class PaginateList:
   @property
   def _idx(self) -> int:
     """ Index of current page (starting at zero) """
-    idx = self.pages.index(self.current)
-    if idx == -1:
-      raise Exception(f"Cannot paginate, {self.current} not in pages.")
+    try:
+      idx = self.pages.index(self.current)
+    except ValueError:
+      raise Exception(f"Cannot paginate, {self.current} not in pages: {joinl(self.pages, sep=',')}")
     return idx
 
   @property
