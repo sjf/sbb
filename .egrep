@@ -1,1 +1,1 @@
---exclude-dir=site  --exclude-dir=logs --exclude-dir=.venv --exclude-dir=.mypy_cache --exclude=*.sublime-workspace --exclude-dir=scraped --exclude-dir=archive
+--exclude-dir=site  --exclude-dir=logs --exclude-dir=.venv --exclude-dir=.mypy_cache --exclude=*.sublime-workspace --exclude-dir=scraped --exclude-dir=archive --exclude=*.log

@@ -1,3 +1,5 @@
+o only regenerate last N days, with optional full re-generation.
+
 https://www.lexiconnexxions.com/data/
 
 some people search for dates
