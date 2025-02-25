@@ -15,6 +15,7 @@ def set_env_globals(env: Environment) -> None:
     url_for=url_for,
     format_date=format_date,
     sort_by_clue=sort_by_clue,
+    smquote=smquote,
     joinl=joinl,
     split_by_start=split_by_start,
     get_content_group=get_content_group)

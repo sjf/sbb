@@ -200,7 +200,7 @@ class Generator:
     else:
       return 'symbols'
 
-  def generate_clue_archives(self, n_per_page=100) -> None:
+  def generate_clue_archives(self, n_per_page=50) -> None:
     answers = self.db.fetch_ganswers()
     answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
     by_prefix = defaultdict(list)
@@ -224,7 +224,6 @@ class Generator:
     for prefix, answers in sorted(by_prefix.items(), key=lambda x:prefix_key(x[0])):
       n_pages = ceil(len(answers) / n_per_page)
       sub_pages = mapl(lambda n:url_for('clues', prefix, n), range(1, n_pages+1))
-      first_page = sub_pages[0]
       for i in range(n_pages):
         log(f'Clues {prefix}: {n_pages} pages')
         page_answers = answers[i*n_per_page:(i+1)*n_per_page]
@@ -236,8 +235,7 @@ class Generator:
           answers=page_answers,
           prefix=prefix,
           alphabet=prefixes,
-          pagination=PaginateList(pages=pages, current=first_page),
-          sub_pagination=PaginateList(pages=sub_pages, current=url),
+          pagination=PaginateList(pages=sub_pages, current=url),
           canon_url=url)
         self.output(url, rendered, lastmod)
 
