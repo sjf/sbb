@@ -102,11 +102,19 @@ class GAnswer:
     return self.word < other.word
 
 @dataclass
+class Hint:
+  score: int
+  text: str
+  words: List[str]
+  def __lt__(self, other):
+    return (self.score, self.text, self.words) < (other.score, other.text, other.words)
+
+@dataclass
 class GPuzzle:
   date: str # Date in the format YYYY-MM-DD.
   center_letter: str
   outer_letters: List[str]
-  hints: List[str]
+  hints: List[Hint]
   _answers: List[GAnswer] = field(default_factory=list)
 
   @property

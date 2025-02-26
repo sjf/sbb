@@ -49,6 +49,28 @@ function toggleClueAnswer(element) {
   }
 }
 
+function toggleHintAnswers(element) {
+  const targetId = element.getAttribute('data-target');
+  const answers = document.getElementById(targetId);
+  if (answers.classList.contains('hidden')) {
+    answers.classList.remove('hidden');
+    setTimeout(() => answers.classList.add('opacity-100'), 10);
+  } else {
+    answers.classList.remove('opacity-100');
+    answers.classList.add('opacity-0');
+    // Wait for transition to finish before hiding the element
+    setTimeout(() => answers.classList.add('hidden'), 300);
+  }
+
+  let icons = element.querySelectorAll('.eye');
+  if (icons.length === 0) {
+    icons = element.nextElementSibling.querySelectorAll('.eye');
+  }
+  icons.forEach((icon, index) => {
+    icon.classList.toggle('hidden');
+  });
+}
+
 function ffocus(id) {
   document.getElementById(id).focus();
 }

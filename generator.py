@@ -225,7 +225,6 @@ class Generator:
       n_pages = ceil(len(answers) / n_per_page)
       sub_pages = mapl(lambda n:url_for('clues', prefix, n), range(1, n_pages+1))
       for i in range(n_pages):
-        log(f'Clues {prefix}: {n_pages} pages')
         page_answers = answers[i*n_per_page:(i+1)*n_per_page]
         page_answers = sorted(page_answers, key=lambda x:x.text)
         lastmod = max(map(lambda x:x.puzzle_date, answers))
@@ -242,6 +241,7 @@ class Generator:
     template = self.env.get_template('clue_archive_index.html')
     url = '/clues/index.html'
     prefix_counts = [ Prefix(prefix=k,count=len(v)) for k,v in sorted(by_prefix.items(), key=lambda x: prefix_key(x[0])) ]
+    log('Clue pages: ' + joinl(map(lambda x: f'{x.prefix.upper()}: {ceil(x.count/n_per_page)}', prefix_counts), sep=', '))
     rendered = template.render(
       url=url,
       canon_url=url,

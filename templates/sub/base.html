@@ -83,7 +83,7 @@
 {% endif %}
 
 <!-- The search box should always be open on these pages -->
-{% set show_search_box = ((request is defined and request.path == '/search') or url.startswith('/clues')) %}
+{% set show_search_box = True or ((request is defined and request.path == '/search') or url.startswith('/clues')) %}
 
 <!-- Navigation Bar -->
 <nav class="flex items-center justify-between py-4 px-6 bg-yellow-400 shadow-md">
