@@ -9,7 +9,7 @@ COPY . /app
 WORKDIR /app
 
 COPY .git/FETCH_HEAD /tmp/FETCH_HEAD
-RUN /bin/sh -c 'grep main /tmp/FETCH_HEAD | cut -f1 > git.txt'
+RUN /bin/sh -c 'grep main /tmp/FETCH_HEAD | cut -f1 > git.txt; if [ ! -s git.txt ]; then cat /tmp/FETCH_HEAD | cut -f1 > git.txt; fi'
 RUN date -u +"%d/%b/%Y:%H:%M:%S %z" > build_time.txt
 
 CMD ["gunicorn", "-c", "gunicorn_config.py", "app:app"]
