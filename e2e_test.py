@@ -114,9 +114,11 @@ def test_css():
   assert_contains(response, '')
 
 def test_js():
-  version = settings.config['VERSION']
-  response = get(f'/static/script.{version}.min.js')
-  assert_contains(response, '')
+  soup = BeautifulSoup(get('/').text, 'html.parser')
+  js_files = [script['src'] for script in soup.find_all('script', src=True)]
+  js_files = filter(lambda x:x.startswith('/'), js_files)
+  for js in js_files:
+    assert_code(get(js), 200)
 
 ####### Other pages
 def test_redirects_clue():
