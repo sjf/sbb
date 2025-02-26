@@ -77,7 +77,7 @@
 
 <div id="clues" class="hidden mt-4">
   <h2 class="text-2xl font-semibold mb-2">Clues</h2>
-  <div class="space-y-6">
+  <div class="space-y-3">
     {% if not puzzle.has_all_clues() %}
     <div class="text-lg italic mb-4">These clues were created by us, ahead of the NYT clues which are not available until 9AM EST.</div>
     {% endif %}
@@ -120,7 +120,7 @@
       <li onclick="toggleHintAnswers(this)"
           id="toggle-hint-answer"
           data-target="hint-answers-{{ loop.index0 }}">{{ hint.text }}</li>
-      <div class="flex flex-row h-[2em] pt-1">
+      <div class="flex flex-row pt-1 min-h-[2em]">
         <div class="inline-flex text-gray-500 pr-2 curser-pointer"
              onclick="toggleHintAnswers(this)"
              id="toggle-hint-answer"

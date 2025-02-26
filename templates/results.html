@@ -38,8 +38,10 @@
 {% if result.results %}
 
   {% if pagination.has_next or pagination.has_prev %}
-    {% include 'sub/pagination_small.html' %}
-    {% include 'sub/pagination_large.html' %}
+    <div class="mb-6">
+      {% include 'sub/pagination_small.html' %}
+      {% include 'sub/pagination_large.html' %}
+    </div>
   {% endif %}
   <div class="grid grid-cols-1 gap-6">
     {% for clue in result.results %}
@@ -56,8 +58,10 @@
       </div>
     {% endfor %}
   </div>
-  {% include 'sub/pagination_small.html' %}
-  {% include 'sub/pagination_large.html' %}
+    <div class="mt-6 mb-3">
+      {% include 'sub/pagination_small.html' %}
+      {% include 'sub/pagination_large.html' %}
+    </div>
 {% else %}
   <p class="text-gray-600 text-center">No results found for “{{ result.term }}”.</p>
 {% endif %}
