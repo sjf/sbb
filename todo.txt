@@ -1,28 +1,29 @@
+o date picker should appear on puzzle archive page as well.
+
 o only regenerate last N days, with optional full re-generation.
 
-https://www.lexiconnexxions.com/data/
-
-some people search for dates
-some people search for puzzle letters
-
--> build a dictionary of valid words
--> show not included words
--> show how common words are
-
-seo:
-h1 heading on clue pages is too short
-clue archive pages shouldnt have more than 400 entries
-puzzle pages dont have enough text
-clue pages dont have enough text
+o content seo:
+  h1 heading on clue pages is too short
+  clue pages dont have enough text
 
 o puzzle pages need to be unique, add stats, numner of words, number of panagrams, bingos.
-  word origins/etymology for foreign words, words in MW but not included. Compare to previous days puzzle.
+  words in MW but not included. Compare to previous days puzzle.
+  See https://www.lexiconnexxions.com/data/
+  -> build a dictionary of valid words
+  -> show not included words
+  -> show how common words are
+
+o Search:
+  2 You should be able to search by puzzle letters.
+  3 You should be able to search for answer, and see all clues and puzzles where it occurred.
+    - This needs to be answer pages.
+  Verify search action
 
 o puzzle page, link from clue to definition
 
 o add puzzle/dates to elasticsearch so they show up in results
-
-o flask should use the same error pages as static pages
+    some people search for dates
+    some people search for puzzle letters
 
 o templates should support flask flash
 
@@ -32,28 +33,17 @@ o social media share links
 
 o Transition animation when answer is revealed.
 
---
-o puzzle page: prev, next & date picker.
+o puzzle-archive date shouldnt be underlined.
 
+o ssl cert updater- expires April 6
+
+--
+SEO:
 o bing submissions api https://www.bing.com/webmasters/url-submission-api#APIs
 https://www.bing.com/indexnow/getstarted#
 
 o register on ddg search
 ---
-
-o puzzle-archive date shouldnt be underlined.
-
-o ssl cert updater- expires April 6
-
-o output to a temp dir and swap with site/
-----
-Search:
-2 You should be able to search by puzzle letters.
-3 You should be able to search for answer, and see all clues and puzzles where it occurred.
-  - This needs to be answer pages.
-Verify search action
-
-----
 
 x The name/title of the puzzle should include the letters as well as the data.
 x puzzle archive page, make date the title. Make center letter yellow.
@@ -81,3 +71,9 @@ most search queries have ~1 result.
 x 1 You should be able to search for clues.
 x Add potentialAction for site search – Allow users to search directly from Google.
 x [ ]search Implement the JSON-LD.
+
+x flask should use the same error pages as static pages
+x output to a temp dir and swap with site/
+o puzzle page: prev, next & date picker.
+x word origins/etymology for foreign words,
+x clue archive pages shouldnt have more than 400 entries
