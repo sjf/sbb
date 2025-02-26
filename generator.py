@@ -308,7 +308,7 @@ class Generator:
     else:
       mkdir(f'{OUTPUT_DIR}/static/')
       cp('static_files/static/script.js',  f'{OUTPUT_DIR}/static/script.{js_version}.js')
-      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{js_version}.css')
+      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{css_version}.css', verbose=True)
 
     for file in ls('static_files/*'):
       cp_file(file, OUTPUT_DIR)

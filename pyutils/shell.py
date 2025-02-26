@@ -101,7 +101,9 @@ def rm_rf(path, verbose=False):
   vflag = "-v" if verbose else ""
   shell(f'rm -rf {vflag} {path}')
 
-def cp(a: str, b: str) -> None:
+def cp(a: str, b: str, verbose: bool=False) -> None:
+  if verbose:
+    log(f"Copying '{a}' -> '{b}'")
   shutil.copy(a, b)
 
 def ln(src: str, dest: str, target_is_directory: bool = False) -> None:
