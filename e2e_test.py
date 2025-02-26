@@ -146,6 +146,10 @@ def test_no_redirects():
 def test_internal_pages():
   assert_code(get('/err/500.html'), 404)
 
+def test_sitemap():
+  response = get('/sitemap.xml')
+  assert '/definition/' not in response.text
+
 ####### Test URL redirects
 
 

@@ -295,10 +295,12 @@ class Generator:
       self.output(url, rendered, lastmod)
 
   def generate_sitemap(self) -> None:
-    if len(self.pages) > 50_000 - 300:
-      log_error(f"Site map is close maximum size of 50k links: {len(self.pages)}")
+    pages = filterl(lambda x:not x.path.startswith('/definition'), self.pages)
+    if len(pages) > 50_000 - 300:
+      log_error(f"Site map is close maximum size of 50k links: {len(pages)}")
+
     template = self.env.get_template('internal/sitemap.xml')
-    rendered = template.render(pages=self.pages)
+    rendered = template.render(pages=pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
 
   def generate_static(self) -> None:
