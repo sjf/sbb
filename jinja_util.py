@@ -11,7 +11,10 @@ def set_env_globals(env: Environment) -> None:
   try:
     config['CSS_VERSION'] = shell('git rev-parse HEAD', with_output=True).strip()
   except Exception:
+    if not exists('git.txt'):
+      raise Exception(f"Can't open git.txt in {realpath('.')}")
     config['CSS_VERSION'] = read('git.txt')
+
   if not config['CSS_VERSION']:
     raise Exception('Couldnt get CSS version')
 

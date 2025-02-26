@@ -77,7 +77,7 @@ def log(message, ex=None):
 def log_warn(message, ex=None):
   if ex:
     logger.warn(format_ex(ex))
-  logger.warn(message)
+  logger.warning(message)
 
 def log_error(message, ex=None):
   if ex:
