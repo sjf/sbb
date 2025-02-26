@@ -6,10 +6,17 @@ from pyutils import *
 from model import *
 
 def set_env_globals(env: Environment) -> None:
+  config['JS_VERSION'] = md5('static_files/static/script.js')
+  try:
+    config['CSS_VERSION'] = shell('git rev-parse HEAD')
+  except Exception:
+    config['CSS_VERSION'] = read('git.txt')
+
   env.globals.update(
     DEV=config['DEV'],
     domain=config['DOMAIN'],
-    VERSION=config['VERSION'],
+    js_version=config['JS_VERSION'],
+    css_version=config['CSS_VERSION'],
     config=config,
     current_year=datetime.datetime.now().year,
     url_for=url_for,

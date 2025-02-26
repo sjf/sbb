@@ -12,6 +12,7 @@ import csv
 import urllib.parse
 import pprint
 import tldextract
+import hashlib
 from typing import List, Any, Dict, Optional, Tuple, TypeVar,TypeAlias
 from collections.abc import Iterable
 from collections import Counter, defaultdict
@@ -180,6 +181,10 @@ def read_csv(f, delimiter=',', quotechar='"'):
     for line in reader:
       result.append(line)
   return result
+
+def md5(f: str) -> str:
+  data = read(f).encode('utf-8')
+  return hashlib.md5(data).hexdigest()
 
 def canon(s):
   return s.strip().lower().strip('"').strip("'")

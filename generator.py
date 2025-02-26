@@ -9,21 +9,16 @@ from collections import defaultdict
 from http import HTTPStatus
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
-from pyutils import settings
+from pyutils.settings import config
 from pyutils import *
 from jinja_util import *
 from model import *
 from db import *
 
-SITE_DIR = settings.config['OUTPUT_DIR']
-OUTPUT_DIR = joinp(SITE_DIR, f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
-DOMAIN = settings.config['DOMAIN']
-VERSION = settings.config['VERSION']
-DEV = settings.config['DEV']
-TODAY = datetime.datetime.now().strftime('%Y-%m-%d')
+OUTPUT_DIR = joinp(config['SITE_DIR'], f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
 
 def url(path: str) -> str:
-  return joinp(DOMAIN, path)
+  return joinp(config['DOMAIN'], path)
 
 def cp_file(file: str, dest: str) -> None:
   dirs = dirname(dest)
@@ -43,8 +38,8 @@ class Generator:
     self.env = Environment(
       loader=FileSystemLoader('templates'),
       undefined=StrictUndefined,
-      trim_blocks=(not DEV),
-      lstrip_blocks=(not DEV))
+      trim_blocks=(not config['DEV']),
+      lstrip_blocks=(not config['DEV']))
     set_env_globals(self.env)
     self.pages = []
 
@@ -67,14 +62,15 @@ class Generator:
     log(f"*** Switching serving '{config['SERVING_DEST']}' to '{OUTPUT_DIR}' ***")
     self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
 
-    dirs = ls(f'{SITE_DIR}/sbb-*')
+    s = config['SITE_DIR']
+    dirs = ls(f'{s}/sbb-*')
     dirs = sorted(dirs, reverse=True)
     for d in dirs[6:]: # keep last six generations
       log(f"Removing old generated site {d}")
       rm_rf(d)
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
-    if not DEV and config['HTML_MIN']: # Only in prod and when enable because this is slow.
+    if not config['DEV'] and config['HTML_MIN']: # Only in prod and when enable because this is slow.
       if contents.startswith('<!DOCTYPE html>') or contents.startswith('<html>'):
         contents = htmlmin.minify(contents,
           remove_comments=True,        # Remove all HTML comments
@@ -104,7 +100,7 @@ class Generator:
 
   def rel_ln(self, src_path: str, dst_path: str) -> None:
     # For serving to work properly they both need to be under the base OUTPUT_DIR.
-    base_output = realpath(SITE_DIR)
+    base_output = realpath(config['SITE_DIR'])
     src_path = realpath(src_path)
     dst_path = realpath(dst_path)
     # print(src_path, dst_path, base_output)
@@ -168,7 +164,8 @@ class Generator:
       next_=None,
       max_date=max_date,
       min_date=min_date)
-    self.output('/index.html', rendered, TODAY)
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
+    self.output('/index.html', rendered, today)
 
     template = self.env.get_template('about.html')
     rendered = template.render(url='/about', canon_url='/about')
@@ -304,13 +301,15 @@ class Generator:
     self.output('sitemap.xml', rendered, None, is_internal=True)
 
   def generate_static(self) -> None:
-    if not DEV:
-      shell(f'npx tailwindcss -i input.css -o {OUTPUT_DIR}/static/style.{VERSION}.css --minify')
-      shell(f'terser static_files/static/script.js --mangle -o {OUTPUT_DIR}/static/script.{VERSION}.min.js')
+    css_version = config['CSS_VERSION']
+    js_version = config['JS_VERSION']
+    if not config['DEV']:
+      shell(f'npx tailwindcss -i input.css -o {OUTPUT_DIR}/static/style.{css_version}.css --minify')
+      shell(f'terser static_files/static/script.js --mangle -o {OUTPUT_DIR}/static/script.{js_version}.min.js')
     else:
       mkdir(f'{OUTPUT_DIR}/static/')
-      cp('static_files/static/script.js',  f'{OUTPUT_DIR}/static/script.{VERSION}.js')
-      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{VERSION}.css')
+      cp('static_files/static/script.js',  f'{OUTPUT_DIR}/static/script.{js_version}.js')
+      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{js_version}.css')
 
     for file in ls('static_files/*'):
       cp_file(file, OUTPUT_DIR)

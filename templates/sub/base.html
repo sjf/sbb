@@ -29,9 +29,9 @@
 <!-- CSS -->
 {% if DEV %}
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="/static/custom.{{VERSION}}.css" rel="stylesheet">
+  <link href="/static/custom.{{ css_version }}.css" rel="stylesheet">
 {% else %}
-  <link href="/static/style.{{VERSION}}.css" rel="stylesheet">
+  <link href="/static/style.{{ css_version }}.css" rel="stylesheet">
 {% endif %}
 
 <!-- Javascript -->
@@ -54,10 +54,10 @@
     <!-- End Google Tag Manager -->
 
     <!-- Site Javascript -->
-    <script async src="/static/script.{{VERSION}}.min.js"></script>
+    <script async src="/static/script.{{ js_version }}.min.js"></script>
   {% else %}
     <!-- Unminified site javacript for DEV. -->
-    <script async src="/static/script.{{VERSION}}.js"></script>
+    <script async src="/static/script.{{ js_version }}.js"></script>
   {% endif %}
 
   <link rel="icon" href="/static/favicon/favicon.ico" type="image/x-icon">

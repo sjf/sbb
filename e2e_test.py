@@ -109,16 +109,20 @@ def test_search():
   assert_contains(response, "antenna")
 
 def test_css():
-  version = settings.config['VERSION']
-  response = get(f'/static/style.{version}.css')
-  assert_contains(response, '')
+  for url in ['/', '/search?q=cathode']:
+    soup = BeautifulSoup(get(url).text, 'html.parser')
+    css_files = [link['href'] for link in soup.find_all('link', rel="stylesheet")]
+    css_files = filter(lambda x:x.startswith('/'), css_files)
+    for cs in css_files:
+      assert_code(get(cs), 200)
 
 def test_js():
-  soup = BeautifulSoup(get('/').text, 'html.parser')
-  js_files = [script['src'] for script in soup.find_all('script', src=True)]
-  js_files = filter(lambda x:x.startswith('/'), js_files)
-  for js in js_files:
-    assert_code(get(js), 200)
+  for url in ['/', '/search?q=cathode']:
+    soup = BeautifulSoup(get(url).text, 'html.parser')
+    js_files = [script['src'] for script in soup.find_all('script', src=True)]
+    js_files = filter(lambda x:x.startswith('/'), js_files)
+    for js in js_files:
+      assert_code(get(js), 200)
 
 ####### Other pages
 def test_redirects_clue():
