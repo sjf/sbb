@@ -11,6 +11,8 @@ def set_env_globals(env: Environment) -> None:
     config['CSS_VERSION'] = shell('git rev-parse HEAD')
   except Exception:
     config['CSS_VERSION'] = read('git.txt')
+  if not config['CSS_VERSION']:
+    raise Exception('Couldnt get CSS version')
 
   env.globals.update(
     DEV=config['DEV'],

@@ -31,7 +31,6 @@ def cp_file(file: str, dest: str) -> None:
     url_path = joinp(url_path,basename(file))
   log(f"Copied {file} to {url(url_path)}")
 
-
 class Generator:
   def __init__(self):
     self.db = DB()
