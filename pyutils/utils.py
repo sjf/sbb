@@ -93,8 +93,10 @@ def percent(n,d):
   pc = int((n / d) * 100)
   return f'{pc}%'
 
-def smquote(s: str) -> str:
+def smquote(s: str, single=False) -> str:
   """ Smart quote. """
+  if single:
+    return f"‘{s}’"
   return f"“{s}”"
 
 def file_line_reader(file_path):

@@ -6,6 +6,7 @@ from model import *
 from text_templates import *
 
 def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
+  """ Create a clue for an answer when the NYT does not have one. """
   if not defs.has_def:
     return None
   # TODO: Don't produce clue text that contains the word.
@@ -45,7 +46,7 @@ def get_prefix_counts(words: List[str],
       longest[p1] = count
   return longest
 
-def get_prefix_hints(words: List[str], max_hints=4) -> List[Tuple[int,str]]:
+def get_prefix_hints(words: List[str], max_hints=4) -> List[Hint]:
   """ Returns a list of scored hints relating to the prefixes/suffixes. They are scored by
     the length of the prefix/suffix and the number of occurrences."""
   result = []
@@ -60,12 +61,15 @@ def get_prefix_hints(words: List[str], max_hints=4) -> List[Tuple[int,str]]:
     for prefix,count in prefix_counts.items():
       verb = 'start' if is_prefix else 'end'
       score = len(prefix) * count
-      result.append((score, render_text(PREFIX_TEMPLATES, count=count, verb=verb, prefix=smquote(prefix))))
+      text = render_text(PREFIX_TEMPLATES, count=count, verb=verb, prefix=smquote(prefix))
+      hint_words = filterl(lambda x:x.startswith(prefix) if is_prefix else x.endswith(prefix), words)
+      result.append(Hint(score=score, text=text, words=hint_words))
   result = sorted(result, reverse=True)
   result = result[:max_hints]
   return result
 
 def get_tag_values(json_object: Any, target_key: str) -> List[str]:
+  """ Get all the values in the JSON with the key `target_key. """
   result = []
   def parse_json_recursively(json_object, target_key):
     if type(json_object) is dict and json_object:
@@ -132,7 +136,7 @@ def get_etymology(defs: GDefinitions) -> Optional[str]:
       return lang
   return None
 
-def get_et_hints(answers: List[GAnswer], min_count=2) -> List[Tuple[int,str]]:
+def get_et_hints(answers: List[GAnswer], min_count=2) -> List[Hint]:
   counter:Dict[str,int] = Counter()
   words:Dict[str,List[str]] = defaultdict(list)
   for answer in answers:
@@ -145,7 +149,8 @@ def get_et_hints(answers: List[GAnswer], min_count=2) -> List[Tuple[int,str]]:
     if count < min_count:
       continue
     score = sum(map(len, words[lang]))
-    result.append((score, render_text(ET_TEMPLATES, count=count, lang=lang)))
+    text = render_text(ET_TEMPLATES, count=count, lang=lang)
+    result.append(Hint(score=score, text=text, words=words[lang]))
   result = sorted(result, reverse=True)
   return result
 
@@ -184,14 +189,16 @@ def filter_usage(usage: List[str]) -> bool:
   #   return False
   # return True
 
-def get_usage_hints(answers: List[GAnswer], min_count=1) -> List[Tuple[int,str]]:
+def get_usage_hints(answers: List[GAnswer], min_count=1) -> List[Hint]:
   counter:Dict[str,int] = Counter()
   words:Dict[str,List[str]] = defaultdict(list)
   for answer in answers:
     usage = get_usage(answer.definitions)
-    if usage:
-      counter[usage] += 1
-      words[usage].append(answer.word)
+    if not usage:
+      continue
+    counter[usage] += 1
+    words[usage].append(answer.word)
+
   result = []
   for usage,count in counter.items():
     if count < min_count:
@@ -201,21 +208,18 @@ def get_usage_hints(answers: List[GAnswer], min_count=1) -> List[Tuple[int,str]]
       text = render_text(USAGE_TEMPLATES_SINGLE, count=count, usage=usage)
     else:
       text = render_text(USAGE_TEMPLATES, count=count, usage=usage)
-    result.append((score, text))
+    result.append(Hint(score=score, text=text, words=words[usage]))
   result = sorted(result, reverse=True)
   return result
 
-def get_puzzle_hints(answers: List[GAnswer]) -> List[str]:
+def get_puzzle_hints(answers: List[GAnswer]) -> List[Hint]:
   hints = []
   words = mapl(lambda x:x.word, answers)
   hints.extend(get_prefix_hints(words))
   hints.extend(get_et_hints(answers))
   hints.extend(get_usage_hints(answers))
   hints = sorted(hints, reverse=True)
-  # if hints:
-  #   print(hints)
-  #   print()
-  return mapl(lambda x:x[1], hints) # remove score
+  return hints
 
 def parse_dict_entry(deff: GDefinition) -> None:
   fromm = deff.retrieved_from

@@ -200,7 +200,7 @@ class Generator:
     else:
       return 'symbols'
 
-  def generate_clue_archives(self) -> None:
+  def generate_clue_archives(self, n_per_page=50) -> None:
     answers = self.db.fetch_ganswers()
     answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
     by_prefix = defaultdict(list)
@@ -218,21 +218,36 @@ class Generator:
         return (2, prefix)
 
     prefixes = sorted(by_prefix.keys(), key=prefix_key)
-    pages = mapl(lambda p:url_for('clues', p), prefixes)
+    pages = mapl(lambda p:url_for('clues', p, 1), prefixes)
 
     template = self.env.get_template('clue_archive.html')
     for prefix, answers in sorted(by_prefix.items(), key=lambda x:prefix_key(x[0])):
-      answers = sorted(answers, key=lambda x:x.text)
-      lastmod = max(map(lambda x:x.puzzle_date, answers))
-      url = url_for('clues', prefix)
-      rendered = template.render(
-        url=url,
-        answers=answers,
-        prefix=prefix,
-        alphabet=prefixes,
-        pagination=PaginateList(pages=pages, current=url),
-        canon_url=url)
-      self.output(url, rendered, lastmod)
+      n_pages = ceil(len(answers) / n_per_page)
+      sub_pages = mapl(lambda n:url_for('clues', prefix, n), range(1, n_pages+1))
+      for i in range(n_pages):
+        page_answers = answers[i*n_per_page:(i+1)*n_per_page]
+        page_answers = sorted(page_answers, key=lambda x:x.text)
+        lastmod = max(map(lambda x:x.puzzle_date, answers))
+        url = url_for('clues', prefix, i+1)
+        rendered = template.render(
+          url=url,
+          answers=page_answers,
+          prefix=prefix,
+          alphabet=prefixes,
+          pagination=PaginateList(pages=sub_pages, current=url),
+          canon_url=url)
+        self.output(url, rendered, lastmod)
+
+    template = self.env.get_template('clue_archive_index.html')
+    url = '/clues/index.html'
+    prefix_counts = [ Prefix(prefix=k,count=len(v)) for k,v in sorted(by_prefix.items(), key=lambda x: prefix_key(x[0])) ]
+    log('Clue pages: ' + joinl(map(lambda x: f'{x.prefix.upper()}: {ceil(x.count/n_per_page)}', prefix_counts), sep=', '))
+    rendered = template.render(
+      url=url,
+      canon_url=url,
+      prefixes=prefix_counts,
+      lastmod='2025-02-26')
+    self.output(url, rendered, lastmod)
 
   def generate_puzzle_archives(self) -> None:
     # Group puzzles by year and month
@@ -302,6 +317,11 @@ class Generator:
 class Page:
   path: str
   lastmod: Optional[str]
+@dataclass
+
+class Prefix:
+  prefix: str
+  count: int
 
 if __name__ == '__main__':
   generator = Generator()

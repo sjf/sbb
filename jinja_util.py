@@ -15,12 +15,13 @@ def set_env_globals(env: Environment) -> None:
     url_for=url_for,
     format_date=format_date,
     sort_by_clue=sort_by_clue,
+    smquote=smquote,
     joinl=joinl,
     split_by_start=split_by_start,
     get_content_group=get_content_group)
   env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
 
-def url_for(o: Any, arg=None) -> str:
+def url_for(o: Any, arg1=None, arg2=None) -> str:
   if type(o) == GPuzzle:
     return f"/puzzle/{o.date}"
 
@@ -38,14 +39,14 @@ def url_for(o: Any, arg=None) -> str:
     return o.url
 
   if o == 'clues':
-    if not arg:
+    if not arg1 or not arg2:
       raise Exception("Unhandled url, clues archive needs arg")
-    return '/clues/' + arg
+    return f'/clues/{arg1}/{arg2}'
 
   if type(o) == GWordDefinition:
     return f"/definition/{o.word}"
 
-  raise Exception(f"Unhandled url_for '{o}' arg={arg}")
+  raise Exception(f"Unhandled url_for '{o}' arg1={arg1} arg2={arg2}")
 
 def get_content_group(url: str) -> str:
   prefixes = {
