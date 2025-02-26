@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './templates/**/*.html',  // Scan Jinja templates for class usage
-    './static_files/**/*.css'
+    './templates/**/*.html',
+    './static_files/**/*.css',
+    './static_files/**/*.js'
   ],
   theme: {
     extend: {
