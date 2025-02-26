@@ -239,6 +239,16 @@ class Generator:
           canon_url=url)
         self.output(url, rendered, lastmod)
 
+    template = self.env.get_template('clue_archive_index.html')
+    url = '/clues/index.html'
+    prefix_counts = [ Prefix(prefix=k,count=len(v)) for k,v in sorted(by_prefix.items(), key=lambda x: prefix_key(x[0])) ]
+    rendered = template.render(
+      url=url,
+      canon_url=url,
+      prefixes=prefix_counts,
+      lastmod='2025-02-26')
+    self.output(url, rendered, lastmod)
+
   def generate_puzzle_archives(self) -> None:
     # Group puzzles by year and month
     by_yearmonth = defaultdict(list)
@@ -307,6 +317,11 @@ class Generator:
 class Page:
   path: str
   lastmod: Optional[str]
+@dataclass
+
+class Prefix:
+  prefix: str
+  count: int
 
 if __name__ == '__main__':
   generator = Generator()

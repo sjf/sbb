@@ -26,8 +26,8 @@ TIMEOUT = config['PYTEST_TIMEOUT']
 VERIFY_SSL = config['VERIFY_SSL']
 def get(path, params={}, auth=None):
   url = BACKEND + path
-  response = requests.get(url, params, timeout=TIMEOUT, verify=VERIFY_SSL, auth=auth, headers=HEADERS, allow_redirects=False)
-  print(f"\nGET {response.url}")
+  print(f"\nGET {url}")
+  response = requests.get(url, params, timeout=TIMEOUT, verify=VERIFY_SSL, auth=auth, headers=HEADERS, allow_redirects=True)
   return response
 
 def post(path, body):
@@ -50,16 +50,12 @@ def assert_contains(response, text):
   assert_code(response, 200)
   assert text in response.text, f"Wanted '{text}'. Got:\n{dictl(response.headers)}\n\n{response.text}"
 
-def assert_results_same(expected_response, response):
-  assert response.status_code == expected_response.status_code
-
-  expected_results = get_results(expected_response)
-  results = get_results(response)
-  assert results == expected_results
-
-def get_results(response):
-  soup = BeautifulSoup(response.text, 'html.parser')
-  return soup.find_all('div', class_='book')
+def assert_same(url1, url2):
+  a = get(url1)
+  b = get(url2)
+  assert_code(a, 200)
+  assert_code(b, 200)
+  assert a.text == b.text
 
 ####### CUJs
 
@@ -71,7 +67,7 @@ def test_index_http_redirect():
   if config['IS_FLASK'] or config['IS_GUNICORN'] or BACKEND.startswith('http://'):
     # Flask and gunicorn don't listen on both ports.
     # Testing only with http means https is not available.
-    pytest.skip(f"Skipping http->https redirect test for backend:{BACKEND}")
+    pytest.skip(f"Skipping http->https redirect test for dev backend:{BACKEND}")
   https_url = BACKEND + '/test?foo=bar'
   http_url = https_url.replace('https://', 'http://', 1)
   response = requests.get(http_url, timeout=TIMEOUT, allow_redirects=False, headers=HEADERS)
@@ -123,6 +119,35 @@ def test_js():
   assert_contains(response, '')
 
 ####### Other pages
+def test_redirects_clue():
+  assert_same('/clue/', '/clues')
+  assert_same('/clue',  '/clues')
+
+def test_redirects_clues():
+  assert_same('/clues/', '/clues')
+
+  assert_same('/clues/d',  '/clues/d/1')
+  assert_same('/clues/d/', '/clues/d/1')
+
+def test_redirects_puzzle():
+  assert_same('/puzzle',  '/puzzle/latest')
+  assert_same('/puzzle/', '/puzzle/latest')
+
+def test_redirects_puzzles():
+  assert_same('/puzzles',  '/puzzles/latest')
+  assert_same('/puzzles/', '/puzzles/latest')
+
+def test_no_redirects():
+  assert_code(get('/clues/abc'), 404)
+  assert_code(get('/clues/ab/c'), 404)
+  assert_code(get('/puzzles/abc'), 404)
+  assert_code(get('/puzzle/abc'), 404)
+
+def test_internal_pages():
+  assert_code(get('/err/500.html'), 404)
+
+####### Test URL redirects
+
 
 def test_health():
   response = get('/health')
