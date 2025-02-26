@@ -8,7 +8,7 @@ from model import *
 def set_env_globals(env: Environment) -> None:
   config['JS_VERSION'] = md5('static_files/static/script.js')
   try:
-    config['CSS_VERSION'] = shell('git rev-parse HEAD')
+    config['CSS_VERSION'] = shell('git rev-parse HEAD', with_output=True).strip()
   except Exception:
     config['CSS_VERSION'] = read('git.txt')
   if not config['CSS_VERSION']:

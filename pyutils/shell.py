@@ -8,18 +8,19 @@ from .log import log
 
 #### Shell Utils ###
 
-def shell(cmd, env=None, verbose=True):
+def shell(cmd, env=None, verbose=True, with_output=False):
   if verbose:
     log(f"Running '{cmd}'")
-  # try:
-  # check=True is equivalent of set -e, fail the script if this command fails.
+  kwargs = {
+    'shell': True,
+    'check': True, # check=True is equivalent of set -e, fail the script if this command fails.
+    'capture_output': with_output,
+    'text': True, # output as text, as opposed to bytes.
+  }
   if env:
-    subprocess.run(cmd, shell=True, check=True, env=env)
-  else:
-    subprocess.run(cmd, shell=True, check=True)
-  # except subprocess.CalledProcessError:
-  # print(f"Command failed: {e}")
-  # sys.exit(1)
+    kwargs['env'] = env
+  result = subprocess.run(cmd, **kwargs)
+  return result.stdout
 
 def read(f):
   if not f:
