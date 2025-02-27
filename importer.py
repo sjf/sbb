@@ -6,6 +6,7 @@ import unicodedata
 import re
 import requests
 import requests_cache
+import mw
 from requests.adapters import HTTPAdapter
 from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
@@ -91,7 +92,7 @@ class Importer:
     puzzles = self.db.fetch_puzzles_without_hints()
     for puzzle in puzzles:
       assert not puzzle.hints
-      hints = get_puzzle_hints(puzzle.answers)
+      hints = mw.get_puzzle_hints(puzzle.answers)
       puzzle.hints = hints
       self.db.upsert_gpuzzle(puzzle)
       print(f'Updated {puzzle.date}, {len(hints)} hints')

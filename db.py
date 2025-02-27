@@ -244,7 +244,7 @@ class DB:
     self.cursor.execute(query.format(limit_term=limit_term, where_term=where_term))
     result = []
     for row in self.cursor.fetchall():
-      print(dict(row))
+      # print(dict(row))
       answers = by_date[row['date']]
       hints = self.deserialize_hints(row['hints'])
       puzzle = GPuzzle(

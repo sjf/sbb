@@ -46,6 +46,12 @@ def mock_es(fs) -> Generator:
     }
     yield {"search": mock_search, "update": mock_update}
 
+@pytest.fixture
+def mock_mw() -> Generator:
+  with patch("mw.get_puzzle_hints") as mock_get_puzzle_hints:
+    mock_get_puzzle_hints.return_value = HS_1
+    yield mock_get_puzzle_hints
+
 ##### Test Data for files in test-data/ #####
 FILE_1 = 'scraped/puzzle-1.json'
 FILE_1_NOCLUES = 'scraped/puzzle-1-early.json'
@@ -139,6 +145,10 @@ GDEF1_A = GDefinitions(word=W1_A,
       source_url='https://merrian-webster.com/dict/outfoxed',
       word_types=[GWordTypeDefinition(word_type='noun', meanings=[])])
   ])
+
+H1_A = Hint(score=10, text='These words have x in the middle.', words=[W1_A, W1_B])
+H1_B = Hint(score=9,  text='This word is from Japanese.',       words=[W1_C])
+HS_1 = [H1_A, H1_B]
 
 ## Storage classes
 P_1 = Puzzle(date=D1, center_letter=C1, outer_letters=L1, hints='')
