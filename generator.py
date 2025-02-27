@@ -11,11 +11,14 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
 from pyutils.settings import config
 from pyutils import *
-from jinja_util import *
+from site_util import *
 from model import *
 from db import *
 
-OUTPUT_DIR = joinp(config['SITE_DIR'], f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
+if config['FULL']:
+  OUTPUT_DIR = joinp(config['SITE_DIR'], f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
+else:
+  OUTPUT_DIR = joinp(config['SITE_DIR'], 'current')
 
 def url(path: str) -> str:
   return joinp(config['DOMAIN'], path)
@@ -58,15 +61,16 @@ class Generator:
     self.switch_to_serving()
 
   def switch_to_serving(self) -> None:
-    log(f"*** Switching serving '{config['SERVING_DEST']}' to '{OUTPUT_DIR}' ***")
-    self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
+    if config['FULL']:
+      log(f"*** Switching serving '{config['SERVING_DEST']}' to '{OUTPUT_DIR}' ***")
+      self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
 
-    s = config['SITE_DIR']
-    dirs = ls(f'{s}/sbb-*')
-    dirs = sorted(dirs, reverse=True)
-    for d in dirs[6:]: # keep last six generations
-      log(f"Removing old generated site {d}")
-      rm_rf(d)
+      s = config['SITE_DIR']
+      dirs = ls(f'{s}/sbb-*')
+      dirs = sorted(dirs, reverse=True)
+      for d in dirs[6:]: # keep last six generations
+        log(f"Removing old generated site {d}")
+        rm_rf(d)
 
   def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
     if not config['DEV'] and config['HTML_MIN']: # Only in prod and when enable because this is slow.

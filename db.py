@@ -36,6 +36,16 @@ class DB:
       self.conn.executescript(read(SCHEMA))
       self.conn.commit()
 
+  def __del__(self):
+    try:
+      self.conn.commit()
+      self.conn.close()
+    except Exception as e:
+      print(f"Error committing DB: {e}")
+
+  def commit(self) -> None:
+    self.conn.commit()
+
   def insert(self, dataclass_instance, ignore_dups=False, replace_term='') -> int:
     data = DB.to_dict(dataclass_instance)
     table_name = MAPPING[type(dataclass_instance)]
@@ -60,12 +70,23 @@ class DB:
     last_id = prev[0]
     return last_id
 
-  def upsert_puzzle(self, puzzle: Puzzle) -> int:
-    columns = DB.to_dict(puzzle).keys() - 'id'
-    updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
-    replace_term = f"ON CONFLICT(date) DO UPDATE SET {updates}"
+  def upsert_gpuzzle(self, p: GPuzzle) -> int:
+    puzzle = Puzzle(
+      date=p.date,
+      center_letter=p.center_letter,
+      outer_letters=joinl(p.outer_letters,sep=','),
+      hints=json.dumps([ asdict(h) for h in p.hints ]))
+    return self.upsert_puzzle(puzzle)
 
-    last_id = self.insert(puzzle, replace_term=replace_term)
+  def upsert_puzzle(self, puzzle: Puzzle, ignore_dups: bool=False) -> int:
+    columns = DB.to_dict(puzzle).keys() - 'id'
+    if ignore_dups:
+      replace_term = ''
+    else:
+      updates = joinl([ f"{col} = excluded.{col}" for col in columns], sep=', ')
+      replace_term = f"ON CONFLICT(date) DO UPDATE SET {updates}"
+
+    last_id = self.insert(puzzle, ignore_dups=ignore_dups, replace_term=replace_term)
     return self._last_inserted_or_get_id(last_id, 'puzzles', {'date': puzzle.date})
 
   def upsert_answer(self, answer: Answer) -> int:
@@ -205,25 +226,27 @@ class DB:
     result = sorted(result)
     return result
 
-  def fetch_gpuzzles(self, limit=None, with_hints=True) -> List[GPuzzle]:
+  def fetch_gpuzzles(self, limit=None, where_term="") -> List[GPuzzle]:
     # The answers group by url.
     by_date = defaultdict(list)
     for answer in self.fetch_ganswers():
       by_date[answer.puzzle_date].append(answer)
 
     query = """
-      SELECT date, center_letter, outer_letters
+      SELECT *
       FROM puzzles p
+      {where_term}
       ORDER BY p.date DESC
       {limit_term};
     """
     limit_term = f"LIMIT {limit}" if limit else ""
-
-    self.cursor.execute(query.format(limit_term = limit_term))
+    # print(query.format(limit_term=limit_term, where_term=where_term))
+    self.cursor.execute(query.format(limit_term=limit_term, where_term=where_term))
     result = []
     for row in self.cursor.fetchall():
+      print(dict(row))
       answers = by_date[row['date']]
-      hints = get_puzzle_hints(answers) if with_hints else []
+      hints = self.deserialize_hints(row['hints'])
       puzzle = GPuzzle(
           date=row['date'],
           center_letter=row['center_letter'],
@@ -232,6 +255,10 @@ class DB:
           hints=hints)
       result.append(puzzle)
     return result
+
+  def fetch_puzzles_without_hints(self) -> List[GPuzzle]:
+    where_term = "WHERE hints IS ''"
+    return self.fetch_gpuzzles(where_term=where_term)
 
   def fetch_undefined_words(self) -> List[str]:
     query = """
@@ -285,6 +312,13 @@ class DB:
       return GDefinitions(word=word, defs=[])
     data = json.loads(gdefs_json)
     return dacite.from_dict(data_class=GDefinitions, data=data)
+
+  @staticmethod
+  def deserialize_hints(hints_json: str) -> List[Hint]:
+    if not hints_json:
+      return []
+    data = json.loads(hints_json)
+    return [ dacite.from_dict(data_class=Hint, data=o) for o in data ]
 
   @staticmethod
   def columns(dataclass_instance) -> List[str]:

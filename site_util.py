@@ -5,7 +5,7 @@ from pyutils.settings import config
 from pyutils import *
 from model import *
 
-def set_env_globals(env: Environment) -> None:
+def set_env_globals(env: Optional[Environment]) -> None:
   config['JS_VERSION'] = md5('static_files/static/script.js')
 
   try:
@@ -13,26 +13,30 @@ def set_env_globals(env: Environment) -> None:
   except Exception:
     if not exists('git.txt'):
       raise Exception(f"Can't open git.txt in {realpath('.')}")
-    config['CSS_VERSION'] = read('git.txt')
-
+    config['CSS_VERSION'] = read_value('git.txt')
   if not config['CSS_VERSION']:
     raise Exception('Couldnt get CSS version')
 
-  env.globals.update(
-    DEV=config['DEV'],
-    domain=config['DOMAIN'],
-    js_version=config['JS_VERSION'],
-    css_version=config['CSS_VERSION'],
-    config=config,
-    current_year=datetime.datetime.now().year,
-    url_for=url_for,
-    format_date=format_date,
-    sort_by_clue=sort_by_clue,
-    smquote=smquote,
-    joinl=joinl,
-    split_by_start=split_by_start,
-    get_content_group=get_content_group)
-  env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
+  if not config['FULL'] and not exists(joinp(config['SITE_DIR'], 'current')):
+    log_warn('Incremental generate requested, but site is not already generated, switching to FULL=True')
+    config['FULL'] = False
+
+  if env:
+    env.globals.update(
+      DEV=config['DEV'],
+      domain=config['DOMAIN'],
+      js_version=config['JS_VERSION'],
+      css_version=config['CSS_VERSION'],
+      config=config,
+      current_year=datetime.datetime.now().year,
+      url_for=url_for,
+      format_date=format_date,
+      sort_by_clue=sort_by_clue,
+      smquote=smquote,
+      joinl=joinl,
+      split_by_start=split_by_start,
+      get_content_group=get_content_group)
+    env.filters['json_esc'] = lambda s:json.dumps(s)[1:-1]
 
 def url_for(o: Any, arg1=None, arg2=None) -> str:
   if type(o) == GPuzzle:

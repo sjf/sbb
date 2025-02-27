@@ -10,7 +10,7 @@ from http import HTTPStatus
 from pyutils import *
 from pyutils.settings import config
 from gunicorn_util import *
-from jinja_util import http_error_messages
+from site_util import http_error_messages
 from es import ElasticSearch
 from query import Query
 

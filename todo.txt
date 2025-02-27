@@ -13,6 +13,9 @@ o puzzle pages need to be unique, add stats, numner of words, number of panagram
   -> show not included words
   -> show how common words are
 
+o Hints:
+  compound words are hard to find, e.g. lawman.
+
 o Search:
   2 You should be able to search by puzzle letters.
   3 You should be able to search for answer, and see all clues and puzzles where it occurred.

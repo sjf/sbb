@@ -1,0 +1,34 @@
+{
+  "id": 26969,
+  "center_letter": "l",
+  "outer_letters": "bgimor",
+  "pangrams": [
+    "imbroglio"
+  ],
+  "answers": [
+    "igloo",
+    "olio"
+  ],
+  "print_date": "2024-12-29",
+  "editor": "Sam Ezersky",
+  "clues": [
+    {
+      "word": "imbroglio",
+      "text": "An embarrassing situation",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/18/crosswords/spelling-bee-forum.html#permid=138370070"
+    },
+    {
+      "word": "igloo",
+      "text": "Dome shaped snow house",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/18/crosswords/spelling-bee-forum.html#permid=138370070"
+    },
+    {
+      "word": "olio",
+      "text": "Hodge lodge",
+      "user": "Jenn E",
+      "url": "https://www.nytimes.com/2024/12/18/crosswords/spelling-bee-forum.html#permid=138370266"
+    }
+  ]
+}

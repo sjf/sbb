@@ -11,6 +11,7 @@ from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
 from pyutils import *
+from pyutils.settings import config
 from model import *
 from db import *
 from storage import *
@@ -41,10 +42,11 @@ class Importer:
         id = content['id'],
         date = date,
         center_letter = content['center_letter'].upper(),
-        outer_letters = list(map(lambda x:x.upper(), content['outer_letters'])))
+        outer_letters = list(map(lambda x:x.upper(), content['outer_letters'])),
+        hints = "") # The defintions are needed before hints can be created.
       # Re-import everything, even if rows already exist.
       # Puzzles are upate on their post day with clues later.
-      puzzle_id = self.db.upsert_puzzle(puzzle)
+      puzzle_id = self.db.upsert_puzzle(puzzle, ignore_dups=True) # don't overwrite existing row.
 
       if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:
@@ -74,7 +76,7 @@ class Importer:
             is_pangram = is_pangram)
           self.db.upsert_answer(answer)
 
-      self.db.conn.commit()
+      self.db.commit()
       n += 1
       log(f"Imported {puzzle.date} from {file}")
     log(f"Imported {n} files.")
@@ -84,6 +86,17 @@ class Importer:
     not_found = self.import_from_dict_apis(undefined)
     if not_found:
       log_error(f"Missing definitions for {joinl(not_found, sep=', ')}")
+
+  def generate_hints(self) -> None:
+    puzzles = self.db.fetch_puzzles_without_hints()
+    for puzzle in puzzles:
+      assert not puzzle.hints
+      hints = get_puzzle_hints(puzzle.answers)
+      puzzle.hints = hints
+      self.db.upsert_gpuzzle(puzzle)
+      print(f'Updated {puzzle.date}, {len(hints)} hints')
+    self.db.commit()
+    log(f"Created hints for {len(puzzles)} puzzles.")
 
   def import_from_dict_apis(self, words: List[str]) -> List[str]:
     if not words: return []
@@ -98,7 +111,7 @@ class Importer:
       else:
         missing.append(word)
       self.db.insert_definition(d)
-    self.db.conn.commit() # Commit at the end because this is very slow otherwise.
+    self.db.commit() # Commit at the end because this is very slow otherwise.
     log(f"Got definitions for {n} words, could not find {len(missing)}: {joinl(missing, sep=', ')}.")
     return missing
 
@@ -167,4 +180,5 @@ if __name__ == '__main__':
     sys.exit(0)
   importer.import_files(files)
   importer.import_definitions()
+  importer.generate_hints()
   print(importer.requester.cache_status())

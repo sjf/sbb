@@ -1,0 +1,33 @@
+{
+  "id": 14869,
+  "center_letter": "d",
+  "outer_letters": "tefoux",
+  "pangrams": [
+    "outfoxed"
+  ],
+  "answers": [
+    "tofu",
+    "detox"
+  ],
+  "print_date": "2024-12-24",
+  "clues": [
+    {
+      "word": "outfoxed",
+      "text": "Defeated (a woodland creature)",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
+    },
+    {
+      "word": "detox",
+      "text": "Go cold turkey",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
+    },
+    {
+      "word": "tofu",
+      "text": "Soft, hard, or pressed soy bean curd",
+      "user": "Kitt Richards 👩🏻‍💻💭",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506071"
+    }
+ ]
+}

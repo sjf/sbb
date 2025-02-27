@@ -150,6 +150,8 @@ class GCluePage:
   @property
   def clue_answers(self) -> List[GClueAnswer]:
     return sorted(self._clue_answers)
+  def __lt__(self, other):
+    return (self.url, self.clue_answers) < (other.url, other.clue_answers)
 
 @dataclass
 class GWordDefinition:
