@@ -279,6 +279,15 @@ class DB:
     result = mapl(lambda x:x[0], rows)
     return result
 
+  def is_imported(self, name: str) -> bool:
+    query = "SELECT 1 FROM imported_files WHERE name = ? LIMIT 1"
+    self.cursor.execute(query, (name,))
+    return self.cursor.fetchone() is not None
+
+  def mark_as_imported(self, name: str) -> None:
+    query = "INSERT INTO imported_files (name) VALUES (?) ON CONFLICT(name) DO NOTHING"
+    self.cursor.execute(query, (name,))
+
   @staticmethod
   def from_dict(cls, data: Dict):
     for f in fields(cls):

@@ -33,3 +33,7 @@ CREATE TABLE definitions (
   ,definitions TEXT NOT NULL -- JSON serialized GDefinition
 );
 
+CREATE TABLE imported_files (
+  name TEXT PRIMARY KEY
+);
+

@@ -31,16 +31,16 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
 def test_reimportfiles_succeeds(temp_db, fake_files, mock_es):
   importer = imp.Importer()
 
-  importer.import_files(FILES, archive=False)
+  importer.import_files(FILES)
   importer.import_files(FILES)
 
-  mock_es["update"].assert_has_calls(ES_UPDATES + ES_UPDATES)
+  mock_es["update"].assert_has_calls(ES_UPDATES)
   assert importer.db.fetch_gpuzzles() == GPS
   assert importer.db.fetch_ganswers() == AS
 
 def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   importer = imp.Importer()
-  importer.import_files([FILE_1_NOCLUES], archive=False)
+  importer.import_files([FILE_1_NOCLUES])
 
   assert mock_es["update"].call_count == 0
   assert importer.db.fetch_ganswers() == AS_NC_1
@@ -51,15 +51,29 @@ def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   assert clue_pages == []
 
   # Reimport with clues.
-  importer.import_files([FILE_1], archive=False)
+  importer.import_files([FILE_1])
 
   mock_es["update"].assert_has_calls(ES_UPDATES_1)
   assert importer.db.fetch_ganswers() == AS_1
   assert importer.db.fetch_gpuzzles() == [GP_1]
 
+def test_files_not_reimported(temp_db, fake_files, mock_es):
+  importer = imp.Importer()
+  importer.import_files([FILE_1_NOCLUES, FILE_2])
+
+  mock_es["update"].assert_has_calls(ES_UPDATES_2)
+  assert not importer.db.is_imported(FILE_1_NOCLUES)
+  assert importer.db.is_imported(FILE_2)
+
+  importer.import_files([FILE_1_NOCLUES, FILE_2])
+
+  mock_es["update"].assert_has_calls(ES_UPDATES_2)
+  assert not importer.db.is_imported(FILE_1_NOCLUES)
+  assert importer.db.is_imported(FILE_2)
+
 def test_import_definitions(temp_db, fake_files, mock_es):
   importer = imp.Importer()
-  importer.import_files([FILE_1], archive=False)
+  importer.import_files([FILE_1])
   assert importer.db.fetch_undefined_words() == sorted([W1_A, W1_B, W1_C])
 
   importer.import_definitions()

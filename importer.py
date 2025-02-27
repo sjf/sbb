@@ -20,7 +20,6 @@ from requester import *
 from es import *
 
 DIR = 'scraped/*.json'
-ARCHIVE = 'archive/'
 WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
 DICT_APIS = [MW_API, WIKTIONARY_API]
@@ -31,9 +30,10 @@ class Importer:
     self.db = DB()
     self.es = ElasticSearch()
 
-  def import_files(self, files, archive=True) -> None:
+  def import_files(self, files) -> None:
     # Elastic search needs the entries to be inserted in order, so the more recent entry have precedence.
     files = sorted(files)
+    files = filter(lambda f:not self.db.is_imported(f), files)
     n = 0
     for file in files:
       log(f"Importing {file}")
@@ -67,6 +67,7 @@ class Importer:
             clue_id = clue_id,
             is_pangram = is_pangram)
           self.db.upsert_answer(answer)
+          self.db.mark_as_imported(file) # Don't reimport this file.
       else:
         # Clues are not present in the json.
         for word in content['answers'] + content['pangrams']:
@@ -76,10 +77,8 @@ class Importer:
             clue_id = None,
             is_pangram = is_pangram)
           self.db.upsert_answer(answer)
-
       self.db.commit()
       n += 1
-      log(f"Imported {puzzle.date} from {file}")
     log(f"Imported {n} files.")
 
   def import_definitions(self) -> None:
@@ -129,11 +128,6 @@ class Importer:
       return result
     parse_dict_entry(result)
     return result
-
-  def archive_file(self,file):
-    if not exists_dir(ARCHIVE):
-      mkdir(ARCHIVE)
-    mv(file, ARCHIVE)
 
 def get_clue_url(text: str) -> str:
   safe_text = to_path_safe_name(text)
