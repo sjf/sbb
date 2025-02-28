@@ -1,200 +1,201 @@
 <div class="flex justify-center flex-col items-center relative">
-<div>
-  <p class="text-center text-xl">Unlock the Spelling Bee</p>
-  <p class="text-center text-lg">
-    Stuck and can't reach Queen Bee? See the solution or find out the answers to the NYT clues.
-  </p>
-</div>
-
-<div class="sb-hive w-2/3 max-w-[300px]">
-  <div class="hive">
-    <svg class="hive-cell center" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.center_letter}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[0]}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[1]}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[2]}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[3]}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[4]}}</text>
-    </svg>
-    <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
-      <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
-      <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[5]}}</text>
-    </svg>
+  <div>
+    <p class="text-center text-xl">Unlock the Spelling Bee</p>
+    <p class="text-center text-lg">
+      Stuck and can't reach Queen Bee? See the solution or find out the answers to the NYT clues.
+    </p>
   </div>
-</div>
 
-<!-- Buttons to Reveal Clues and Answers -->
-<div class="w-full flex justify-center space-x-6 mt-2 sm:mt-1">
-  <button id="puzzle-show-clues"
-          data-target="clues"
-          data-opposite-button="puzzle-show-answers"
-          onclick="toggleVisible(this)"
-          class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
-    <span>Show Clues</span>
-  </button>
-
-  <button id="puzzle-show-answers"
-          data-target="answers"
-          data-opposite-button="puzzle-show-clues"
-          onclick="toggleVisible(this)"
-          class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
-    <span>Show Answers</span>
-  </button>
-</div>
-
-<!-- Hidden Sections for Clues and Answers -->
-<div id="answers" class="hidden mt-4 w-full">
-  <h2 class="text-2xl font-semibold mb-2">Answers</h2>
-  <div class="columns-2 md:columns-3 space-y-0">
-    {% for ls in split_by_start(puzzle.answers) %}
-      {% for answer in ls %}
-        <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
-          <a  href="/definition/{{ answer.word }}"
-              id="puzzle-answer-definition"
-              class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
-        </div>
-      {% endfor %}
-      {% if not loop.last %}<div class="pt-4"></div>{% endif %}
-    {% endfor %}
-  </div>
-</div>
-
-<div id="clues" class="hidden mt-4">
-  <h2 class="text-2xl font-semibold mb-2">Clues</h2>
-  <div class="space-y-3">
-    {% if not puzzle.has_all_clues() %}
-    <div class="text-lg italic mb-4">These clues were created by us, ahead of the NYT clues which are not available until 9AM EST.</div>
-    {% endif %}
-    {% for answer in sort_by_clue(puzzle.answers) %}
-    <div class="grid grid-cols-1">
-      {% if answer.text %}
-        <div class="text-lg">
-          {% if answer.url %}
-            <a  href="{{ answer.url }}"
-                class="hover:underline"
-                id="puzzle-clue-page">{{ answer.text }}</a>
-          {% else %}
-            {{ answer.text }} <!-- no url temporary clues -->
-          {% endif %}
-        </div>
-      {% else %}
-        <div class="text-lg italic text-gray-500">No clue available</div>
-      {% endif %}
-      {% with word=answer.word %}
-        {% include "sub/word_boxes.html" %}
-      {% endwith %}
+  <div class="sb-hive w-2/3 max-w-[300px]">
+    <div class="hive">
+      <svg class="hive-cell center" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.center_letter}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[0]}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[1]}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[2]}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[3]}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[4]}}</text>
+      </svg>
+      <svg class="hive-cell outer" viewBox="0 0 120 103.92304845413263">
+        <polygon class="cell-fill" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+        <text class="cell-letter" x="50%" y="50%" dy="0.35em">{{puzzle.outer_letters[5]}}</text>
+      </svg>
     </div>
-    {% endfor %}
   </div>
-</div>
 
-<!-- Hints  -->
-<div class="mt-4 w-full md:max-w-[400px] mx-auto flex-col items-center">
-  <div class="flex flex-row items-start">
-    <h2 class="text-2xl font-semibold mb-2 inline">Hints</h2>
-      <button id="puzzle-show-hints"
-            data-target="hints"
+  <!-- Buttons to Reveal Clues and Answers -->
+  <div class="w-full flex justify-center space-x-6 mt-2 sm:mt-1">
+    <button id="puzzle-show-clues"
+            data-target="clues"
+            data-opposite-button="puzzle-show-answers"
             onclick="toggleVisible(this)"
-            class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
-      <span>▼</span>
+            class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
+      <span>Show Clues</span>
+    </button>
+
+    <button id="puzzle-show-answers"
+            data-target="answers"
+            data-opposite-button="puzzle-show-clues"
+            onclick="toggleVisible(this)"
+            class="w-full border text-center py-2 px-3 rounded-lg shadow-md text-yellow-600 border-yellow-570 font-semibold text-lg max-w-[200px]">
+      <span>Show Answers</span>
     </button>
   </div>
-  {% if puzzle.hints %}
-    <ul id="hints" class="list-disc pl-6 text-lg">
-      {% for hint in puzzle.hints %}
-        <li onclick="toggleHintAnswers(this)"
-            id="toggle-hint-answer"
-            data-target="hint-answers-{{ loop.index0 }}">{{ hint.text }}</li>
-        <div class="flex flex-row pt-1 min-h-[2em]">
-          <div class="inline-flex text-gray-500 pr-2 curser-pointer"
-               onclick="toggleHintAnswers(this)"
-               id="toggle-hint-answer"
-               data-target="hint-answers-{{ loop.index0 }}">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="size-6 hidden eye" role="img">
-              <title>Show</title>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                class="size-6 eye">
-              <title>Hide</title>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"/>
-            </svg>
+
+  <!-- Hidden Sections for Clues and Answers -->
+  <div id="answers" class="hidden mt-4 w-full">
+    <h2 class="text-2xl font-semibold mb-2">Answers</h2>
+    <div class="columns-2 md:columns-3 space-y-0">
+      {% for ls in split_by_start(puzzle.answers) %}
+        {% for answer in ls %}
+          <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
+            <a  href="/definition/{{ answer.word }}"
+                id="puzzle-answer-definition"
+                class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
           </div>
-          <div class="hidden opacity-0 transition-opacity duration-300" id="hint-answers-{{ loop.index0 }}">
-            {% for word in hint.words %}
-                <a  href="/definition/{{ word }}"
-                    id="hint-answer-definition"
-                    class="border-b-2 border-dashed border-gray-300 cursor-pointer py-1">
-                  {{ word }}</a>{% if not loop.last %},{% endif %}
-            {% endfor %}
-          </div>
-        </div>
+        {% endfor %}
+        {% if not loop.last %}<div class="pt-4"></div>{% endif %}
       {% endfor %}
-    </ul>
-  {% endif %}
-</div>
-
-<!-- Navigation Section -->
-<div class="w-full flex flex-row justify-between items-end sm:space-x-4 mt-4">
-  {% if prev %}
-  <a  href="{{url_for(prev)}}"
-      id="puzzle-prev"
-      class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
-    ⟨⟨ <span class="hidden sm:inline">{{format_date(prev.date)}}</span>
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
-    ⟨⟨ <span class="hidden sm:inline">>2025-01-01</span>
-  </span>
-  {% endif %}
-
-  <div class="flex flex-col items-center">
-    <label for="puzzle-date-picker" class="text-sm text-gray-700 mb-1">Jump to date:</label>
-    <input
-      id="puzzle-date-picker"
-      type="date"
-      value="{{puzzle.date}}"
-      max="{{max_date}}"
-      min="{{min_date}}"
-      onkeydown="return false"
-      class="border border-gray-300 rounded px-4 py-2">
+    </div>
   </div>
-  <script>
-    document.getElementById("puzzle-date-picker").addEventListener("change", function() {
-      const selectedDate = this.value; // Get the selected date (YYYY-MM-DD)
-      if (selectedDate) {
-        window.location.href = `/puzzle/${selectedDate}`; // Navigate to the new URL
-      }
-    });
-  </script>
 
-  {% if next_ %}
-  <a  href="{{url_for(next_)}}"
-      id="puzzle-next"
-      class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
-    <span class="hidden sm:inline">{{format_date(next_.date)}}</span> ⟩⟩
-  </a>
-  {% else %}
-  <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
-    <span class="hidden sm:inline">2025-01-01</span> ⟩⟩
-  </span>
-  {% endif %}
+  <div id="clues" class="hidden mt-4">
+    <h2 class="text-2xl font-semibold mb-2">Clues</h2>
+    <div class="space-y-3">
+      {% if not puzzle.has_all_clues() %}
+      <div class="text-lg italic mb-4">These clues were created by us, ahead of the NYT clues which are not available until 9AM EST.</div>
+      {% endif %}
+      {% for answer in sort_by_clue(puzzle.answers) %}
+      <div class="grid grid-cols-1">
+        {% if answer.text %}
+          <div class="text-lg">
+            {% if answer.url %}
+              <a  href="{{ answer.url }}"
+                  class="hover:underline"
+                  id="puzzle-clue-page">{{ answer.text }}</a>
+            {% else %}
+              {{ answer.text }} <!-- no url temporary clues -->
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="text-lg italic text-gray-500">No clue available</div>
+        {% endif %}
+        {% with word=answer.word %}
+          {% include "sub/word_boxes.html" %}
+        {% endwith %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Hints  -->
+  <div class="mt-4 w-full md:max-w-[400px] mx-auto flex-col items-center">
+    <div class="flex flex-row items-start">
+      <h2 class="text-2xl font-semibold mb-2 inline">Hints</h2>
+        <button id="puzzle-show-hints"
+              data-target="hints"
+              onclick="toggleVisible(this)"
+              class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
+        <span>▼</span>
+      </button>
+    </div>
+    {% if puzzle.hints %}
+      <ul id="hints" class="list-disc pl-6 text-lg">
+        {% for hint in puzzle.hints %}
+          <li onclick="toggleHintAnswers(this)"
+              id="toggle-hint-answer"
+              data-target="hint-answers-{{ loop.index0 }}">{{ hint.text }}</li>
+          <div class="flex flex-row pt-1 min-h-[2em]">
+            <div class="inline-flex text-gray-500 pr-2 curser-pointer"
+                 onclick="toggleHintAnswers(this)"
+                 id="toggle-hint-answer"
+                 data-target="hint-answers-{{ loop.index0 }}">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="size-6 hidden eye" role="img">
+                <title>Show</title>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="size-6 eye">
+                <title>Hide</title>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"/>
+              </svg>
+            </div>
+            <div class="hidden opacity-0 transition-opacity duration-300" id="hint-answers-{{ loop.index0 }}">
+              {% for word in hint.words %}
+                  <a  href="/definition/{{ word }}"
+                      id="hint-answer-definition"
+                      class="border-b-2 border-dashed border-gray-300 cursor-pointer py-1">
+                    {{ word }}</a>{% if not loop.last %},{% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <!-- Navigation Section -->
+  <div class="w-full flex flex-row justify-between items-end sm:space-x-4 mt-4">
+    {% if prev %}
+    <a  href="{{url_for(prev)}}"
+        id="puzzle-prev"
+        class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+      ⟨⟨ <span class="hidden sm:inline">{{format_date(prev.date)}}</span>
+    </a>
+    {% else %}
+    <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
+      ⟨⟨ <span class="hidden sm:inline">>2025-01-01</span>
+    </span>
+    {% endif %}
+
+    <div class="flex flex-col items-center">
+      <label for="puzzle-date-picker" class="text-sm text-gray-700 mb-1">Jump to date:</label>
+      <input
+        id="puzzle-date-picker"
+        type="date"
+        value="{{puzzle.date}}"
+        max="{{max_date}}"
+        min="{{min_date}}"
+        onkeydown="return false"
+        class="border border-gray-300 rounded px-4 py-2">
+    </div>
+    <script>
+      document.getElementById("puzzle-date-picker").addEventListener("change", function() {
+        const selectedDate = this.value; // Get the selected date (YYYY-MM-DD)
+        if (selectedDate) {
+          window.location.href = `/puzzle/${selectedDate}`; // Navigate to the new URL
+        }
+      });
+    </script>
+
+    {% if next_ %}
+    <a  href="{{url_for(next_)}}"
+        id="puzzle-next"
+        class="px-6 py-2 border rounded hover:bg-gray-100 w-auto text-center">
+      <span class="hidden sm:inline">{{format_date(next_.date)}}</span> ⟩⟩
+    </a>
+    {% else %}
+    <span class="px-6 py-2 border rounded text-gray-400 select-none w-auto text-center invisible">
+      <span class="hidden sm:inline">2025-01-01</span> ⟩⟩
+    </span>
+    {% endif %}
+  </div>
 </div>
