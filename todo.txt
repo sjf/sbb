@@ -1,3 +1,7 @@
+o on clue archive page, clue text is not selectable
+
+o puzzles/2024 this url should go somewhere
+
 o date picker should appear on puzzle archive page as well.
 
 o only regenerate last N days, with optional full re-generation.

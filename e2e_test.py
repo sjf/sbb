@@ -7,6 +7,7 @@ import pyutils
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
 from pyutils import *
+from testutils import *
 
 # These can be overridden by setting the env var.
 TEST_SETTINGS = {
@@ -86,27 +87,40 @@ def test_puzzles():
   response = get('/puzzles/latest')
   assert_contains(response, "NYT Spelling Bee")
 
-def test_puzzle():
-  response = get('/puzzle/2024-12-31')
-  assert_contains(response, "Spelling Bee from December 31, 2024")
-  assert_contains(response, "Poker entry fee")
-  assert_contains(response, "pentane")
-  assert_contains(response, "ive words")
-  assert_contains(response, "Italian")
+@pytest.mark.parametrize("url, title, clue, answer, hint1, hint2", [
+  pytest.param('/puzzle/2024-12-31',
+    "Spelling Bee from December 31, 2024", "Poker entry fee", "pentane",
+    "“ane” appears at the end of five words.", "You’ll find two words here that come from Italian.", marks=pytest.mark.live),
+  pytest.param('/puzzle/2024-12-29',
+    "Spelling Bee from December 29, 2024", "Hodge lodge", "olio",
+    "You can find two words that end with “lio”", "", marks=pytest.mark.testdata)
+])
+def test_puzzle(url, title, clue, answer, hint1, hint2):
+  response = get(url)
+  assert_contains(response, title)
+  assert_contains(response, clue)
+  assert_contains(response, answer)
+  assert_contains(response, hint1)
+  assert_contains(response, hint2)
 
 def test_puzzle_latest():
   response = get('/puzzle/latest')
   assert_contains(response, "NYT Spelling Bee")
 
 def test_clues():
-  response = get('/clues/b')
-  assert_contains(response, "NYT Spelling Bee")
+  response = get('/clues/d')
+  assert_contains(response, "starting with ‘D’")
 
-def test_search():
-  response = get('/search?q=cathode')
-  assert_contains(response, "/clue/rabbit-ears-on-a-cathode-tube-tv")
-  assert_contains(response, "Rabbit ears on a cathode tube tv")
-  assert_contains(response, "antenna")
+@pytest.mark.parametrize("query, dest, clue, answer", [
+  pytest.param('cathode', "/clue/rabbit-ears-on-a-cathode-tube-tv", "Rabbit ears on a cathode tube tv",
+    "antenna", marks=pytest.mark.live),
+  pytest.param(T1_A, U1_A, T1_A, W1_A, marks=pytest.mark.testdata)
+])
+def test_search(query, dest, clue, answer):
+  response = get(f'/search?q={query}')
+  assert_contains(response, dest)
+  assert_contains(response, clue)
+  assert_contains(response, answer)
 
 def test_css():
   for url in ['/', '/search?q=cathode']:
@@ -123,6 +137,38 @@ def test_js():
     js_files = filter(lambda x:x.startswith('/'), js_files)
     for js in js_files:
       assert_code(get(js), 200)
+
+####### Tests for content of generated pages #####
+
+@pytest.mark.testdata
+def test_td_clue_page():
+  r = get('/clue/go-cold-turkey')
+  assert_code(r, 200)
+  t = r.text
+  assert re.search('puzzle-3-word-for-detox.*puzzle-2-word-for-detox.*detox', t)
+  assert re.search('Go cold turkey.*Go cold turkey!!!!!.*Go cold turkey', t)
+  assert re.search('December 30, 2024.*December 29, 2024.*December 24, 2024', t)
+  assert ('Detoxification from an intoxicating or addictive substance' in t)
+
+@pytest.mark.testdata
+def test_td_clue_archive():
+  r = get('/clues/')
+  assert_code(r, 200)
+  t = r.text
+  assert re.search('1 clues.*2 clues.*3 clues', t)
+  assert re.search('/clues/a/1.*/clues/d/1.*/clues/g/1',t)
+
+@pytest.mark.testdata
+@pytest.mark.parametrize(
+    "url", ['/puzzles/latest', '/puzzles/2024/12', '/puzzles/']
+)
+def test_td_puzzle_archive(url):
+  r = get(url)
+  assert_code(r, 200)
+  t = r.text
+  assert 'December, 2024' in t
+  assert re.search('December 24, 2024.*December 29, 2024.*December 30, 2024', t)
+  assert re.search('T E F O U X.*B G I M O R.*D H I L N O', t)
 
 ####### Other pages
 def test_redirects_clue():
