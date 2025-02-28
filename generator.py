@@ -364,16 +364,20 @@ class Generator:
         dcmp = filecmp.dircmp(new, old)
 
       if dcmp.left_only:
-        new_files.extend(dcmp.left_only)
+        new_files.extend(map(lambda x:joinp(new, x), dcmp.left_only))
       if dcmp.right_only:
-        missing.extend(dcmp.right_only)
+        missing.extend(map(lambda x:joinp(old, x), dcmp.right_only))
 
       for sub_dcmp in dcmp.subdirs.values():
         cmp_dirs(sub_dcmp.left, sub_dcmp.right, sub_dcmp)
 
     cmp_dirs(self.out_dir, current)
+    missing = map(lambda x:x.replace(config['SERVING_DEST'], ''), missing)
+    missing = filterl(lambda x:not x.endswith('.css'), missing)
+    missing = filterl(lambda x:not x.endswith('.js'), missing)
     if missing:
-      log_fatal(f'Files were not regenerated: {len(missing):,} are missing:\n{joinl(missing)}')
+      f = log_error if config['IGNORE_MISSING'] else log_fatal
+      f(f'Files were not regenerated: {len(missing):,} are missing:\n{joinl(missing)}')
     if new_files:
       log(f'Generated {len(new_files):,} files.')
 

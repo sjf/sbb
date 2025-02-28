@@ -6,13 +6,13 @@ import unicodedata
 import re
 import requests
 import requests_cache
-import mw
 from requests.adapters import HTTPAdapter
 from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
 from typing import List, Any, Dict, Optional
 from pyutils import *
 from pyutils.settings import config
+from hint_generator import HintGenerator
 from model import *
 from db import *
 from storage import *
@@ -91,7 +91,8 @@ class Importer:
     puzzles = self.db.fetch_puzzles_without_hints()
     for puzzle in puzzles:
       assert not puzzle.hints
-      hints = mw.get_puzzle_hints(puzzle.answers)
+      hg = HintGenerator(puzzle)
+      hints = hg.get_puzzle_hints()
       puzzle.hints = hints
       self.db.upsert_gpuzzle(puzzle)
       log(f'Updated {puzzle.date} with {len(hints)} hints')

@@ -1,16 +1,3 @@
-import random
-import inflect
-inflect_engine = inflect.engine()
-random.seed(808)
-
-def render_text(templates, **params):
-  t = random.choice(templates)
-  if 'count' in params:
-    params['count'] = inflect_engine.number_to_words(params['count'])
-  t = t.format(**params)
-  t = t[0].upper() + t[1:]
-  return t
-
 USAGE_TEMPLATES = [
 '{count} words are used in {usage}.',
 ]
