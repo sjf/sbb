@@ -18,8 +18,8 @@ def set_env_globals(env: Optional[Environment]) -> None:
     raise Exception('Couldnt get CSS version')
 
   if not config['FULL'] and not exists(joinp(config['SITE_DIR'], 'current')):
-    log_warn('Incremental generate requested, but site is not already generated, switching to FULL=True')
-    config['FULL'] = False
+    log_error('Incremental generate requested, but site is not already generated, switching to FULL=True')
+    config['FULL'] = True
 
   if env:
     env.globals.update(

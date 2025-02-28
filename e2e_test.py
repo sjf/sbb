@@ -60,8 +60,8 @@ def assert_same(url1, url2):
 ####### CUJs
 
 def test_index():
-  response = get('/')
-  assert_contains(response, "Today's Spelling Bee")
+  assert_contains(get(''), "Today's Spelling Bee")
+  assert_contains(get('/'), "Today's Spelling Bee")
 
 def test_index_http_redirect():
   if config['IS_FLASK'] or config['IS_GUNICORN'] or BACKEND.startswith('http://'):

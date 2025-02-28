@@ -4,6 +4,7 @@ import sqlite3
 import unicodedata
 import re
 import dacite
+import filecmp
 from dataclasses import dataclass, asdict, fields, field
 from typing import List, Any, Dict, Optional, Tuple
 from collections import defaultdict
@@ -12,19 +13,16 @@ from storage import *
 from model import *
 from mw import *
 
-DIR = 'scraped/*.json'
-DB_FILE = 'nyt.db'
 SCHEMA = 'schema.sql'
-DEBUG = os.environ.get('DEBUG', False)
-MAPPING = {Puzzle: 'puzzles', Answer: 'answers', Clue: 'clues', Definition: 'definitions'}
+MAPPING = {Puzzle: 'puzzles', Answer: 'answers', Clue: 'clues', Definition: 'definitions', Page: 'generated'}
 
 class DB:
   def __init__(self):
-    log(f"Opening SqliteDB {DB_FILE}")
-    self.conn = sqlite3.connect(DB_FILE)
+    log(f"Opening SqliteDB {config['DB_FILE']}")
+    self.conn = sqlite3.connect('file:' + config['DB_FILE'], uri=True)
     # Return rows as dictionaries (column name access)
     self.conn.row_factory = sqlite3.Row
-    if DEBUG:
+    if config['DEBUG_DB']:
       self.conn.set_trace_callback(lambda x:print(x))
     self.cursor = self.conn.cursor()
 
@@ -140,12 +138,16 @@ class DB:
       if answer.url:
         by_url[answer.url].append(answer)
     result = []
+
     for url,answers in by_url.items():
+      # print(url, mapl(lambda x:x.word, answers))
       by_word = defaultdict(list)
       for answer in answers:
         by_word[answer.word].append(answer)
       clue_answers = []
+
       for word,anss in by_word.items():
+        # print('  ', url, word, mapl(lambda a:a.text, anss))
         puzzle_dates = sorted(mapl(lambda x:x.puzzle_date,anss), reverse=True)
         clue_answers.append(GClueAnswer(
           word=anss[0].word,
@@ -280,13 +282,38 @@ class DB:
     return result
 
   def is_imported(self, name: str) -> bool:
-    query = "SELECT 1 FROM imported_files WHERE name = ? LIMIT 1"
+    query = "SELECT 1 FROM imported WHERE name = ? LIMIT 1"
     self.cursor.execute(query, (name,))
     return self.cursor.fetchone() is not None
 
   def mark_as_imported(self, name: str) -> None:
-    query = "INSERT INTO imported_files (name) VALUES (?) ON CONFLICT(name) DO NOTHING"
+    query = "INSERT INTO imported (name) VALUES (?) ON CONFLICT(name) DO NOTHING"
     self.cursor.execute(query, (name,))
+
+  def is_generated(self, path: str, lastmod: Optional[str]=None) -> bool:
+    and_term = f"AND lastmod >= {lastmod}" if lastmod else ''
+    query = """
+      SELECT 1 FROM generated
+      WHERE path = ? AND needs_regen = FALSE {and_term}
+      LIMIT 1"""
+    self.cursor.execute(query.format(and_term=and_term), (path,))
+    return self.cursor.fetchone() is not None
+
+  def mark_as_generated(self, path: str, lastmod: str, needs_regen: bool=False) -> None:
+    query = """
+      INSERT INTO generated (path, lastmod, needs_regen)
+      VALUES (?,?,?)
+      ON CONFLICT(path) DO UPDATE
+        SET lastmod = excluded.lastmod, needs_regen = excluded.needs_regen
+    """
+    self.cursor.execute(query, (path, lastmod, needs_regen))
+
+  def get_pages(self) -> List[Page]:
+    return self.fetch(Page)
+
+  def clear_generated(self) -> None:
+    query = f"DELETE FROM generated"
+    self.cursor.execute(query)
 
   @staticmethod
   def from_dict(cls, data: Dict):

@@ -27,7 +27,7 @@ def temp_db(fs, monkeypatch) -> None:
   schema = read('schema.sql')
   fs.resume()
   write('schema.sql', schema)
-  monkeypatch.setattr(db, 'DB_FILE', ':memory:')
+  config['DB_FILE'] = 'memorydb?mode=memory&cache=shared'
   config['REQUESTS_SQLITE_CACHE'] = ':memory:'
 
 @pytest.fixture
@@ -56,6 +56,7 @@ def mock_mw() -> Generator:
 FILE_1 = 'scraped/puzzle-1.json'
 FILE_1_NOCLUES = 'scraped/puzzle-1-early.json'
 FILE_2 = 'scraped/puzzle-2.json'
+FILE_3 = 'scraped/puzzle-3.json'
 
 D1 = '2024-12-24'
 D2 = '2024-12-29'
@@ -65,33 +66,38 @@ C2 = 'L'
 L1 = ['T', 'E', 'F', 'O', 'U', 'X']
 L2 = ['B', 'G', 'I', 'M', 'O', 'R']
 W1_A = 'outfoxed'
-W1_B = 'detox'
-W1_C = 'tofu'
+W1_B = 'tofu'
+W1_C = 'detox'
+
 U1_A = '/clue/defeated-a-woodland-creature'
-U1_B = '/clue/go-cold-turkey'
-U1_C = '/clue/soft-hard-or-pressed-soy-bean-curd'
+U1_B = '/clue/soft-hard-or-pressed-soy-bean-curd'
+U1_C = '/clue/go-cold-turkey'
+
 T1_A = 'Defeated (a woodland creature)'
-T1_B = 'Go cold turkey'
-T1_C = 'Soft, hard, or pressed soy bean curd'
+T1_B = 'Soft, hard, or pressed soy bean curd'
+T1_C = 'Go cold turkey'
+
 W2_A = 'imbroglio'
-W2_B = 'igloo'
-W2_C = 'olio'
+W2_B = 'olio'
+W2_C = 'puzzle-2-word-for-detox'
+
 U2_A = '/clue/an-embarrassing-situation'
-U2_B = '/clue/dome-shaped-snow-house'
-U2_C = '/clue/hodge-lodge'
+U2_B = '/clue/hodge-lodge'
+U2_C = '/clue/go-cold-turkey'
+
 T2_A = 'An embarrassing situation'
-T2_B = 'Dome shaped snow house'
-T2_C = 'Hodge lodge'
+T2_B = 'Hodge lodge'
+T2_C = 'Go cold turkey!!!!!'
 
 ES_UPDATES_1 = [
   call(index='sbb', id=U1_A, body={'doc': {'word': W1_A, 'text': T1_A, 'lastused': D1}, 'doc_as_upsert': True}),
-  call(index='sbb', id=U1_B, body={'doc': {'word': W1_B, 'text': T1_B, 'lastused': D1}, 'doc_as_upsert': True}),
-  call(index='sbb', id=U1_C, body={'doc': {'word': W1_C, 'text': T1_C, 'lastused': D1}, 'doc_as_upsert': True})
+  call(index='sbb', id=U1_C, body={'doc': {'word': W1_C, 'text': T1_C, 'lastused': D1}, 'doc_as_upsert': True}),
+  call(index='sbb', id=U1_B, body={'doc': {'word': W1_B, 'text': T1_B, 'lastused': D1}, 'doc_as_upsert': True})
 ]
 ES_UPDATES_2 = [
   call(index='sbb', id=U2_A, body={'doc': {'word': W2_A, 'text': T2_A, 'lastused': D2}, 'doc_as_upsert': True}),
-  call(index='sbb', id=U2_B, body={'doc': {'word': W2_B, 'text': T2_B, 'lastused': D2}, 'doc_as_upsert': True}),
-  call(index='sbb', id=U2_C, body={'doc': {'word': W2_C, 'text': T2_C, 'lastused': D2}, 'doc_as_upsert': True})
+  call(index='sbb', id=U2_C, body={'doc': {'word': W2_C, 'text': T2_C, 'lastused': D2}, 'doc_as_upsert': True}),
+  call(index='sbb', id=U2_B, body={'doc': {'word': W2_B, 'text': T2_B, 'lastused': D2}, 'doc_as_upsert': True})
 ]
 ES_UPDATES = ES_UPDATES_1 + ES_UPDATES_2
 
@@ -105,17 +111,13 @@ C2_B = GClueAnswer(word=W2_B, text=T2_B, puzzle_dates=[D2], definitions=GDefinit
 C2_C = GClueAnswer(word=W2_C, text=T2_C, puzzle_dates=[D2], definitions=GDefinitions(word=W2_C,defs=[]))
 CS_2 = [C2_A, C2_B, C2_C]
 
-GC_PAGES_1 = [
+GC_PAGES = sorted([
   GCluePage(url=U1_A, _clue_answers=[C1_A]),
   GCluePage(url=U1_B, _clue_answers=[C1_B]),
-  GCluePage(url=U1_C, _clue_answers=[C1_C]),
-]
-GC_PAGES_2 = [
+  GCluePage(url=U1_C, _clue_answers=[C1_C, C2_C]),
   GCluePage(url=U2_A, _clue_answers=[C2_A]),
   GCluePage(url=U2_B, _clue_answers=[C2_B]),
-  GCluePage(url=U2_C, _clue_answers=[C2_C]),
-]
-GC_PAGES = sorted(GC_PAGES_1 + GC_PAGES_2)
+])
 
 A1_A = GAnswer(word=W1_A, is_pangram=True,  text=T1_A, url=U1_A, puzzle_date=D1, definitions=GDefinitions(word=W1_A,defs=[]))
 A1_B = GAnswer(word=W1_B, is_pangram=False, text=T1_B, url=U1_B, puzzle_date=D1, definitions=GDefinitions(word=W1_B,defs=[]))

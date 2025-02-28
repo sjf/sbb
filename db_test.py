@@ -88,6 +88,6 @@ def test_fetch_undefined(temp_db):
 
   undefined = db.fetch_undefined_words()
 
-  assert undefined == [W1_B, W1_C]
+  assert undefined == sorted([W1_B, W1_C])
 
 

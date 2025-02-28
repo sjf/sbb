@@ -149,7 +149,11 @@ class GCluePage:
   _clue_answers: List[GClueAnswer] = field(default_factory=list)
   @property
   def clue_answers(self) -> List[GClueAnswer]:
-    return sorted(self._clue_answers)
+    return sorted(self._clue_answers, reverse=True)
+  @property
+  def lastmod(self) -> str:
+    # Most recent usage of this clue.
+    return self.clue_answers[0].puzzle_dates[0]
   def __lt__(self, other):
     return (self.url, self.clue_answers) < (other.url, other.clue_answers)
 

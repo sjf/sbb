@@ -5,7 +5,6 @@ import json
 import db
 import importer as imp
 from copy import deepcopy
-from unittest.mock import patch
 from pyutils import *
 from testutils import *
 

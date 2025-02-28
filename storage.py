@@ -29,3 +29,9 @@ class Definition:
   word: str
   # JSON serialized GDefinitions
   definitions: str
+
+@dataclass
+class Page:
+  path: str
+  lastmod: str
+  needs_regen: bool

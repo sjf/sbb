@@ -94,7 +94,7 @@ class Importer:
       hints = mw.get_puzzle_hints(puzzle.answers)
       puzzle.hints = hints
       self.db.upsert_gpuzzle(puzzle)
-      print(f'Updated {puzzle.date}, {len(hints)} hints')
+      log(f'Updated {puzzle.date} with {len(hints)} hints')
     self.db.commit()
     log(f"Created hints for {len(puzzles)} puzzles.")
 

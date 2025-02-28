@@ -11,14 +11,14 @@
     "name": "{{ self.title() }}",
     "description": "{{ self.description() }}}.",
     "url": "{{ domain }}{{ pagination.current }}",
-    "numberOfItems": {{ answers|length }},
+    "numberOfItems": {{ items|length }},
     "itemListElement": [
-      {% for answer in answers %}
+      {% for item in items %}
       {
         "@type": "ListItem",
         "position": {{ loop.index }},
-        "url": "{{ url_for(answer) }}",
-        "name": "{{ answer.text | json_esc }}"
+        "url": "{{ item.url }}",
+        "name": "{{ item.text | json_esc }}"
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]
@@ -47,13 +47,17 @@
 {% endif %}
 
 <div class="grid grid-cols-1 gap-5 my-5">
-  {% for answer in answers %}
-  <a  href="{{ answer.url }}"
+  {% for item in items %}
+  <a  href="{{ item.url }}"
       id="archive-clue-page"
       class="hover:underline">
     <div class="px-4 py-3 border border-gray-300 rounded-lg hover:shadow-lg transition">
-      <p class="text-lg font-medium">{{ answer.text }}</p>
-      <p class="text-sm italic mt-1">{{ format_date(answer.puzzle_date) }}</p>
+      <p class="text-lg font-medium">{{ item.text }}</p>
+      <p class="text-sm italic mt-1">
+        {% for date in item.dates %}
+          {{ format_date(date) }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </p>
     </div>
   </a>
   {% endfor %}

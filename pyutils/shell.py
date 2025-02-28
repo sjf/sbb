@@ -4,7 +4,7 @@ import sys
 import glob
 import shutil
 
-from .log import log
+from .log import log, log_fatal
 
 #### Shell Utils ###
 
