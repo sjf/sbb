@@ -47,8 +47,8 @@ def mock_es(fs) -> Generator:
     yield {"search": mock_search, "update": mock_update}
 
 @pytest.fixture
-def mock_mw() -> Generator:
-  with patch("mw.get_puzzle_hints") as mock_get_puzzle_hints:
+def mock_hg() -> Generator:
+  with patch("hint_generator.HintGenerator.get_puzzle_hints") as mock_get_puzzle_hints:
     mock_get_puzzle_hints.return_value = HS_1
     yield mock_get_puzzle_hints
 

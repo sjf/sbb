@@ -357,8 +357,8 @@ class Generator:
       log(f'Not checking for missing files, {current} does not exist.')
       return
 
-    missing = []
-    new_files = []
+    missing: List[str] = []
+    new_files: List[str]  = []
     def cmp_dirs(new: str, old: str, dcmp=None):
       if dcmp is None:
         dcmp = filecmp.dircmp(new, old)
@@ -372,7 +372,7 @@ class Generator:
         cmp_dirs(sub_dcmp.left, sub_dcmp.right, sub_dcmp)
 
     cmp_dirs(self.out_dir, current)
-    missing = map(lambda x:x.replace(config['SERVING_DEST'], ''), missing)
+    missing = mapl(lambda x:x.replace(config['SERVING_DEST'], ''), missing)
     missing = filterl(lambda x:not x.endswith('.css'), missing)
     missing = filterl(lambda x:not x.endswith('.js'), missing)
     if missing:

@@ -79,31 +79,31 @@ def test_import_definitions(temp_db, fake_files, mock_es):
 
   assert importer.db.fetch_undefined_words() == []
 
-def test_generate_hints(temp_db, fake_files, mock_es, mock_mw):
+def test_generate_hints(temp_db, fake_files, mock_es, mock_hg):
   importer = imp.Importer()
   importer.import_files([FILE_1])
   importer.generate_hints()
 
-  assert mock_mw.call_count == 1
+  assert mock_hg.call_count == 1
 
   puzzle = importer.db.fetch_gpuzzles()[0]
   assert puzzle.hints == HS_1
 
-def test_reimport_no_regen_hints(temp_db, fake_files, mock_es, mock_mw):
+def test_reimport_no_regen_hints(temp_db, fake_files, mock_es, mock_hg):
   importer = imp.Importer()
   importer.import_files([FILE_1_NOCLUES])
   importer.generate_hints()
 
-  assert mock_mw.call_count == 1
+  assert mock_hg.call_count == 1
   assert importer.db.fetch_gpuzzles()[0].hints == HS_1
 
   importer.import_files([FILE_1])
   importer.generate_hints()
-  assert mock_mw.call_count == 1
+  assert mock_hg.call_count == 1
 
   importer.import_files([FILE_1])
   importer.generate_hints()
-  assert mock_mw.call_count == 1
+  assert mock_hg.call_count == 1
   assert importer.db.fetch_gpuzzles()[0].hints == HS_1
 
 @pytest.mark.parametrize('input_str, expected', [
