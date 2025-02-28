@@ -26,15 +26,16 @@ jobs:
           git clone https://github.com/sjf/scripts.git external-scripts
           echo "$(pwd)/external-scripts" >> $GITHUB_PATH
 
-      - name: Setup local files and start elasticsearch
+      - name: Run Pytest unit-tests
+        run: |
+          ./unit_tests.sh
+
+      - name: Setup local files and start and setup elasticsearch
         run: |
           ./setup.sh
           sudo chown 1000:0 secrets/elastic-password.txt
           docker compose up --quiet-pull -d elasticsearch
-
-      - name: Run Pytest unit-tests
-        run: |
-          ./unit_tests.sh
+          ./elasticsearch/setup.sh
 
       - name: Import
         env:
@@ -46,9 +47,8 @@ jobs:
         run: |
           ./generator.py
 
-      - name: Setup backend all services
+      - name: Setup backend and frontend services
         run: |
-          ./elasticsearch/setup.sh
           docker compose up --quiet-pull -d
           wait_for_containers.sh 2 45 frontend
 
