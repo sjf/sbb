@@ -32,25 +32,22 @@ class Generator:
       self.out_dir = joinp(config['SITE_DIR'], new_dir)
     else:
       self.out_dir = joinp(config['SITE_DIR'], 'current')
-
-    dirs = dirname(self.out_dir)
-    if dirs:
-      mkdir(dirs)
+    mkdir(self.out_dir)
 
   def generate_all(self) -> None:
     log(f"Generating to: '{self.out_dir}' {"**FULL**" if config['FULL'] else ''}")
     log(f"Config:\n{dictl(config)}")
 
+    self.generate_css() # This must happen first.
     self.generate_main()
     self.generate_clue_pages()
     self.generate_clue_archives()
     self.generate_puzzle_archives()
     self.generate_puzzle_pages()
     self.generate_definitions()
-
-    # These have to be last.
     self.generate_sitemap()
     self.generate_static()
+
     self.switch_to_serving()
 
   def switch_to_serving(self) -> None:
@@ -250,7 +247,7 @@ class Generator:
       sub_pages = mapl(lambda n:url_for('clues', prefix, n), range(1, n_pages+1))
 
       lastmod = max(map(lambda x:x.puzzle_date, answers)) # Use same lastmod for all pages even though some may not change.
-      print(prefix, items)
+      # print(prefix, items)
       for i in range(n_pages):
         page_items = items[i*n_per_page:(i+1)*n_per_page]
         url = url_for('clues', prefix, i+1)
@@ -333,19 +330,24 @@ class Generator:
     rendered = template.render(pages=pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
 
+  def generate_css(self) -> None:
+    if config['DEV']:
+      return
+    shell(f'npx tailwindcss -i input.css -o out.css --minify')
+    config['CSS_VERSION'] = md5('out.css')
+    self.env.globals.update(css_version=config['CSS_VERSION'])
+
   def generate_static(self) -> None:
-    css_version = config['CSS_VERSION']
     js_version = config['JS_VERSION']
+    css_version = config['CSS_VERSION']
     if not config['DEV']:
-      shell(f'npx tailwindcss -i input.css -o {self.out_dir}/static/style.{css_version}.css --minify')
       shell(f'terser static_files/static/script.js --mangle -o {self.out_dir}/static/script.{js_version}.min.js')
+      cp('out.css', f"{self.out_dir}/static/style.{css_version}.css", verbose=True)
     else:
-      mkdir(f'{self.out_dir}/static/')
-      cp('static_files/static/script.js',  f'{self.out_dir}/static/script.{js_version}.js')
-      cp('static_files/static/custom.css', f'{self.out_dir}/static/custom.{css_version}.css', verbose=True)
+      cp('static_files/static/script.js',  f'{self.out_dir}/static/script.{js_version}.js', verbose=True)
+      cp('static_files/static/custom.css', f'{self.out_dir}/static/custom.css', verbose=True)
 
     for file in ls('static_files/*'):
-      log_error(file)
       shell(f'cp -a {file} {self.out_dir}', verbose=False)
       log(f"Copied {file} to /{basename(file)}")
 

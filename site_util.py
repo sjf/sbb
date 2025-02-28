@@ -8,14 +8,10 @@ from model import *
 def set_env_globals(env: Optional[Environment]) -> None:
   config['JS_VERSION'] = md5('static_files/static/script.js')
 
-  try:
-    config['CSS_VERSION'] = shell('git rev-parse HEAD', with_output=True).strip()
-  except Exception:
-    if not exists('git.txt'):
-      raise Exception(f"Can't open git.txt in {realpath('.')}")
-    config['CSS_VERSION'] = read_value('git.txt')
-  if not config['CSS_VERSION']:
-    raise Exception('Couldnt get CSS version')
+  if exists('out.css') and not config['DEV']:
+    config['CSS_VERSION'] = md5('out.css')
+  else:
+    config['CSS_VERSION'] = 'NOT_GENERATED'
 
   if not config['FULL'] and not exists(joinp(config['SITE_DIR'], 'current')):
     log_error('Incremental generate requested, but site is not already generated, switching to FULL=True')
