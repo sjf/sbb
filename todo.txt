@@ -1,3 +1,5 @@
+o scraper needs some kind of tests
+
 o on clue archive page, clue text is not selectable
 
 o puzzles/2024 this url should go somewhere

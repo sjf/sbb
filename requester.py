@@ -68,7 +68,7 @@ class Requester:
     # print(dictl(response.headers))
 
     if response.status_code == 404:
-      if not response.from_cache:
+      if self.cache and not response.from_cache:
         log_error(f'Could not retrieve {url}: Got:{str(response)} {response.reason}')
       return None
     response.raise_for_status()
