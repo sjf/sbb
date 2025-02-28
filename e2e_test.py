@@ -90,7 +90,7 @@ def test_puzzles():
 @pytest.mark.parametrize("url, title, clue, answer, hint1, hint2", [
   pytest.param('/puzzle/2024-12-31',
     "Spelling Bee from December 31, 2024", "Poker entry fee", "pentane",
-    "Five words have “ane” at the end.", "Two words are derived from Italian.", marks=pytest.mark.live),
+    "A total of five words end with “ane”.", "Two words are borrowed from Italian.", marks=pytest.mark.live),
   pytest.param('/puzzle/2024-12-29',
     "Spelling Bee from December 29, 2024", "Hodge lodge", "olio",
     "Two words in this set end with “lio”.", "", marks=pytest.mark.testdata)

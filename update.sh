@@ -12,6 +12,7 @@ export PYUTILS_LOG_DIR=$HOME/logs
 export PYUTILS_LOG_FILE=sbb.log
 
 CMD=${1:-all}
+shift
 if [[ $CMD == 'all' ]]; then
   ./scraper.py
   ./importer.py
@@ -19,5 +20,5 @@ if [[ $CMD == 'all' ]]; then
 elif [[ $CMD == 'generator' ]]; then
   ./generator.py
 elif [[ $CMD == 'e2e' ]]; then
-  pytest e2e_test.py
+  pytest e2e_test.py "$@"
 fi
