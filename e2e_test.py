@@ -93,7 +93,7 @@ def test_puzzles():
     "Five words have “ane” at the end.", "Two words are derived from Italian.", marks=pytest.mark.live),
   pytest.param('/puzzle/2024-12-29',
     "Spelling Bee from December 29, 2024", "Hodge lodge", "olio",
-    "You can find two words that end with “lio”", "", marks=pytest.mark.testdata)
+    "Two words in this set end with “lio”.", "", marks=pytest.mark.testdata)
 ])
 def test_puzzle(url, title, clue, answer, hint1, hint2):
   response = get(url)

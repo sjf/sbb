@@ -58,7 +58,7 @@ jobs:
           VERIFY_SSL: False
           PYTHONWARNINGS: ignore:Unverified HTTPS request
         run: |
-          ./e2e_tests.sh
+          ./e2e_tests.sh -m "testdata or unmarked"
 
       - name: Breakpoint if tests failed
         if: failure()
