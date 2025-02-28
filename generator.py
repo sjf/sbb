@@ -35,7 +35,7 @@ class Generator:
     mkdir(self.out_dir)
 
   def generate_all(self) -> None:
-    log(f"Generating to: '{self.out_dir}' {"**FULL**" if config['FULL'] else ''}")
+    log(f"Generating to: '{self.out_dir}' {'**FULL**' if config['FULL'] else ''}")
     log(f"Config:\n{dictl(config)}")
 
     self.generate_css() # This must happen first.
