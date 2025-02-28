@@ -14,4 +14,4 @@ docker compose up --no-deps -d --wait backend || dlogs backend
 
 
 export BACKEND=https://beekey.buzz
-./update.sh e2e
+./update.sh e2e -m "live or unmarked"
