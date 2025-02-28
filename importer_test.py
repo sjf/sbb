@@ -5,11 +5,10 @@ import json
 import db
 import importer as imp
 from copy import deepcopy
-from unittest.mock import patch
 from pyutils import *
 from testutils import *
 
-FILES = [DB_TEST, IMPORTER_TEST]
+FILES = [FILE_1, FILE_2]
 
 def test_importfiles_succeeds(temp_db, fake_files, mock_es):
   importer = imp.Importer()
@@ -18,56 +17,94 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
   mock_es["update"].assert_has_calls(ES_UPDATES)
 
   clue_pages = importer.db.fetch_gclue_pages()
-  assert clue_pages == GCLUE_PAGES
+  assert clue_pages == GC_PAGES
 
-  puzzles = importer.db.fetch_gpuzzles(with_hints=False)
+  puzzles = importer.db.fetch_gpuzzles()
   for i in range(len(puzzles)):
-    assert puzzles[i] == GPUZZLES[i]
-  assert puzzles == GPUZZLES
+    assert puzzles[i] == GPS[i]
+  assert puzzles == GPS
 
   answers = importer.db.fetch_ganswers()
-  assert answers == ANSWERS
+  assert answers == AS
 
 def test_reimportfiles_succeeds(temp_db, fake_files, mock_es):
   importer = imp.Importer()
 
-  importer.import_files(FILES, archive=False)
+  importer.import_files(FILES)
   importer.import_files(FILES)
 
-  mock_es["update"].assert_has_calls(ES_UPDATES + ES_UPDATES)
-  assert importer.db.fetch_gpuzzles(with_hints=False) == GPUZZLES
-  assert importer.db.fetch_ganswers() == ANSWERS
+  mock_es["update"].assert_has_calls(ES_UPDATES)
+  assert importer.db.fetch_gpuzzles() == GPS
+  assert importer.db.fetch_ganswers() == AS
 
-def test_reimportfiles_without_clues(temp_db, fake_files, mock_es):
+def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   importer = imp.Importer()
-  importer.import_files([IMPORTER_TEST_NO_CLUES], archive=False)
+  importer.import_files([FILE_1_NOCLUES])
 
   assert mock_es["update"].call_count == 0
-  # answers = importer.db.fetch_ganswers()
-  # for i in range(len(ANSWERS_P2_NO_CLUE)):
-  #   assert answers[i] == ANSWERS_P2_NO_CLUE[i], i
-  assert importer.db.fetch_ganswers() == sorted(ANSWERS_P2_NO_CLUE)
-  puzzle = deepcopy(GPUZZLE_2)
-  puzzle._answers = ANSWERS_P2_NO_CLUE
-  assert importer.db.fetch_gpuzzles(with_hints=False) == [puzzle]
+  assert importer.db.fetch_ganswers() == AS_NC_1
+  puzzle = deepcopy(GP_1)
+  puzzle._answers = AS_NC_1
+  assert importer.db.fetch_gpuzzles() == [puzzle]
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == []
 
   # Reimport with clues.
-  importer.import_files([IMPORTER_TEST], archive=False)
+  importer.import_files([FILE_1])
 
-  mock_es["update"].assert_has_calls(ES_UPDATES_P2)
-  assert importer.db.fetch_ganswers() == ANSWERS_P2
-  assert importer.db.fetch_gpuzzles(with_hints=False) == [GPUZZLE_2]
+  mock_es["update"].assert_has_calls(ES_UPDATES_1)
+  assert importer.db.fetch_ganswers() == AS_1
+  assert importer.db.fetch_gpuzzles() == [GP_1]
+
+def test_files_not_reimported(temp_db, fake_files, mock_es):
+  importer = imp.Importer()
+  importer.import_files([FILE_1_NOCLUES, FILE_2])
+
+  mock_es["update"].assert_has_calls(ES_UPDATES_2)
+  assert not importer.db.is_imported(FILE_1_NOCLUES)
+  assert importer.db.is_imported(FILE_2)
+
+  importer.import_files([FILE_1_NOCLUES, FILE_2])
+
+  mock_es["update"].assert_has_calls(ES_UPDATES_2)
+  assert not importer.db.is_imported(FILE_1_NOCLUES)
+  assert importer.db.is_imported(FILE_2)
 
 def test_import_definitions(temp_db, fake_files, mock_es):
   importer = imp.Importer()
-  importer.import_files([DB_TEST], archive=False)
-  assert importer.db.fetch_undefined_words() == ['duetted', 'toot', 'tractor']
+  importer.import_files([FILE_1])
+  assert importer.db.fetch_undefined_words() == sorted([W1_A, W1_B, W1_C])
 
   importer.import_definitions()
 
   assert importer.db.fetch_undefined_words() == []
+
+def test_generate_hints(temp_db, fake_files, mock_es, mock_mw):
+  importer = imp.Importer()
+  importer.import_files([FILE_1])
+  importer.generate_hints()
+
+  assert mock_mw.call_count == 1
+
+  puzzle = importer.db.fetch_gpuzzles()[0]
+  assert puzzle.hints == HS_1
+
+def test_reimport_no_regen_hints(temp_db, fake_files, mock_es, mock_mw):
+  importer = imp.Importer()
+  importer.import_files([FILE_1_NOCLUES])
+  importer.generate_hints()
+
+  assert mock_mw.call_count == 1
+  assert importer.db.fetch_gpuzzles()[0].hints == HS_1
+
+  importer.import_files([FILE_1])
+  importer.generate_hints()
+  assert mock_mw.call_count == 1
+
+  importer.import_files([FILE_1])
+  importer.generate_hints()
+  assert mock_mw.call_count == 1
+  assert importer.db.fetch_gpuzzles()[0].hints == HS_1
 
 @pytest.mark.parametrize('input_str, expected', [
   ('foo bar: buz (something)', 'foo-bar-buz-something'),

@@ -7,6 +7,7 @@ class Puzzle:
   date: str
   center_letter: str
   outer_letters: List[str]
+  hints: str
   id: Optional[int] = None
 
 @dataclass
@@ -28,3 +29,9 @@ class Definition:
   word: str
   # JSON serialized GDefinitions
   definitions: str
+
+@dataclass
+class Page:
+  path: str
+  lastmod: str
+  needs_regen: bool

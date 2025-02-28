@@ -1,3 +1,7 @@
+o on clue archive page, clue text is not selectable
+
+o puzzles/2024 this url should go somewhere
+
 o date picker should appear on puzzle archive page as well.
 
 o only regenerate last N days, with optional full re-generation.
@@ -12,6 +16,9 @@ o puzzle pages need to be unique, add stats, numner of words, number of panagram
   -> build a dictionary of valid words
   -> show not included words
   -> show how common words are
+
+o Hints:
+  compound words are hard to find, e.g. lawman.
 
 o Search:
   2 You should be able to search by puzzle letters.

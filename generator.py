@@ -11,64 +11,61 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import List, Any, Dict, Optional
 from pyutils.settings import config
 from pyutils import *
-from jinja_util import *
+from site_util import *
 from model import *
 from db import *
-
-OUTPUT_DIR = joinp(config['SITE_DIR'], f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}")
-
-def url(path: str) -> str:
-  return joinp(config['DOMAIN'], path)
-
-def cp_file(file: str, dest: str) -> None:
-  dirs = dirname(dest)
-  if dirs:
-    mkdir(dirs)
-  shell(f'cp -a {file} {dest}', verbose=False)
-
-  url_path = dest.replace(OUTPUT_DIR + '/', '', 1)
-  if is_dir(dest):
-    url_path = joinp(url_path,basename(file))
-  log(f"Copied {file} to {url(url_path)}")
 
 class Generator:
   def __init__(self):
     self.db = DB()
+
     self.env = Environment(
       loader=FileSystemLoader('templates'),
       undefined=StrictUndefined,
       trim_blocks=(not config['DEV']),
       lstrip_blocks=(not config['DEV']))
     set_env_globals(self.env)
-    self.pages = []
+
+    if config['FULL']:
+      self.db.clear_generated()
+      new_dir = f"sbb-{datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')}"
+      self.out_dir = joinp(config['SITE_DIR'], new_dir)
+    else:
+      self.out_dir = joinp(config['SITE_DIR'], 'current')
+    mkdir(self.out_dir)
 
   def generate_all(self) -> None:
-    log(f"Generating: {OUTPUT_DIR}")
+    log(f"Generating to: '{self.out_dir}' {"**FULL**" if config['FULL'] else ''}")
     log(f"Config:\n{dictl(config)}")
+
+    self.generate_css() # This must happen first.
     self.generate_main()
     self.generate_clue_pages()
     self.generate_clue_archives()
     self.generate_puzzle_archives()
     self.generate_puzzle_pages()
     self.generate_definitions()
-
-    # These have to be last.
     self.generate_sitemap()
     self.generate_static()
+
     self.switch_to_serving()
 
   def switch_to_serving(self) -> None:
-    log(f"*** Switching serving '{config['SERVING_DEST']}' to '{OUTPUT_DIR}' ***")
-    self.rel_ln(OUTPUT_DIR, config['SERVING_DEST'])
+    if config['FULL']:
+      self.check_for_ungenerated_files()
 
-    s = config['SITE_DIR']
-    dirs = ls(f'{s}/sbb-*')
-    dirs = sorted(dirs, reverse=True)
-    for d in dirs[6:]: # keep last six generations
-      log(f"Removing old generated site {d}")
-      rm_rf(d)
+      log(f"*** Switching serving '{config['SERVING_DEST']}' to '{self.out_dir}' ***")
+      self.rel_ln(self.out_dir, config['SERVING_DEST'])
 
-  def output(self, location: str, contents: str, lastmod: Optional[str], is_internal: bool=False) -> None:
+      s = config['SITE_DIR']
+      dirs = ls(f'{s}/sbb-*')
+      dirs = sorted(dirs, reverse=True)
+      for d in dirs[6:]: # keep last six generations
+        log(f"Removing old generated site {d}")
+        rm_rf(d)
+
+  def output(self, location: str, contents: str, lastmod: Optional[str],
+      is_internal: bool=False, needs_regen: bool=False) -> None:
     if not config['DEV'] and config['HTML_MIN']: # Only in prod and when enable because this is slow.
       if contents.startswith('<!DOCTYPE html>') or contents.startswith('<html>'):
         contents = htmlmin.minify(contents,
@@ -77,28 +74,28 @@ class Generator:
           remove_all_empty_space=False,  # Preserve essential spaces in inline elements
           reduce_boolean_attributes=False,  # Keep `checked="checked"` for compatibility
           remove_optional_attribute_quotes=False)  # Keep quotes around attributes for safety
-    path = joinp(OUTPUT_DIR, location)
+    path = joinp(self.out_dir, location)
     write(path, contents, create_dirs = True)
     if not is_internal:
       # Add to site map
       if location == '/index.html':
         location = '/'
-      self.pages.append(Page(path=location, lastmod=lastmod))
+      self.db.mark_as_generated(location, lastmod, needs_regen)
     log_debug(f"Generated {url(location)}")
 
   def ln(self, src: str, dst: str, lastmod: str, is_internal: bool=False) -> None:
     log(f"Linking {src} -> {dst} lastmod:{lastmod}")
-    src_path = joinp(OUTPUT_DIR, src)
-    dst_path = joinp(OUTPUT_DIR, dst)
+    src_path = joinp(self.out_dir, src)
+    dst_path = joinp(self.out_dir, dst)
 
     self.rel_ln(src_path, dst_path)
 
     if not is_internal:
-      self.pages.append(Page(path=dst, lastmod=lastmod))
+      self.db.mark_as_generated(dst, lastmod)
     log(f"Generated {url(dst)}")
 
   def rel_ln(self, src_path: str, dst_path: str) -> None:
-    # For serving to work properly they both need to be under the base OUTPUT_DIR.
+    # For serving to work properly they both need to be under the base self.out_dir.
     base_output = realpath(config['SITE_DIR'])
     src_path = realpath(src_path)
     dst_path = realpath(dst_path)
@@ -112,7 +109,7 @@ class Generator:
 
     saved_dir = os.getcwd()
     os.chdir(common_dir)
-    log(f"Linking relative {rel_src_path} -> {rel_dst_path} in {common_dir}.")
+    log_debug(f"Linking relative {rel_src_path} -> {rel_dst_path} in {common_dir}.")
     ln(rel_src_path, rel_dst_path)
     os.chdir(saved_dir)
 
@@ -122,7 +119,10 @@ class Generator:
     puzzles = self.db.fetch_gpuzzles()
     max_date = puzzles[0].date
     min_date = puzzles[-1].date
-    for i, puzzle in enumerate(puzzles):
+
+    needs_gen = filter(lambda p:not self.db.is_generated(url_for(p)), puzzles)
+    c = 0
+    for i, puzzle in enumerate(needs_gen):
       url = url_for(puzzle)
       next_ = None
       if i > 0:
@@ -137,23 +137,35 @@ class Generator:
         prev=prev,
         min_date=min_date,
         max_date=max_date)
-      self.output(url, rendered, max(puzzle.date, min_mod))
+      needs_regen = (not puzzle.has_all_clues())
+      self.output(url, rendered, max(puzzle.date, min_mod), needs_regen=needs_regen)
+      c += 1
     latest = puzzles[0]
+    log(f'Generated {c:,} puzzle pages.')
     self.ln(url_for(latest), '/puzzle/latest', latest.date)
 
   def generate_clue_pages(self) -> None:
     template = self.env.get_template('clue_page.html')
     clue_pages = self.db.fetch_gclue_pages()
+
+    def is_generated(page: GCluePage) -> bool:
+      return not self.db.is_generated(page.url, lastmod=page.lastmod)
+    clue_pages = filter(is_generated, clue_pages)
+    c = 0
     for page in clue_pages:
       url = page.url
       rendered = template.render(url=url, canon_url=url, page=page)
-      self.output(url, rendered, page.clue_answers[0].puzzle_dates[0])
+      self.output(url, rendered, page.lastmod)
+      c +=1
+    log(f'Generated {c:,} clue pages.')
 
   def generate_main(self) -> None:
     template = self.env.get_template('index.html')
     puzzles = self.db.fetch_gpuzzles()
+    if not puzzles:
+      raise log_fatal(f'There are no puzzles in the db, run importer.py')
     latest = puzzles[0]
-    prev = puzzles[1]
+    prev = puzzles[1] if len(puzzles) > 1 else None
     max_date = puzzles[0].date
     min_date = puzzles[-1].date
     rendered = template.render(url='/',
@@ -197,10 +209,10 @@ class Generator:
       return 'symbols'
 
   def generate_clue_archives(self, n_per_page=50) -> None:
-    answers = self.db.fetch_ganswers()
-    answers = filter(lambda x:x.text and x.url, answers) # remove answers without clues.
+    all_answers = self.db.fetch_ganswers()
+    all_answers = filter(lambda x:x.text and x.url, all_answers) # remove answers without clues.
     by_prefix = defaultdict(list)
-    for answer in answers:
+    for answer in all_answers:
       prefix = Generator.get_clue_archive_prefix(answer.text)
       by_prefix[prefix].append(answer)
 
@@ -218,16 +230,30 @@ class Generator:
 
     template = self.env.get_template('clue_archive.html')
     for prefix, answers in sorted(by_prefix.items(), key=lambda x:prefix_key(x[0])):
-      n_pages = ceil(len(answers) / n_per_page)
+      # All entries with the same clue text get one item in the list.
+      by_text = defaultdict(list)
+      for answer in answers:
+        by_text[answer.text].append(answer)
+      # Create all the items
+      items = []
+      for anss in by_text.values():
+        text = anss[0].text
+        url = anss[0].url
+        dates = sorted(map(lambda x:x.puzzle_date, anss), reverse=True)
+        items.append(ClueArchiveItem(text=text, url=url, dates=dates))
+
+      items = sorted(items)
+      n_pages = ceil(len(items) / n_per_page)
       sub_pages = mapl(lambda n:url_for('clues', prefix, n), range(1, n_pages+1))
+
+      lastmod = max(map(lambda x:x.puzzle_date, answers)) # Use same lastmod for all pages even though some may not change.
+      # print(prefix, items)
       for i in range(n_pages):
-        page_answers = answers[i*n_per_page:(i+1)*n_per_page]
-        page_answers = sorted(page_answers, key=lambda x:x.text)
-        lastmod = max(map(lambda x:x.puzzle_date, answers))
+        page_items = items[i*n_per_page:(i+1)*n_per_page]
         url = url_for('clues', prefix, i+1)
         rendered = template.render(
           url=url,
-          answers=page_answers,
+          items=page_items,
           prefix=prefix,
           alphabet=prefixes,
           pagination=PaginateList(pages=sub_pages, current=url),
@@ -278,8 +304,10 @@ class Generator:
 
   def generate_definitions(self) -> None:
     words = self.db.fetch_gwords()
+    words = filter(lambda w:not self.db.is_generated(url_for(w)), words)
     template = self.env.get_template('word_definition.html')
-    lastmod = "2025-01-01" # Just used a fixed date.
+    lastmod = "2025-01-01" # Just used a fixed date, these pages not indexed so it doesnt matter.
+    c = 0
     for word in words:
       url = url_for(word)
       rendered = template.render(
@@ -288,10 +316,13 @@ class Generator:
         word=word.word,
         definition=word.definition,
         lastmod=lastmod)
+      c += 1
       self.output(url, rendered, lastmod)
+    log(f'Generated {c:,} definition pages.')
 
   def generate_sitemap(self) -> None:
-    pages = filterl(lambda x:not x.path.startswith('/definition'), self.pages)
+    pages = self.db.get_pages()
+    pages = filterl(lambda x:not x.path.startswith('/definition'), pages)
     if len(pages) > 50_000 - 300:
       log_error(f"Site map is close maximum size of 50k links: {len(pages)}")
 
@@ -299,29 +330,72 @@ class Generator:
     rendered = template.render(pages=pages)
     self.output('sitemap.xml', rendered, None, is_internal=True)
 
+  def generate_css(self) -> None:
+    if config['DEV']:
+      return
+    shell(f'npx tailwindcss -i input.css -o out.css --minify')
+    config['CSS_VERSION'] = md5('out.css')
+    self.env.globals.update(css_version=config['CSS_VERSION'])
+
   def generate_static(self) -> None:
-    css_version = config['CSS_VERSION']
     js_version = config['JS_VERSION']
+    css_version = config['CSS_VERSION']
     if not config['DEV']:
-      shell(f'npx tailwindcss -i input.css -o {OUTPUT_DIR}/static/style.{css_version}.css --minify')
-      shell(f'terser static_files/static/script.js --mangle -o {OUTPUT_DIR}/static/script.{js_version}.min.js')
+      shell(f'terser static_files/static/script.js --mangle -o {self.out_dir}/static/script.{js_version}.min.js')
+      cp('out.css', f"{self.out_dir}/static/style.{css_version}.css", verbose=True)
     else:
-      mkdir(f'{OUTPUT_DIR}/static/')
-      cp('static_files/static/script.js',  f'{OUTPUT_DIR}/static/script.{js_version}.js')
-      cp('static_files/static/custom.css', f'{OUTPUT_DIR}/static/custom.{css_version}.css', verbose=True)
+      cp('static_files/static/script.js',  f'{self.out_dir}/static/script.{js_version}.js', verbose=True)
+      cp('static_files/static/custom.css', f'{self.out_dir}/static/custom.css', verbose=True)
 
     for file in ls('static_files/*'):
-      cp_file(file, OUTPUT_DIR)
+      shell(f'cp -a {file} {self.out_dir}', verbose=False)
+      log(f"Copied {file} to /{basename(file)}")
+
+  def check_for_ungenerated_files(self) -> None:
+    current = config['SERVING_DEST']
+    if not exists(current):
+      log(f'Not checking for missing files, {current} does not exist.')
+      return
+
+    missing = []
+    new_files = []
+    def cmp_dirs(new: str, old: str, dcmp=None):
+      if dcmp is None:
+        dcmp = filecmp.dircmp(new, old)
+
+      if dcmp.left_only:
+        new_files.extend(map(lambda x:joinp(new, x), dcmp.left_only))
+      if dcmp.right_only:
+        missing.extend(map(lambda x:joinp(old, x), dcmp.right_only))
+
+      for sub_dcmp in dcmp.subdirs.values():
+        cmp_dirs(sub_dcmp.left, sub_dcmp.right, sub_dcmp)
+
+    cmp_dirs(self.out_dir, current)
+    missing = map(lambda x:x.replace(config['SERVING_DEST'], ''), missing)
+    missing = filterl(lambda x:not x.endswith('.css'), missing)
+    missing = filterl(lambda x:not x.endswith('.js'), missing)
+    if missing:
+      f = log_error if config['IGNORE_MISSING'] else log_fatal
+      f(f'Files were not regenerated: {len(missing):,} are missing:\n{joinl(missing)}')
+    if new_files:
+      log(f'Generated {len(new_files):,} files.')
+
+def url(path: str) -> str:
+  return joinp(config['DOMAIN'], path)
 
 @dataclass
-class Page:
-  path: str
-  lastmod: Optional[str]
-@dataclass
-
 class Prefix:
   prefix: str
   count: int
+
+@dataclass
+class ClueArchiveItem:
+  text: str
+  url: str
+  dates: List[str]
+  def __lt__(self, other):
+    return (self.text, self.dates) < (other.text, other.dates)
 
 if __name__ == '__main__':
   generator = Generator()

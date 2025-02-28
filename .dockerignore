@@ -4,7 +4,6 @@ archive/
 site/
 sbb.db
 *.sublime-*
-#secrets/
 actions-runner/
 nyt.db*
 

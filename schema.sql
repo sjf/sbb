@@ -3,9 +3,9 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE puzzles (
   id INTEGER PRIMARY KEY AUTOINCREMENT
   ,date DATE NOT NULL UNIQUE
-  -- ,url TEXT NOT NULL UNIQUE -- Puzzle urls must be unique.
   ,center_letter TEXT NOT NULL
   ,outer_letters TEXT NOT NULL
+  ,hints TEXT NOT NULL -- JSON serialized List[Hints]
 );
 
 CREATE TABLE answers (
@@ -31,5 +31,15 @@ CREATE TABLE clues (
 CREATE TABLE definitions (
   word TEXT PRIMARY KEY
   ,definitions TEXT NOT NULL -- JSON serialized GDefinition
+);
+
+CREATE TABLE imported (
+  name TEXT PRIMARY KEY
+);
+
+CREATE TABLE generated (
+  path TEXT PRIMARY KEY
+  ,lastmod TEXT NOT NULL
+  ,needs_regen BOOL NOT NULL
 );
 

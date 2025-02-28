@@ -11,11 +11,11 @@ def set_id(dataclass_instance, id_):
 
 def test_insert_and_fetch_puzzle(temp_db):
   db = DB()
-  id_1 = db.insert(PUZZLE_1)
-  puzzle_1 = set_id(PUZZLE_1, id_1)
+  id_1 = db.insert(P_1)
+  puzzle_1 = set_id(P_1, id_1)
 
-  id_2 = db.insert(PUZZLE_2)
-  puzzle_2 = set_id(PUZZLE_2, id_2)
+  id_2 = db.insert(P_2)
+  puzzle_2 = set_id(P_2, id_2)
 
   assert id_1 != id_2
   puzzles = list(db.fetch(Puzzle))
@@ -27,8 +27,8 @@ def test_insert_and_fetch_puzzle(temp_db):
 
 def test_upsert_puzzle(temp_db):
   db = DB()
-  id_1 = db.insert(PUZZLE_1)
-  puzzle_b = Puzzle(date=PUZZLE_1.date, center_letter='X', outer_letters=['x','y','z','j','k','l'])
+  id_1 = db.insert(P_1)
+  puzzle_b = Puzzle(date=D1, center_letter=C1, outer_letters=['x','y','z','j','k','l'], hints='')
 
   id_b = db.upsert_puzzle(puzzle_b)
   puzzle_b.id = id_b
@@ -39,18 +39,18 @@ def test_upsert_puzzle(temp_db):
 
 def test_insert_and_fetch_clue(temp_db):
   db = DB()
-  id_1 = db.insert(CLUE_1)
-  clue_1 = set_id(CLUE_1, id_1)
-  id_2 = db.insert(CLUE_2)
-  clue_2 = set_id(CLUE_2, id_2)
+  id_1 = db.insert(CL1_A)
+  clue_1 = set_id(CL1_A, id_1)
+  id_2 = db.insert(CL1_B)
+  clue_2 = set_id(CL1_B, id_2)
 
   clues = list(db.fetch(Clue))
   assert clues == [clue_1, clue_2]
 
 def test_upsert_clue(temp_db):
   db = DB()
-  id_1 = db.insert(CLUE_1)
-  clue_b = deepcopy(CLUE_1)
+  id_1 = db.insert(CL1_A)
+  clue_b = deepcopy(CL1_A)
   id_b = db.upsert_clue(clue_b)
   clue_b.id = id_b
 
@@ -60,18 +60,18 @@ def test_upsert_clue(temp_db):
 
 def test_insert_definition(temp_db):
   db = DB()
-  db.insert_definition(GDEFINITIONS_TRACTOR)
+  db.insert_definition(GDEF1_A)
 
   definitions = list(db.fetch(Definition))
 
-  assert definitions == [Definition(word='tractor', definitions=json.dumps(asdict(GDEFINITIONS_TRACTOR)))]
+  assert definitions == [Definition(word=W1_A, definitions=json.dumps(asdict(GDEF1_A)))]
 
 def test_reinsert_definition_fails(temp_db):
   db = DB()
-  db.insert_definition(GDEFINITIONS_TRACTOR)
-  tractor_2 = GDefinitions(word='tractor',
-    defs=[GDefinition(word='tractor',
-        retrieved_on='2024-01-01',
+  db.insert_definition(GDEF1_A)
+  tractor_2 = GDefinitions(word=W1_A,
+    defs=[GDefinition(word=W1_A,
+        retrieved_on='2024-09-09',
         raw=None,
         retrieved_from='https://something.com')])
 
@@ -80,14 +80,14 @@ def test_reinsert_definition_fails(temp_db):
 
 def test_fetch_undefined(temp_db):
   db = DB()
-  db.insert(PUZZLE_1)
-  db.insert(ANSWER_TRACTOR)
-  db.insert(ANSWER_TOOT)
-  db.insert(ANSWER_DUETTED)
-  db.insert_definition(GDEFINITIONS_TRACTOR)
+  db.insert(P_1)
+  db.insert(AN1_A)
+  db.insert(AN1_B)
+  db.insert(AN1_C)
+  db.insert_definition(GDEF1_A)
 
   undefined = db.fetch_undefined_words()
 
-  assert undefined == ['duetted', 'toot']
+  assert undefined == sorted([W1_B, W1_C])
 
 

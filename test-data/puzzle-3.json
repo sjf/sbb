@@ -1,0 +1,27 @@
+{
+  "id": 34453,
+  "center_letter": "w",
+  "outer_letters": "dhilno",
+  "pangrams": [
+    "downhill"
+  ],
+  "answers": [
+    "puzzle-3-word-for-detox"
+  ],
+  "print_date": "2024-12-30",
+  "editor": "Sam Ezersky",
+  "clues": [
+    {
+      "word": "downhill",
+      "text": "Direction of Alpine skiing",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/18/crosswords/spelling-bee-forum.html#permid=138370070"
+    },
+    {
+      "word": "puzzle-3-word-for-detox",
+      "text": "Go cold turkey",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
+    }
+  ]
+}

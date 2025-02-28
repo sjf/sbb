@@ -8,16 +8,15 @@ import elasticsearch
 from es import ElasticSearch
 from http import HTTPStatus
 
-import jinja_util
+from site_util import set_env_globals
 from pyutils import *
 from pyutils.settings import config
 from gunicorn_util import *
 from routes import bp
-from generator import set_env_globals
 
 def configure_flask_app() -> None:
   app.jinja_env.undefined = jinja2.StrictUndefined
-  jinja_util.set_env_globals(app.jinja_env)
+  set_env_globals(app.jinja_env)
 
   if app.debug or os.getenv('FLASK_ENV') == 'development':
     app.config['TESTING'] = True

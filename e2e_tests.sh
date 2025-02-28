@@ -6,4 +6,4 @@ if [[ $(hostname) == 'box' ]]; then
 elif [[ $(hostname) == 'nytspellingbeesolver.com' ]]; then
   export BACKEND=https://beekey.buzz
 fi
-pytest e2e_test.py $@
+pytest e2e_test.py "$@"
