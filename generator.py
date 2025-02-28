@@ -338,6 +338,8 @@ class Generator:
     self.env.globals.update(css_version=config['CSS_VERSION'])
 
   def generate_static(self) -> None:
+    mkdir(joinp(self.out_dir, 'static'))
+
     js_version = config['JS_VERSION']
     css_version = config['CSS_VERSION']
     if not config['DEV']:
