@@ -377,6 +377,7 @@ class Generator:
     missing = mapl(lambda x:x.replace(config['SERVING_DEST'], ''), missing)
     missing = filterl(lambda x:not x.endswith('.css'), missing)
     missing = filterl(lambda x:not x.endswith('.js'), missing)
+    missing = filterl(lambda x:not x.endswith('report_all.html'), missing)
     if missing:
       f = log_error if config['IGNORE_MISSING'] else log_fatal
       f(f'Files were not regenerated: {len(missing):,} are missing:\n{joinl(missing)}')
