@@ -1,4 +1,5 @@
 #!/bin/bash
-set -eux
+set -u
 
-cp test-data/* scraped/
+mkdir -p scraped/
+cp -v test-data/* scraped/

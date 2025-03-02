@@ -210,7 +210,6 @@ def test_sitemap():
 
 ####### Test URL redirects
 
-
 def test_health():
   response = get('/health')
   assert_contains(response, 'OK')
