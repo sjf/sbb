@@ -30,22 +30,17 @@ jobs:
         run: |
           ./unit_tests.sh
 
-      - name: Setup local files and start and setup elasticsearch
+      - name: Setup passwords files and start and setup elasticsearch, setup test-data
         run: |
-          ./setup.sh
+          ./setup_secrets.sh
           sudo chown 1000:0 secrets/elastic-password.txt
           docker compose up --quiet-pull -d elasticsearch
           ./elasticsearch/setup.sh
+          ./setup_testdata.sh
 
-      - name: Import
-        env:
-          REQUESTS_SQLITE_CACHE: test-data/requests_cache.sqlite
+      - name: Import data and generate pages.
         run: |
-          ./importer.py test-data/*.json
-
-      - name: Generate
-        run: |
-          ./generator.py
+          ./update.sh github
 
       - name: Setup backend and frontend services
         run: |

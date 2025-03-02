@@ -17,6 +17,9 @@ if [[ $CMD == 'all' ]]; then
   ./scraper.py
   ./importer.py
   ./generator.py
+elif [[ $CMD == 'github' ]]; then
+  ./importer.py
+  ./generator.py
 elif [[ $CMD == 'generator' ]]; then
   ./generator.py
 elif [[ $CMD == 'e2e' ]]; then
