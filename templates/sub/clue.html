@@ -15,26 +15,19 @@
     </p>
   {% endif %}
 
-  <div class="mt-4 flex justify-center gap-2 text-5xl font-bold answer-box cursor-pointer"
+  <div class="mt-4 flex flex-wrap justify-center gap-1 sm:gap-2 text-5xl font-bold answer-box cursor-pointer"
        id="clue-toggle"
        data-answer="{{ answer.word }}"
        data-definition="definition-{{ index }}"
        onclick="toggleClueAnswer(this)"
        data-nosnippet>
-
-    <!-- First Letter Always Visible -->
-    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
-      {{ answer.word[0] }}
-    </div>
-    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase">
-      {{ answer.word[1] }}
-    </div>
-
-    <!-- Empty Boxes for Remaining Letters -->
-    {% for c in answer.word[2:] %}
-    <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 text-4xl font-bold uppercase empty-box"
-      data-letter="{{c}}">
-    </div>
+    {% for i in range(answer.word | length) %}
+      <div class="inline-flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14
+                  bg-yellow-400 text-2xl sm:text-4xl font-bold uppercase
+                  {% if i >= 2 %}empty-box{% endif %}"
+           data-letter="{{answer.word[i]}}">
+        {% if i < 2 %}{{ answer.word[i] }}{% endif %}
+      </div>
     {% endfor %}
   </div>
 
