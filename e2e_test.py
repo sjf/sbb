@@ -181,7 +181,7 @@ def test_redirects_clues():
   assert_same('/clues/d',  '/clues/d/1')
   assert_same('/clues/d/', '/clues/d/1')
 
-@pytest.mark.testdata
+@pytest.mark.live
 def test_redirects_other_clue_indexes():
   assert_same('/clues/0-9',   '/clues/0-9/1')
   assert_same('/clues/0-9/',  '/clues/0-9/1')

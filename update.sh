@@ -23,6 +23,7 @@ if [[ $CMD == 'all' ]]; then
   ./importer.py
   ./generator.py
 elif [[ $CMD == 'github' ]]; then
+  ./setup_testdata.sh
   ./importer.py
   ./generator.py
 elif [[ $CMD == 'generator' ]]; then

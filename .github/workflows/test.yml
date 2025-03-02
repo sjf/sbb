@@ -36,7 +36,6 @@ jobs:
           sudo chown 1000:0 secrets/elastic-password.txt
           docker compose up --quiet-pull -d elasticsearch
           ./elasticsearch/setup.sh
-          ./setup_testdata.sh
 
       - name: Import data and generate pages.
         run: |
