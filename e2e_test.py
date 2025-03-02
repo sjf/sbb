@@ -181,6 +181,12 @@ def test_redirects_clues():
   assert_same('/clues/d',  '/clues/d/1')
   assert_same('/clues/d/', '/clues/d/1')
 
+@pytest.mark.testdata
+def test_redirects_other_clue_indexes():
+  assert_same('/clues/0-9',   '/clues/0-9/1')
+  assert_same('/clues/0-9/',  '/clues/0-9/1')
+  assert_same('/clues/symbols',  '/clues/symbols/1')
+
 def test_redirects_puzzle():
   assert_same('/puzzle',  '/puzzle/latest')
   assert_same('/puzzle/', '/puzzle/latest')
@@ -190,7 +196,7 @@ def test_redirects_puzzles():
   assert_same('/puzzles/', '/puzzles/latest')
 
 def test_no_redirects():
-  assert_code(get('/clues/abc'), 404)
+  assert_code(get('/clues/does-not-exist'), 404)
   assert_code(get('/clues/ab/c'), 404)
   assert_code(get('/puzzles/abc'), 404)
   assert_code(get('/puzzle/abc'), 404)
