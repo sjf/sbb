@@ -12,7 +12,7 @@ export PYUTILS_LOG_DIR=$HOME/logs
 export PYUTILS_LOG_FILE=sbb.log
 
 CMD=${1:-all}
-shift
+shift || true
 if [[ $CMD == 'all' ]]; then
   ./scraper.py
   ./importer.py
