@@ -1,7 +1,12 @@
 #!/bin/bash
 set -ue
 
-cd ~/sbb
+if [[ -n "${GITHUB_RUN_ID:-}" ]]; then
+  cd ~/work/sbb/sbb
+else
+  cd ~/sbb
+fi
+
 if [ ! -f .venv/bin/activate ]; then
   python3 -m venv .venv
 fi
