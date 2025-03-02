@@ -19,6 +19,10 @@ ol.list-decimal li::marker, .subtext {
 .hive-cell:nth-child(1) {
     transform: translate(0, 0);
 }
+a, button {
+  cursor: pointer;
+}
+
 .hive-cell {
     position: absolute;
     top: 33.3333333333%;
