@@ -19,24 +19,25 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-4xl font-bold mb-6 text-center">{{ page.clue_answers[0].text }}</h1>
+<div class="mt-1 mb-3">
+  <h1 class="text-4xl font-bold mb-3 text-center">{{ page.clue_answers[0].text }}</h1>
 
-{% with answer=page.clue_answers[0], index=0, is_sub=False %}
-  {% include "sub/clue.html" %}
-{% endwith %}
+  {% with answer=page.clue_answers[0], index=0, is_sub=False %}
+    {% include "sub/clue.html" %}
+  {% endwith %}
 
-<!-- Other answers for the same clue. -->
-{% if page.clue_answers|length > 1 %}
-<div class="mt-10 pt-6 border-t text-center">
-  <h2 class="text-lg mb-6">This clue has also appeared with other answers. Find all the answers below:</h2>
-  {% for answer in page.clue_answers[1:] %}
-    {% with index=loop.index,is_sub=True %}
-      <div class="mb-8 border-b last:border-b-0 pb-8 ">
-        {% include "sub/clue.html" %}
-      </div>
-    {% endwith %}
-  {% endfor %}
+  <!-- Other answers for the same clue. -->
+  {% if page.clue_answers|length > 1 %}
+  <div class="mt-6 pt-6 border-t text-center">
+    <h2 class="text-lg mb-6">This clue has also appeared with other answers. Find all the answers below:</h2>
+    {% for answer in page.clue_answers[1:] %}
+      {% with index=loop.index,is_sub=True %}
+        <div class="mb-6 pb-6 last:pb-0 border-b last:border-b-0">
+          {% include "sub/clue.html" %}
+        </div>
+      {% endwith %}
+    {% endfor %}
+  </div>
+  {% endif %}
 </div>
-{% endif %}
-
 {% endblock %}

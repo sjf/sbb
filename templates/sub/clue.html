@@ -2,7 +2,7 @@
 
   {% if not is_sub %}
     <!-- Intro text -->
-    <p class="mt-8 text-lg">
+    <p class="mt-4 text-lg">
       Get the answer to the NYT Spelling Bee clue “<span class="font-semibold">{{answer.text}}</span>”, starting with the letters <span class="uppercase">{{answer.word[0]}}{{answer.word[1]}}</span>.
     <br>
       Click below to uncover the answer.
@@ -46,7 +46,7 @@
   {% endif %}
 
   {% if not is_sub %}
-    <p class="mt-8 text-lg">
+    <p class="mt-6 text-lg">
       This clue was used on
         <a  href="{{ url_for(answer.puzzle_dates[0]) }}"
             id="clue-used-on-date"
