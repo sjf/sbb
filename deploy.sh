@@ -12,6 +12,7 @@ export FULL=True
 docker compose build --quiet backend
 docker compose up --no-deps -d --wait backend || dlogs backend
 
+# git diff --name-only HEAD~1 | grep nginx.conf
 
 export BACKEND=https://beekey.buzz
 ./update.sh e2e -m "live or unmarked"
