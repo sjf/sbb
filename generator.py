@@ -380,7 +380,10 @@ class Generator:
     missing = filterl(lambda x:not x.endswith('report_all.html'), missing)
     if missing:
       f = log_error if config['IGNORE_MISSING'] else log_fatal
-      f(f'Files were not regenerated: {len(missing):,} are missing:\n{joinl(missing)}')
+      files = joinl(missing[:20])
+      rest = "\n...\nSee missing.txt for the full list." if len(files) > 20 else ''
+      write('missing.txt', joinl(missing))
+      f(f'Files were not regenerated: {len(missing):,} are missing:\n{files}{rest}')
     if new_files:
       log(f'Generated {len(new_files):,} files.')
 

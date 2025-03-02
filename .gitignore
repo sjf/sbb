@@ -8,6 +8,7 @@ sbb.db
 secrets/
 actions-runner/
 nyt.db*
+missing.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
