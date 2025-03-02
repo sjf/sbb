@@ -119,12 +119,13 @@
       <ul id="hints" class="list-disc pl-6 text-lg">
         {% for hint in puzzle.hints %}
           <li onclick="toggleHintAnswers(this)"
-              id="toggle-hint-answer"
-              data-target="hint-answers-{{ loop.index0 }}">{{ hint.text }}</li>
+              id="toggle-hint-answer-text"
+              data-target="hint-answers-{{ loop.index0 }}"
+              class="cursor-pointer">{{ hint.text }}</li>
           <div class="flex flex-row pt-1 min-h-[2em]">
             <div class="inline-flex text-gray-500 pr-2 curser-pointer"
                  onclick="toggleHintAnswers(this)"
-                 id="toggle-hint-answer"
+                 id="toggle-hint-answer-icon"
                  data-target="hint-answers-{{ loop.index0 }}">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                   class="size-6 hidden eye" role="img">
