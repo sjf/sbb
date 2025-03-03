@@ -48,6 +48,7 @@ class Importer:
       # Re-import everything, even if rows already exist.
       # Puzzles are upate on their post day with clues later.
       puzzle_id = self.db.upsert_puzzle(puzzle, ignore_dups=True) # don't overwrite existing row.
+      self.es.upsert_puzzle(puzzle.date, puzzle.center_letter, puzzle.outer_letters)
 
       if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:

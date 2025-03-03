@@ -18,11 +18,15 @@
     "@type": "ItemList",
     "name": "Search results for “{{ result.term | json_esc }}”",
     "itemListElement": [
-      {% for clue in result.results %}{
+      {% for result in result.results %}{
         "@type": "ListItem",
         "position": {{ loop.index }},
-        "url": "{{ clue.url }}",
-        "name": "{{ clue.text | json_esc }}"
+        "url": "{{ result.url }}",
+        {% if result.clue %}
+          "name": "{{ result.clue.text | json_esc }}"
+        {% else %}
+          "name": "Puzzle from {{ format_date(result.date) }}"
+        {% endif %}
       }{% if not loop.last %},{% endif %}
       {% endfor %}
     ]
@@ -44,24 +48,48 @@
     </div>
   {% endif %}
   <div class="grid grid-cols-1 gap-6">
-    {% for clue in result.results %}
-    <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition">
-      <a  href="{{ clue.url }}"
-          id="results-clue-page"
-          class="hover:underline">
-        <p class="text-lg font-medium">{{ clue.text }}</p>
-      </a>
-      {% with word=clue.word %}
-        {% include "sub/word_boxes.html" %}
-      {% endwith %}
-      <div class="text-sm italic text-gray-500 pt-2 text-right">{{ format_date(clue.lastused) }}</div>
-      </div>
+    {% for result in result.results %}
+        <div class="p-4 border border-gray-300 rounded-lg hover:shadow-lg transition
+                    flex flex-col sm:flex-row items-end justify-between">
+          <div class="self-start sm:self-auto">
+            {% if result.clue %}
+              <a  href="{{ result.url }}"
+                  id="results-clue-page"
+                  class="hover:underline select-text">
+                <p class="text-lg font-medium">{{ result.clue.text }}</p></a>
+                {% with word=result.clue.word %}
+                  {% include "sub/word_boxes.html" %}
+                {% endwith %}
+            {% else %}
+
+              <a  href="{{ url_for(result.date) }}"
+                  id="results-puzzle-page"
+                  class="group hover:underline">
+                  <p class="text-lg font-medium">Spelling Bee:
+                  <span class="text-lg font-medium uppercase flex items-center">
+                    <svg class="hive-cell-standalone center" viewBox="0 0 120 103.92304845413263">
+                      <polygon class="cell-fill cell-fill-center" points="0,51.96152422706631 30,0 90,0 120,51.96152422706631 90,103.92304845413263 30,103.92304845413263" stroke="white" stroke-width="7.5"></polygon>
+                      <text x="13%" y="13%" text-anchor="middle" dy="0.35em" font-size="18" transform="scale(4)"  class="group-hover:underline">{{ result.puzzle.center_letter }}</text>
+                    </svg>
+                    <span class="pl-1">{{ joinl(result.puzzle.outer_letters, sep=' ') }}</span>
+                  </span>
+                  </p>
+              </a>
+
+            {% endif %}
+          </div>
+          <div class="self-end sm:self-auto text-sm italic text-gray-500 pt-2 text-right">
+            {{ format_date(result.date) }}
+            {% if DEBUG %}{{result.score}}{% endif %}
+          </div>
+        </div>
+
     {% endfor %}
   </div>
-    <div class="mt-6 mb-3">
-      {% include 'sub/pagination_small.html' %}
-      {% include 'sub/pagination_large.html' %}
-    </div>
+  <div class="mt-6 mb-3">
+    {% include 'sub/pagination_small.html' %}
+    {% include 'sub/pagination_large.html' %}
+  </div>
 {% else %}
   <p class="text-gray-600 text-center mb-6">No results found for “{{ result.term }}”.</p>
 {% endif %}

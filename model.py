@@ -165,14 +165,35 @@ class GWordDefinition:
     return self.word < other.word
 
 @dataclass
-class GSearchResult:
+class GClueSearchResult:
   word: str
   text: str
+
+@dataclass
+class GPuzzleSearchResult:
+  center_letter: str
+  outer_letters: List[str]
+
+@dataclass
+class GSearchResult:
+  clue: Optional[GClueSearchResult]
+  puzzle: Optional[GPuzzleSearchResult]
+  score: float
   url: str
-  lastused: str
+  date: str
+
   def __lt__(self, other):
-    if self.word == other.word:
-      return self.text > other.text
+    self_date = datetime.datetime.strptime(self.date, '%Y-%m-%d').timestamp()
+    other_date = datetime.datetime.strptime(other.date, '%Y-%m-%d').timestamp()
+
+    self_text = self.clue.text if self.clue else ''
+    other_text = other.clue.text if other.clue else ''
+
+    self_k =  (-self.score,  self.url,  self_text,  -self_date)
+    other_k = (-other.score, other.url, other_text, -other_date)
+    return self_k < other_k
+
+
 
 def format_yearmonth(value: str) -> str:
   date = datetime.datetime.strptime(value, "%Y-%m")

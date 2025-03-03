@@ -20,6 +20,7 @@ def set_env_globals(env: Optional[Environment]) -> None:
   if env:
     env.globals.update(
       DEV=config['DEV'],
+      DEBUG=config['DEBUG'],
       domain=config['DOMAIN'],
       js_version=config['JS_VERSION'],
       css_version=config['CSS_VERSION'],

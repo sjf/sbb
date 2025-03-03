@@ -183,8 +183,12 @@ def read_csv(f, delimiter=',', quotechar='"'):
   return result
 
 def md5(f: str) -> str:
-  data = read(f).encode('utf-8')
-  return hashlib.md5(data).hexdigest()
+  data = read(f)
+  return md5_value(data)
+
+def md5_value(s: str) -> str:
+  s = s.encode('utf-8')
+  return hashlib.md5(s).hexdigest()
 
 def canon(s):
   return s.strip().lower().strip('"').strip("'")

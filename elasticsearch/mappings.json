@@ -1,6 +1,18 @@
 {
   "dynamic": "strict",
   "properties": {
+    "type": {
+      "type": "keyword"
+    },
+    "url": {
+      "type": "text",
+      "index": "false"
+    },
+    "date": {
+      "type": "text",
+      "index": "false"
+    },
+
     "word": {
       "type": "text",
       "analyzer": "search_analyser"
@@ -9,7 +21,27 @@
       "type": "text",
       "analyzer": "search_analyser"
     },
-    "lastused": {
+
+    "month_day": {
+      "type": "keyword"
+    },
+    "month_day_year": {
+      "type": "keyword"
+    },
+    "day_month": {
+      "type": "keyword"
+    },
+    "day_month_year": {
+      "type": "keyword"
+    },
+    "letters": {
+      "type": "keyword"
+    },
+    "center_letter": {
+      "type": "text",
+      "index": "false"
+    },
+    "outer_letters": {
       "type": "text",
       "index": "false"
     }

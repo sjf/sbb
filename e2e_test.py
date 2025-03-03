@@ -56,7 +56,15 @@ def assert_same(url1, url2):
   b = get(url2)
   assert_code(a, 200)
   assert_code(b, 200)
-  assert a.text == b.text
+  assert a.text == b.text, f'{url1} == {url2}'
+
+def assert_in_order(response, l):
+  assert_code(response, 200)
+  t = response.text
+  for s in l:
+    assert s in t, t
+  reg = joinl(l, sep='.*')
+  assert re.search(reg, t, re.DOTALL), t
 
 ####### CUJs
 
@@ -122,14 +130,6 @@ def test_search(query, dest, clue, answer):
   assert_contains(response, clue)
   assert_contains(response, answer)
 
-def test_css():
-  for url in ['/', '/search?q=cathode']:
-    soup = BeautifulSoup(get(url).text, 'html.parser')
-    css_files = [link['href'] for link in soup.find_all('link', rel="stylesheet")]
-    css_files = filter(lambda x:x.startswith('/'), css_files)
-    for cs in css_files:
-      assert_code(get(cs), 200)
-
 def test_js():
   for url in ['/', '/search?q=cathode']:
     soup = BeautifulSoup(get(url).text, 'html.parser')
@@ -140,23 +140,56 @@ def test_js():
 
 ####### Tests for content of generated pages #####
 
+def test_backend_css():
+  for url in ['/', '/search?q=cathode']:
+    soup = BeautifulSoup(get(url).text, 'html.parser')
+    css_files = [link['href'] for link in soup.find_all('link', rel="stylesheet")]
+    css_files = filter(lambda x:x.startswith('/'), css_files)
+    for cs in css_files:
+      assert_code(get(cs), 200)
+
+@pytest.mark.testdata
+def test_search_results_duplicate_clues_latest_only():
+  r = get(f'/search?q=go')
+  assert_in_order(r, ['December 31, 2024', 'December 30, 2024', 'December 29, 2024', 'December 31, 2024'])
+  assert_in_order(r, ['Go cold turkey', 'Go cold turkey', 'Go cold turkey!!!!!',
+    'Want an expensive ticket and possibly be towed'])
+  assert_in_order(r, ['/clue/go-cold-turkey', '/clue/go-cold-turkey', '/clue/go-cold-turkey',
+    'clue/want-an-expensive-ticket-and-possibly-be-towed-go-park-next-to-a-fire'])
+
+@pytest.mark.parametrize('q', ['hydrant', 'tadhnry', 'A D H N R Y T'])
+@pytest.mark.testdata
+def test_search_by_puzzle_letters(q):
+  r = get(f'/search?q={q}')
+  assert 'December 31, 2024' in r.text
+  assert 'A D H N R Y' in r.text
+
+@pytest.mark.parametrize('q', ['31 December', 'December 31', 'December 31, 2024', '31 December, 2024'])
+@pytest.mark.testdata
+def test_search_by_puzzle_date(q):
+  r = get(f'/search?q={q}')
+  assert 'December 31, 2024' in r.text
+  assert 'A D H N R Y' in r.text
+
+@pytest.mark.testdata
+def test_search_month_does_not_match_puzzle_date():
+  r = get('/search?q=December')
+  assert_in_order(r, ['Holiday in December','December 31, 2024'])
+  assert 'A D H N R Y' not in r.text
+
 @pytest.mark.testdata
 def test_td_clue_page():
   r = get('/clue/go-cold-turkey')
-  assert_code(r, 200)
-  t = r.text
-  assert re.search('puzzle-3-word-for-detox.*puzzle-2-word-for-detox.*detox', t)
-  assert re.search('Go cold turkey.*Go cold turkey!!!!!.*Go cold turkey', t)
-  assert re.search('December 30, 2024.*December 29, 2024.*December 24, 2024', t)
-  assert ('Detoxification from an intoxicating or addictive substance' in t)
+  assert_in_order(r, ['puzzle-3-word-for-detox', 'puzzle-2-word-for-detox', 'detox'])
+  assert_in_order(r, ['Go cold turkey', 'Go cold turkey!!!!!', 'Go cold turkey'])
+  assert_in_order(r, ['December 30, 2024', 'December 29, 2024', 'December 24, 2024'])
+  assert 'Detoxification from an intoxicating or addictive substance' in r.text
 
 @pytest.mark.testdata
 def test_td_clue_archive():
   r = get('/clues/')
-  assert_code(r, 200)
-  t = r.text
-  assert re.search('1 clues.*2 clues.*3 clues', t)
-  assert re.search('/clues/a/1.*/clues/d/1.*/clues/g/1',t)
+  assert_in_order(r, ['1 clues', '2 clues', '3 clues'])
+  assert_in_order(r, ['/clues/a/1', '/clues/d/1', '/clues/g/1'])
 
 @pytest.mark.testdata
 @pytest.mark.parametrize(
@@ -164,11 +197,8 @@ def test_td_clue_archive():
 )
 def test_td_puzzle_archive(url):
   r = get(url)
-  assert_code(r, 200)
-  t = r.text
-  assert 'December, 2024' in t
-  assert re.search('December 24, 2024.*December 29, 2024.*December 30, 2024', t)
-  assert re.search('T E F O U X.*B G I M O R.*D H I L N O', t)
+  assert_in_order(r, ['December 24, 2024', 'December 29, 2024', 'December 30, 2024'])
+  assert_in_order(r, ['T E F O U X', 'B G I M O R', 'D H I L N O'])
 
 ####### Other pages
 def test_redirects_clue():

@@ -8,18 +8,24 @@
   "answers": [
     "puzzle-3-word-for-detox"
   ],
-  "print_date": "2024-12-30",
+  "print_date": "2024-12-31",
   "editor": "Sam Ezersky",
   "clues": [
     {
       "word": "hydrant",
-      "text": "Want an expensive ticket and possibly be towed? Park next to a fire ____",
+      "text": "Want an expensive ticket and possibly be towed? Go park next to a fire ____",
       "user": "SUCCINCTLY, STEVE G",
       "url": "https://www.nytimes.com/2024/12/18/crosswords/spelling-bee-forum.html#permid=138370070"
     },
     {
       "word": "detox",
       "text": "Go cold turkey",
+      "user": "SUCCINCTLY, STEVE G",
+      "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
+    },
+    {
+      "word": "christmas",
+      "text": "Holiday in December",
       "user": "SUCCINCTLY, STEVE G",
       "url": "https://www.nytimes.com/2024/12/24/crosswords/spelling-bee-forum.html#permid=138506079"
     }

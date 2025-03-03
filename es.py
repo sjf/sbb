@@ -4,13 +4,17 @@ from elasticsearch import Elasticsearch, helpers
 import langcodes
 from functools import cmp_to_key
 from collections import defaultdict
+from datetime import datetime
+
 import json
 import os
 import shlex
 from typing import List, Any, Dict, Optional, Tuple
 from pyutils.settings import config
 from pyutils import *
-from model import GSearchResult
+from model import GSearchResult, GClueSearchResult, GPuzzleSearchResult
+from query import Query
+from site_util import url_for
 from result import Result
 
 class ElasticSearch:
@@ -26,15 +30,36 @@ class ElasticSearch:
     self.max_retries = config.get('ES_MAX_RETRIES')
     self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
 
+  def upsert_puzzle(self, date: str, center_letter: str, outer_letters: List[str]) -> None:
+    letters = joinl(sorted(outer_letters + [center_letter]), sep='')
+    dt = datetime.datetime.strptime(date, '%Y-%m-%d')
+    month_day =      normalize(dt.strftime('%B %-d'))
+    month_day_year = normalize(dt.strftime('%B %-d %Y'))
+    day_month =      normalize(dt.strftime('%-d %B'))
+    day_month_year = normalize(dt.strftime('%-d %B %Y'))
+    url = url_for(date)
+    doc = {'type': 'puzzle', 'url': url, 'date': date,
+            'letters': letters, 'center_letter': center_letter, 'outer_letters': joinl(outer_letters, sep=''),
+            'month_day': month_day, 'day_month': day_month,
+            'month_day_year': month_day_year, 'day_month_year': day_month_year}
+    id_ = url
+    self._upsert(doc, id_)
+
   def upsert_clue(self, url: str, word: str, text: str, date: str) -> None:
+    # If the clues are inserted in chronological order, only the last clue will be stored when there
+    # are clues with the same text and word. We only the most recent to show up in the search results.
+    doc = {'type': 'clue', 'url': url, 'date': date, 'word': word, 'text': text}
+    id_ = md5_value(word + '_' + text)
+    self._upsert(doc, id_)
+
+  def _upsert(self, doc: Dict[Any,Any], id_: str) -> None:
     retries = self.max_retries + 1
     success = 0
 
-    doc = {'word': word, 'text': text, 'lastused': date}
     while retries > 0:
       try:
         body = {'doc': doc, 'doc_as_upsert': True}
-        self.es.update(index=self.index, id=url, body=body)
+        self.es.update(index=self.index, id=id_, body=body)
         break # Don't retry
       except (elasticsearch.AuthenticationException, elasticsearch.AuthorizationException) as e:
         raise e
@@ -46,10 +71,25 @@ class ElasticSearch:
           log(f'Retrying... (attempt {self.max_retries + 2 - retries}) after {self.retry_delay_secs} seconds', )
           time.sleep(self.retry_delay_secs)
 
-  def search(self, query) -> Result:
-    and_terms = []
-    or_terms = [] # Match any of full title, isbn or doi.
-    unquoted, quoted = get_quoted_substrings(query.term)
+  def search(self, query: Query) -> Result:
+    q = query.term
+    es_query = es_or([self.search_clues(q), self.search_puzzles(q)])
+
+    config.get('DEBUG') and print(json.dumps(es_query)) # ssss
+    hits, has_next = self._search(es_query, query.page_num - 1) # pages start at 1 in the query.
+    config.get('DEBUG') and print(joinl(hits)) # ssss
+
+    results = mapl(to_search_result, hits)
+    results = sorted(results)
+    result = Result(query, results, has_next)
+    config.get('DEBUG') and (print(result)) # ssss
+
+    return result
+
+  def search_clues(self, query) -> Dict[str, Any]:
+    and_terms = [exact_string('type', 'clue')]
+    or_terms = []
+    unquoted, quoted = get_quoted_substrings(query)
     if unquoted:
       unquoted_t = inexact_phrase('text', self.tokenize(unquoted), 400, 300, 50, 0)
       if not quoted:
@@ -62,14 +102,21 @@ class ElasticSearch:
       # All quoted strings must be present.
       or_terms.append(es_and(quoted_ts))
     and_terms.append(es_or(or_terms))
-
-    os.environ.get('DEBUG','') and print(query) # ssss
     es_query = es_and(and_terms)
-    hits, has_next = self._search(es_query, query.page_num - 1) # pages start at 1.
-    results = mapl(to_clue, hits)
-    result = Result(query, results, has_next)
-    os.environ.get('DEBUG','') and (print(result)) # ssss
-    return result
+    return es_query
+
+  def search_puzzles(self, q: str) -> Dict[str, Any]:
+    q = normalize(q)
+    or_terms = [exact_string('month_day', q),
+                 exact_string('month_day_year', q),
+                 exact_string('day_month', q),
+                 exact_string('day_month_year', q)]
+    l = q.replace(' ', '').upper()
+    l = joinl(sorted(l), sep='')
+    if len(l) == len(set(l)) == 7 and 's' not in l:
+      or_terms.append(exact_string('letters', l))
+
+    return es_and([exact_string('type', 'puzzle'), es_or(or_terms)])
 
   def _search(self, es_query, page_num) -> Tuple[List[GSearchResult], bool]:
     body = {
@@ -92,12 +139,22 @@ class ElasticSearch:
     response = self.es.indices.analyze(index=self.index, body=body)
     return [token['token'] for token in response['tokens']]
 
-def to_clue(hit: Dict) -> GSearchResult:
-  url = hit['_id']
-  word = hit['_source']['word']
-  text = hit['_source']['text']
-  lastused = hit['_source']['lastused']
-  return GSearchResult(url=url, word=word, text=text, lastused=lastused)
+def to_search_result(hit: Dict) -> GSearchResult:
+  clue, puzzle = None, None
+  score = hit['_score']
+  url = hit['_source']['url']
+  date = hit['_source']['date']
+
+  if hit['_source']['type'] == 'clue':
+    word = hit['_source']['word']
+    text = hit['_source']['text']
+    clue = GClueSearchResult(word=word, text=text)
+  else:
+    center_letter = hit['_source']['center_letter']
+    outer_letters = list(hit['_source']['outer_letters'])
+    puzzle = GPuzzleSearchResult(center_letter=center_letter, outer_letters=outer_letters)
+
+  return GSearchResult(score=score, date=date, url=url, clue=clue, puzzle=puzzle)
 
 def split_quotes(s):
   lex = shlex.shlex(s)
@@ -130,23 +187,6 @@ def get_quoted_substrings(s):
       unquoted.append(p)
   unquoted = joinl(unquoted, ' ', empty='')
   return unquoted, quoted
-
-# Sort by whether ISBN is present. (field is not indexed)
-# {
-#   "_script": {
-#     "type": "number",
-#     "script": {
-#       "source": f"""
-#         if (doc['IdentifierWODash'].value != '') {{
-#           return 0;
-#         }} else {{
-#           return 1;
-#         }}
-#       """,
-#       # "order": "desc"
-#     }
-#   }
-# },
 
 # Document contains the _exact_ search query.
 # The terms maybe moved by `slop` positions, they will be scored lower however.
@@ -280,7 +320,10 @@ def es_and(clauses, filters=None):
 def es_or(clauses):
   return {"bool":{"should": clauses}} # should means 'or'
 
-
-
-
+def normalize(s):
+  s = s.lower()
+  s = re.sub(r'[^\w\s]', '', s)  # Remove punctuation
+  s = re.sub(r'\s+', ' ', s)  # Collapse whitespace
+  s = s.strip()
+  return s
 
