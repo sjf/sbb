@@ -7,6 +7,7 @@ import importer as imp
 from copy import deepcopy
 from pyutils import *
 from testutils import *
+from testdata import *
 
 FILES = [FILE_1, FILE_2]
 
@@ -14,7 +15,7 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
   importer = imp.Importer()
   importer.import_files(FILES)
 
-  mock_es["update"].assert_has_calls(ES_UPDATES)
+  assert_calls(mock_es["update"], ES_UPDATES)
 
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == GC_PAGES
@@ -41,7 +42,7 @@ def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   importer = imp.Importer()
   importer.import_files([FILE_1_NOCLUES])
 
-  assert mock_es["update"].call_count == 0
+  assert_calls(mock_es["update"], ES_UPDATES_1[0:1]) # Only puzzle is imported
   assert importer.db.fetch_ganswers() == AS_NC_1
   puzzle = deepcopy(GP_1)
   puzzle._answers = AS_NC_1

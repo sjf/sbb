@@ -4,7 +4,7 @@ from elasticsearch import Elasticsearch, helpers
 import langcodes
 from functools import cmp_to_key
 from collections import defaultdict
-from datetime import datetime
+import datetime as dtt
 
 import json
 import os

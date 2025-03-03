@@ -187,8 +187,8 @@ def md5(f: str) -> str:
   return md5_value(data)
 
 def md5_value(s: str) -> str:
-  s = s.encode('utf-8')
-  return hashlib.md5(s).hexdigest()
+  e = s.encode('utf-8')
+  return hashlib.md5(e).hexdigest()
 
 def canon(s):
   return s.strip().lower().strip('"').strip("'")
