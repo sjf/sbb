@@ -188,7 +188,7 @@ def test_td_clue_page():
 @pytest.mark.testdata
 def test_td_clue_archive():
   r = get('/clues/')
-  assert_in_order(r, ['1 clues', '2 clues', '3 clues'])
+  assert_in_order(r, ['1 clues', '2 clues', '4 clues'])
   assert_in_order(r, ['/clues/a/1', '/clues/d/1', '/clues/g/1'])
 
 @pytest.mark.testdata
