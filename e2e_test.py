@@ -7,7 +7,7 @@ import pyutils
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
 from pyutils import *
-from testutils import *
+from testdata import *
 
 # These can be overridden by setting the env var.
 TEST_SETTINGS = {
