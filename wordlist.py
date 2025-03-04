@@ -47,7 +47,7 @@ class Wordlist:
 
   def load_denylist(self) -> Dict[str,str]:
     if not exists(config['DENYLIST']):
-      log_error(f"Deny list {config['DENYLIST']} is missing.")
+      log_warn(f"Deny list {config['DENYLIST']} is missing.")
       touch(config['DENYLIST'])
 
     result = {}

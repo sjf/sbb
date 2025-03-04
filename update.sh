@@ -16,6 +16,11 @@ pip3 install -qr requirements.txt
 export PYUTILS_LOG_DIR=$HOME/logs
 export PYUTILS_LOG_FILE=sbb.log
 
+if [[ -f pause ]]; then
+  echo "Pausing update on $(hostname) because pause file found: $(realpath pause)" >&2
+  exit 1
+fi
+
 CMD=${1:-all}
 shift || true
 if [[ $CMD == 'all' ]]; then
