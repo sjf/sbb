@@ -179,8 +179,14 @@ class Generator:
     self.output('/index.html', rendered, today)
 
     template = self.env.get_template('about.html')
-    rendered = template.render(url='/about', canon_url='/about')
-    self.output('/about', rendered, '2025-01-01')
+    url = '/about'
+    rendered = template.render(url=url, canon_url=url)
+    self.output(url, rendered, '2025-01-01')
+
+    template = self.env.get_template('about_other_answers.html')
+    url = '/about-other-answers'
+    rendered = template.render(url=url, canon_url=url)
+    self.output(url, rendered, '2025-03-03')
 
     template = self.env.get_template('internal/error.html')
     for code,message in http_error_messages.items():
@@ -381,7 +387,7 @@ class Generator:
     if missing:
       f = log_error if config['IGNORE_MISSING'] else log_fatal
       files = joinl(missing[:20])
-      rest = "\n...\nSee data/missing.txt for the full list." if len(files) > 20 else ''
+      rest = "\n...\nSee data/missing.txt for the full list." if len(missing) > 20 else ''
       write('data/missing.txt', joinl(missing))
       f(f'Files were not regenerated: {len(missing):,} are missing:\n{files}{rest}')
     if new_files:

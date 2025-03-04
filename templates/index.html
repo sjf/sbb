@@ -13,8 +13,8 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold text-center mb-2">Today's Spelling Bee</h1>
-<p class="text-center italic text-gray-500">{{ format_date(puzzle.date) }}</p>
+<h1 class="text-3xl font-bold text-center mb-1">Today's Spelling Bee</h1>
+<p class="text-center italic text-gray-600 mb-2">{{ format_date(puzzle.date) }}</p>
 {% include "sub/game.html" %}
 
 {% endblock %}

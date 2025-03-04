@@ -1,7 +1,7 @@
 <div class="flex justify-center flex-col items-center relative">
   <div>
-    <p class="text-center text-xl">Unlock the Spelling Bee</p>
-    <p class="text-center text-lg">
+    <p class="text-center text-xl sm:text-lg">Unlock the Spelling Bee</p>
+    <p class="text-center text-lg sm:text-base">
       Stuck and can't reach Queen Bee? See the solution or find out the answers to the NYT clues.
     </p>
   </div>
@@ -64,7 +64,7 @@
     <div class="columns-2 md:columns-3 space-y-0">
       {% for ls in split_by_start(puzzle.answers) %}
         {% for answer in ls %}
-          <div class="text-lg break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
+          <div class="text-lg sm:text-base break-inside-avoid {% if answer.is_pangram %}text-yellow-700 font-bold{% endif %}">
             <a  href="/definition/{{ answer.word }}"
                 id="puzzle-answer-definition"
                 class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ answer.word }}</a>
@@ -79,12 +79,12 @@
     <h2 class="text-2xl font-semibold mb-2">Clues</h2>
     <div class="space-y-3">
       {% if not puzzle.has_all_clues() %}
-      <div class="text-lg italic mb-4">These clues were created by us, ahead of the NYT clues which are not available until 9AM EST.</div>
+      <div class="text-lg sm:text-base italic mb-4">These clues were created by us, ahead of the NYT clues which are not available until 9AM EST.</div>
       {% endif %}
       {% for answer in sort_by_clue(puzzle.answers) %}
       <div class="grid grid-cols-1">
         {% if answer.text %}
-          <div class="text-lg">
+          <div class="text-lg sm:text-base ">
             {% if answer.url %}
               <a  href="{{ answer.url }}"
                   class="hover:underline"
@@ -94,7 +94,7 @@
             {% endif %}
           </div>
         {% else %}
-          <div class="text-lg italic text-gray-500">No clue available</div>
+          <div class="text-lg sm:text-base italic text-gray-500">No clue available</div>
         {% endif %}
         {% with word=answer.word %}
           {% include "sub/word_boxes.html" %}
@@ -116,7 +116,7 @@
           <span>▼</span>
         </button>
       </div>
-      <ul id="hints" class="list-disc pl-6 text-lg">
+      <ul id="hints" class="list-disc pl-6 text-lg sm:text-base">
         {% for hint in puzzle.hints %}
           <li onclick="toggleHintAnswers(this)"
               id="toggle-hint-answer-text"
@@ -163,14 +163,14 @@
         <span>▼</span>
       </button>
     </div>
-    <div id="missing-answers">
+    <div id="missing-answers" class="text-lg sm:text-base">
       {% if puzzle.missing_answers %}
-        <div class="text-lg mb-2">These words can be made with the letters in spelling bee but were not in included the answer set.
+        <div class="mb-2">These words can be made with the letters in spelling bee but were not in included the answer set.
         </div>
         <div class="flex flex-row items-start">
-          <div class="columns-2 md:columns-3 space-y-0">
+          <div class="columns-2 md:columns-3 space-y-0 w-full">
             {% for word in puzzle.missing_answers %}
-              <div class="text-lg break-inside-avoid {% if False %}text-yellow-700 font-bold{% endif %}">
+              <div class="break-inside-avoid {% if False %}text-yellow-700 font-bold{% endif %}">
                 <a  href="https://www.merriam-webster.com/dictionary/{{ word }}"
                     id="puzzle-missing-answer-definition"
                     class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ word }}</a>
@@ -179,8 +179,15 @@
           </div>
         </div>
       {% else %}
-        <div class="italic text-gray-700 text-lg">I couldn't find any words today that were not included in the answer set.</div>
+        <div class="italic text-gray-700">I couldn't find any words today that were not included in the answer set.</div>
       {% endif %}
+      <div class="text-right text-sm text-gray-700">
+        <a  class="border-b-2 border-dashed border-gray-300 cursor-pointer text-sm text-gray-500"
+            href="/about-other-answers"
+            id="missing-answers-about">
+          Where do these come from?
+        </a>
+      </div>
     </div>
   </div>
 

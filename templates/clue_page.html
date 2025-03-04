@@ -29,7 +29,7 @@
   <!-- Other answers for the same clue. -->
   {% if page.clue_answers|length > 1 %}
   <div class="mt-6 pt-6 border-t text-center">
-    <h2 class="text-lg mb-6">This clue has also appeared with other answers. Find all the answers below:</h2>
+    <h2 class="text-lg sm:text-base mb-6">This clue has also appeared with other answers. Find all the answers below:</h2>
     {% for answer in page.clue_answers[1:] %}
       {% with index=loop.index,is_sub=True %}
         <div class="mb-6 pb-6 last:pb-0 border-b last:border-b-0">

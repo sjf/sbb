@@ -90,12 +90,12 @@
   <div class="text-2xl font-bold flex items-center">
     <a id="nav-home" href="/">🐝 <span class="ml-2">NYT Spelling Bee Key</span></a>
   </div>
-  <div class="hidden sm:flex space-x-6">
+  <div class="hidden sm:flex space-x-6 text-lg">
     <a  href="#"
         onclick="toggleVisible(this); ffocus('search-text-input')"
         data-target="search-box"
         id="nav-lrg-open-search"
-        class="group flex items-center text-lg font-medium text-gray-700 hover:text-yellow-600 transition
+        class="group flex items-center font-medium text-gray-700 hover:text-yellow-600 transition
           {% if show_search_box %} hidden {% endif %}">
       <svg class="h-6 w-6 inline stroke-[1.5] text-gray-700 group-hover:fill-yellow-600 transition"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
@@ -104,13 +104,13 @@
     </a>
     <a  href="/puzzles/latest"
         id="nav-puzzles"
-        class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
+        class="font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
     <a  href="/clues/"
         id="nav-clues"
-        class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
+        class="font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
     <a  href="/about"
         id="nav-about"
-        class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
+        class="font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
   </div>
   <div class="sm:hidden">
     <button class="text-3xl {% if show_search_box %} hidden {% endif %}"
@@ -132,19 +132,19 @@
 
 <!-- Search Box -->
 {% set query = (request is defined and request.args.get('q', '')) or '' %}
-<div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 py-4 bg-yellow-300 shadow-md">
+<div id="mobileMenu" class="hidden sm:hidden flex flex-col space-y-4 px-6 pt-4 bg-yellow-300 shadow-md text-lg">
   <a  href="/"
       id="menu-home"
-      class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
+      class="font-medium text-gray-700 hover:text-yellow-600 transition">Home</a>
   <a  href="/puzzles/latest"
       id="menu-puzzles"
-      class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
+      class="font-medium text-gray-700 hover:text-yellow-600 transition">Puzzles</a>
   <a  href="/clues/"
       id="menu-clues"
-      class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
+      class="font-medium text-gray-700 hover:text-yellow-600 transition">Clues</a>
   <a  href="/about"
       id="menu-about"
-      class="text-lg font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
+      class="font-medium text-gray-700 hover:text-yellow-600 transition">About</a>
 </div>
 
 <div id="search-box" class="{% if not show_search_box %}hidden{% endif %} flex items-center w-full pl-4 pr-2 sm:pr-4 py-4 bg-yellow-300 shadow-md">

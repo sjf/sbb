@@ -39,7 +39,8 @@
 <h1 class="text-4xl font-bold text-center mb-1">Clues starting with {{ smquote(prefix.upper(), single=True) }}</h1>
 <a  href="/clues/"
     id="archive-clue-back-to-index"
-    class="block w-full mb-4 text-center underline italic text-sm">Back to index
+    class="block w-full mb-4 text-center italic text-sm">
+      <span class="border-b-2 border-dashed border-gray-300 cursor-pointer">Back to index</span>
 </a>
 {% if pagination.total_pages > 1 %}
   {% include 'sub/pagination_large.html' %}

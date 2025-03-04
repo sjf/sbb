@@ -1,0 +1,13 @@
+attn:abbreviation
+atty:abbreviation
+corr:abbreviation
+gringo:offensive
+incl:abbreviation
+inline:offensive
+innit:no merrian-webster definition
+ital:abbreviation
+natl:abbreviation
+nigga:offensive
+orig:no merrian-webster definition
+tarty:offensive
+titty:no merrian-webster definition

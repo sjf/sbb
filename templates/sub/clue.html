@@ -1,14 +1,14 @@
-<div class="text-center">
+<div class="text-center text-lg sm:text-base">
 
   {% if not is_sub %}
     <!-- Intro text -->
-    <p class="mt-4 text-lg">
+    <p class="mt-4 ">
       Get the answer to the NYT Spelling Bee clue “<span class="font-semibold">{{answer.text}}</span>”, starting with the letters <span class="uppercase">{{answer.word[0]}}{{answer.word[1]}}</span>.
     <br>
       Click below to uncover the answer.
     </p>
   {% else %}
-    <p class="mt-2  text-lg">
+    <p class="mt-2">
       Clue “<span class="font-semibold">{{answer.text}}</span>” on
         <a href="{{ url_for(answer.puzzle_dates[0]) }}" class="text-m text-yellow-500 hover:underline">
           {{ format_date(answer.puzzle_dates[0]) }}</a>.
@@ -39,7 +39,7 @@
   {% endif %}
 
   {% if not is_sub %}
-    <p class="mt-6 text-lg">
+    <p class="mt-6">
       This clue was used on
         <a  href="{{ url_for(answer.puzzle_dates[0]) }}"
             id="clue-used-on-date"
@@ -51,9 +51,9 @@
   <!-- Other puzzles that used this clue/answer combo. -->
   {% if answer.puzzle_dates|length > 1 %}
   <div class="mt-12 pt-6 border-t text-center">
-    <p class="text-lg">This clue has been used several times with the same answer. It also appeared on these dates:</p>
+    <p>This clue has been used several times with the same answer. It also appeared on these dates:</p>
     {% for puzzle_date in answer.puzzle_dates[1:] %}
-      <p class="text-lg mt-2">
+      <p class="mt-2">
         <a  href="{{ url_for(puzzle_date) }}"
             id="clue-used-on-other-date"
             class="text-m text-yellow-500 hover:underline">
