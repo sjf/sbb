@@ -3,6 +3,7 @@ import logging
 import os
 import json
 import elasticsearch
+import fcntl
 from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app, abort
 from markupsafe import escape
 from http import HTTPStatus
@@ -31,6 +32,26 @@ def handle_result(query, result):
     })
   # Canonical URL for results page is the first page of results.
   return render_template('results.html', url=request.url, canon_url=result.pagination.first, result=result)
+
+@bp.route('/thank-you', methods=['GET', 'POST'])
+def thankyou():
+  if request.method == 'GET':
+      return redirect('/')
+  email = request.form.get('email')
+  access_log(f'EMAIL SUBMITTED: "{email}"')
+
+  ts = timestamp()
+  user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+  line = f'{ts},{user_ip},{email}\n'
+
+  file = joinp(get_log_dir(), config['EMAIL_FILE'])
+  with open(file, 'a') as fh:
+      fcntl.flock(fh, fcntl.LOCK_EX)  # Lock the file
+      fh.write(line)
+      fcntl.flock(fh, fcntl.LOCK_UN)  # Unlock after writing
+
+  url='/thank-you'
+  return render_template('thank_you.html', url=url, canon_url=url)
 
 if os.getenv('FLASK_ENV') == 'development':
   @bp.route('/', defaults={'filename': 'index.html'})

@@ -22,6 +22,9 @@ def timestamp(access_log=True):
 def duration(start, end):
   return humanfriendly.format_timespan(end - start)
 
+def get_log_dir():
+  return os.environ.get('PYUTILS_LOG_DIR', f'{Path.home()}/logs/')
+
 list_handler = None
 logger = logging.getLogger('pyutils')
 formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s',  datefmt=ISO_DATE_FORMAT)
@@ -33,7 +36,7 @@ def _setup_logging(list_handler=False):
   # console handler
   console_handler = logging.StreamHandler()
 
-  log_dir = os.environ.get('PYUTILS_LOG_DIR', f'{Path.home()}/log/')
+  log_dir = get_log_dir()
   if not os.path.isdir(log_dir):
     log_warn(f'Creating log file directory {log_dir}')
     os.makedirs(log_dir, exist_ok=True)

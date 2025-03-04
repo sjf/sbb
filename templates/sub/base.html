@@ -182,9 +182,86 @@
 
 <!-- Main Content Area -->
 <main class="flex-grow">
-  <div class="container mx-auto sm:mt-5 mt-3 py-4 px-6 max-w-4xl bg-white shadow-md rounded">
+  <section class="container mx-auto sm:mt-5 mt-3 py-4 px-6 max-w-4xl bg-white shadow-md rounded">
     {% block content %}{% endblock %}
-  </div>
+  </section>
+
+  {% if config['USE_SIGNUP'] and not url == '/thank-you' %}
+    <section class="container mx-auto sm:mt-5 mt-3 py-4 px-6 max-w-4xl bg-white shadow-md rounded  text-gray-900">
+      <h2 class="text-2xl font-bold">A New Word Game is Coming!</h2>
+      <p class="text-gray-700 mt-2">
+        Think you’re fast with words? A new multiplayer word game—<strong>inspired by Spelling Bee</strong>—is launching soon.
+      </p>
+      <p class="text-gray-700 mt-2">
+        It will put you head-to-head with other players in real-time, where quick thinking and sharp vocabulary skills determine the winner.
+      </p>
+
+      <form id="signup-form" action="/thank-you" method="POST" class="mt-3 mx-auto">
+        <label for="email" class="block text-gray-700 mb-2">
+          <strong>Be amongst the first to play. Sign up for early access</strong>
+        </label>
+        <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            placeholder="Enter your email"
+            required
+            class="sm:w-[500px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-transparent focus:ring-2 focus:ring-yellow-500 w-full sm:w-60"
+          >
+          <button
+            type="submit"
+            class="w-full max-w-sm sm:max-w-48 bg-yellow-400 text-yellow-900 font-bold p-3 rounded-lg hover:bg-yellow-500 transition">
+            Notify Me
+          </button>
+        </div>
+      </form>
+
+      <p id="success-message" class="italic mt-3 hidden text-gray-700">
+        Thank you for signing up! We'll notify you when we launch.
+      </p>
+      <p id="failure-message" class="italic mt-3 hidden text-gray-700">
+        Something went wrong. Please try again.
+      </p>
+      <script>
+        document.getElementById("signup-form").addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevent normal form submission
+          submitForm(); // Call the async function
+        });
+
+        async function submitForm() {
+          let form = document.getElementById("signup-form");
+          let formData = new FormData(form);
+          let emailInput = document.getElementById("email");
+          let successMessage = document.getElementById("success-message");
+          let failureMessage = document.getElementById("failure-message");
+
+          try {
+            let response = await fetch(form.action, {
+              method: form.method,
+              body: formData,
+              headers: { "Accept": "application/json" } // Optional for APIs that accept JSON
+            });
+
+            if (response.ok) {
+              successMessage.classList.remove("hidden");
+              failureMessage.classList.add("hidden");
+              emailInput.value = "";
+            } else {
+              failureMessage.classList.remove("hidden");
+              successMessage.classList.add("hidden");
+            }
+          } catch (error) {
+            console.error("Submission error:", error);
+            failureMessage.classList.remove("hidden");
+            successMessage.classList.add("hidden");
+          }
+        }
+      </script>
+    </section>
+  {% endif %}
+
   {% if config['USE_ADSENSE'] %}
     <!-- Ad sense -->
     <section>

@@ -4,6 +4,7 @@ import http.client
 import os
 import re
 import pyutils
+import random
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
 from pyutils import *
@@ -129,6 +130,13 @@ def test_search(query, dest, clue, answer):
   assert_contains(response, dest)
   assert_contains(response, clue)
   assert_contains(response, answer)
+
+def test_signup():
+  email = f'test-{random.randint(1000,9999)}@example.com'
+  response = post(f'/thank-you', {'email':email})
+  assert_contains(response, 'Thank you')
+  assert not 'Sign up' in response.text
+  assert email in read(get_log_dir() + config['EMAIL_FILE'])
 
 def test_js():
   for url in ['/', '/search?q=cathode']:

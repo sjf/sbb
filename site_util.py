@@ -80,6 +80,8 @@ def get_content_group(url: str) -> str:
 
     '/about':          'About',
     '/error/':         'Error Page',
+
+    '/thank-you':      'Thank_you'
   }
   path = url_path(url)
   for prefix,content_group in prefixes.items():

@@ -1,0 +1,29 @@
+{% extends "sub/base.html" %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Thank you for signing up.",
+  "url": "{{ domain }}/{{ canon_url }}",
+  "description": "Thank you for signing up."
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="max-w-3xl mx-auto pt-12 pb-8 px-6">
+  <h1 class="text-4xl font-bold mb-6">Thank you for signing up!</h1>
+  <div class="leading-relaxed text-lg sm:text-base">
+    <p class="mb-6">
+You’re on the list. We’ll send you an invite as soon as the game launches.
+    </p>
+  </div>
+
+  </div>
+</section>
+
+
+{% endblock %}
