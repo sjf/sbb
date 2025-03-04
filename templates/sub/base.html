@@ -205,7 +205,7 @@
   {% if config['USE_AMAZON'] %}
     <a href="https://amzn.to/4ih70Ej" id="amazon-ah">
       <div class="container mx-auto sm:mt-5 mt-3 py-4 px-6 max-w-4xl bg-white shadow-md rounded center flex flex-col items-center">
-        <img style="width: 300px; height: auto;" src="/static/gh.png"/>
+        <img id="amazon-img" class="my-2" style="max-width: 300px; max-height: 373px; width: auto; height: auto;" src="/static/gh.png"/>
 
         <div class="flex flex-row items-center space-x-[2px]">
           <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -225,7 +225,7 @@
           </svg>
         </div>
 
-        <div class="mt-1 font-serif max-w-[400px]">This breakthrough book from James Clear is the most comprehensive guide on how to change your habits and get 1% better every day. #ad</div>
+        <div id="amazon-text" class="mt-1 font-serif max-w-[400px]">This breakthrough book from James Clear is the most comprehensive guide on how to change your habits and get 1% better every day. #ad</div>
 
         <style>
           .amazon-btn {
@@ -262,5 +262,68 @@
     &copy; {{ current_year }} NYT Spelling Bee Key | Not affiliated with the New York Times
   </div>
 </footer>
+
+{% if config['USE_AMAZON'] %}
+  <script>
+
+    const ads = [
+      {"id": 1, "url": "https://amzn.to/4ih70Ej", "image": "/static/gh.png",
+        "text": "This breakthrough book from James Clear is the most comprehensive guide on how to change your habits and get 1% better every day."},
+
+      {"id": 2, "url": "https://amzn.to/4bsLzxF", "image": "/static/li.jpg",
+        "text": "\"<i>A brilliant, witty, and altogether satisfying book.</i>\" — New York Times Book Review<p class='my-1'>The classic work on the development of human language by the world’s leading expert on language and the mind.</p>"},
+
+      {"id": 3, "url": "https://amzn.to/3R3Vrox", "image": "/static/st.jpg",
+        "text": "The Stuff of Thought presents a fascinating look at how our words explain our nature. Considering scientific questions with examples from everyday life, it is a brilliantly crafted and highly readable work that will appeal to fans of everything from <i>The Selfish Gene</i> and <i>Blink to Eats, Shoots & Leaves.</i>"},
+
+      {"id": 4, "url": "https://amzn.to/3XswpTn", "image": "/static/word_freak.jpg",
+        "text": "<i>Word Freak: Heartbreak, Triumph, Genius, and Obsession in the World of Competitive Scrabble Players</i>"},
+
+     {"id": 5, "url": "https://amzn.to/3Dh5xyQ", "image": "/static/lp.jpg",
+        "text": "<i>Letter Perfect: The Marvelous History of Our Alphabet From A to Z</i>"},
+
+      {"id": 6, "url": "https://amzn.to/4i25Cpn", "image": "/static/et.jpg",
+        "text": "<i>The Etymologicon: A Circular Stroll Through the Hidden Connections of the English Language</i>"},
+
+      {"id": 7, "url": "https://amzn.to/43kQ8bi", "image": "/static/hr.jpg",
+        "text": "The Horologicon contains the most extraordinary words in the English language, arranged according to what hour of the day you might need them. <p class='my-1'>Do you wake up feeling rough? Then you’re <i>philogrobolized</i>.<p/><p>Find yourself pretending to work? That’s <i>fudgelling</i>.</p>"},
+
+      {"id": 8, "url": "https://amzn.to/3Xtn0el", "image": "/static/hs.jpg",
+        "text": "This concise compendium of the most confused and misused words defines, discerns and distinguishes the finer points of sense and meaning. Are you trying to remember, or more fully recollect? Is he uninterested or rightly disinterested? Healthful or healthy, regretful or regrettable, notorious or infamous?"},
+
+    ];
+
+    function getAdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      let adParam = parseInt(params.get('ad'), 10);
+      return ads.find(ad => ad.id === adParam) || null;
+    }
+
+
+    function getNextAd() {
+      let adFromUrl = getAdFromUrl();
+      if (adFromUrl) return adFromUrl;
+
+      let lastSeenAd = parseInt(localStorage.getItem('last_seen_ad'), 10);
+      let lastIndex = ads.findIndex(ad => ad.id === lastSeenAd);
+      // Move to the next ad in sequence
+      let nextIndex = (lastIndex + 1) % ads.length;
+      let nextAd = ads[nextIndex];
+      // Store the new last seen ad
+      localStorage.setItem('last_seen_ad', nextAd.id);
+      return nextAd;
+    }
+
+    function showAd() {
+      let ad = getNextAd();
+      document.getElementById('amazon-ah').href = ad.url;
+      document.getElementById('amazon-img').src = ad.image;
+      document.getElementById('amazon-img').alt = ad.text;
+      document.getElementById('amazon-text').innerHTML = ad.text + ' #ad';
+    }
+
+    document.addEventListener('DOMContentLoaded', showAd);
+  </script>
+{% endif %}
 </body>
 </html>
