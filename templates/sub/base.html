@@ -268,28 +268,28 @@
 
     const ads = [
       {"id": 1, "url": "https://amzn.to/4ih70Ej", "image": "/static/gh.png",
-        "text": "This breakthrough book from James Clear is the most comprehensive guide on how to change your habits and get 1% better every day."},
+        "text": "This breakthrough book from James Clear is the most comprehensive guide on how to change your habits and get 1% better every day. #ad"},
 
       {"id": 2, "url": "https://amzn.to/4bsLzxF", "image": "/static/li.jpg",
-        "text": "\"<i>A brilliant, witty, and altogether satisfying book.</i>\" — New York Times Book Review<p class='my-1'>The classic work on the development of human language by the world’s leading expert on language and the mind.</p>"},
+        "text": "\"<i>A brilliant, witty, and altogether satisfying book.</i>\" — New York Times Book Review<p class='my-1'>The classic work on the development of human language by the world’s leading expert on language and the mind. #ad</p>"},
 
       {"id": 3, "url": "https://amzn.to/3R3Vrox", "image": "/static/st.jpg",
-        "text": "The Stuff of Thought presents a fascinating look at how our words explain our nature. Considering scientific questions with examples from everyday life, it is a brilliantly crafted and highly readable work that will appeal to fans of everything from <i>The Selfish Gene</i> and <i>Blink to Eats, Shoots & Leaves.</i>"},
+        "text": "The Stuff of Thought presents a fascinating look at how our words explain our nature. Considering scientific questions with examples from everyday life, it is a brilliantly crafted and highly readable work that will appeal to fans of everything from <i>The Selfish Gene</i> and <i>Blink to Eats, Shoots & Leaves.</i> #ad"},
 
       {"id": 4, "url": "https://amzn.to/3XswpTn", "image": "/static/word_freak.jpg",
-        "text": "<i>Word Freak: Heartbreak, Triumph, Genius, and Obsession in the World of Competitive Scrabble Players</i>"},
+        "text": "<i>Word Freak: Heartbreak, Triumph, Genius, and Obsession in the World of Competitive Scrabble Players</i> #ad"},
 
      {"id": 5, "url": "https://amzn.to/3Dh5xyQ", "image": "/static/lp.jpg",
-        "text": "<i>Letter Perfect: The Marvelous History of Our Alphabet From A to Z</i>"},
+        "text": "<i>Letter Perfect: The Marvelous History of Our Alphabet From A to Z</i> #ad"},
 
       {"id": 6, "url": "https://amzn.to/4i25Cpn", "image": "/static/et.jpg",
-        "text": "<i>The Etymologicon: A Circular Stroll Through the Hidden Connections of the English Language</i>"},
+        "text": "<i>The Etymologicon: A Circular Stroll Through the Hidden Connections of the English Language</i> #ad"},
 
       {"id": 7, "url": "https://amzn.to/43kQ8bi", "image": "/static/hr.jpg",
-        "text": "The Horologicon contains the most extraordinary words in the English language, arranged according to what hour of the day you might need them. <p class='my-1'>Do you wake up feeling rough? Then you’re <i>philogrobolized</i>.<p/><p>Find yourself pretending to work? That’s <i>fudgelling</i>.</p>"},
+        "text": "The Horologicon contains the most extraordinary words in the English language, arranged according to what hour of the day you might need them. <p class='my-1'>Do you wake up feeling rough? Then you’re <i>philogrobolized</i>.<p/><p>Find yourself pretending to work? That’s <i>fudgelling</i>. #ad</p>"},
 
       {"id": 8, "url": "https://amzn.to/3Xtn0el", "image": "/static/hs.jpg",
-        "text": "This concise compendium of the most confused and misused words defines, discerns and distinguishes the finer points of sense and meaning. Are you trying to remember, or more fully recollect? Is he uninterested or rightly disinterested? Healthful or healthy, regretful or regrettable, notorious or infamous?"},
+        "text": "This concise compendium of the most confused and misused words defines, discerns and distinguishes the finer points of sense and meaning. Are you trying to remember, or more fully recollect? Is he uninterested or rightly disinterested? Healthful or healthy, regretful or regrettable, notorious or infamous? #ad"},
 
     ];
 
@@ -319,7 +319,7 @@
       document.getElementById('amazon-ah').href = ad.url;
       document.getElementById('amazon-img').src = ad.image;
       document.getElementById('amazon-img').alt = ad.text;
-      document.getElementById('amazon-text').innerHTML = ad.text + ' #ad';
+      document.getElementById('amazon-text').innerHTML = ad.text;
     }
 
     document.addEventListener('DOMContentLoaded', showAd);
