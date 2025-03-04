@@ -29,7 +29,7 @@ def test_insert_and_fetch_puzzle(temp_db):
 def test_upsert_puzzle(temp_db):
   db = DB()
   id_1 = db.insert(P_1)
-  puzzle_b = Puzzle(date=D1, center_letter=C1, outer_letters=['x','y','z','j','k','l'], hints='')
+  puzzle_b = Puzzle(date=D1, center_letter=C1, outer_letters='xyzjkl', hints='', missing_answers='[]')
 
   id_b = db.upsert_puzzle(puzzle_b)
   puzzle_b.id = id_b

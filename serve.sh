@@ -9,6 +9,7 @@ DEV=${DEV:-True}
 . .venv/bin/activate
 
 export DOMAIN=http://box:8081
+export FULL=True
 export DEV
 
 mypy generator.py && ./generator.py || true

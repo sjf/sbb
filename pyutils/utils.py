@@ -19,15 +19,31 @@ from collections import Counter, defaultdict
 from .log import *
 from .shell import read, stderr
 
-def uniq(l):
-  """ Remove duplicates while preserving order. """
-  return list(dict.fromkeys(l))
+### String utils ###
 
-def cmp(a,b):
-  # ascending
-  res = (a > b) - (a < b)
-  # descending
-  return -res
+def md5(f: str) -> str:
+  data = read(f)
+  return md5_value(data)
+
+def md5_value(s: str) -> str:
+  e = s.encode('utf-8')
+  return hashlib.md5(e).hexdigest()
+
+def normalize(s, lower=True, rm_whitespace=False, rm_punctuation=True):
+  """ With the default args: lowercases, collapses whitespace and strips; and removes punctuation (not letter, digit or whitespace). """
+  if lower:
+    s = s.lower() # lowercase
+
+  if rm_whitespace:
+    s = re.sub(r'\s', '', s) # remove all whitespace
+  else:
+    s = re.sub(r'\s+', ' ', s, flags=re.MULTILINE) # collapse whitespace, including newlines
+
+  if rm_punctuation:
+    s = re.sub(r'[^\w\s]', '', s) # remove chars that are not letters, digits or whitespace.
+
+  s = s.strip() # remove leading and trailing whitespace
+  return s
 
 def split(s, sep=','):
   parts = s.split(sep)
@@ -35,58 +51,10 @@ def split(s, sep=','):
   parts = non_empty(parts)
   return parts
 
-def joinl(l, sep="\n", to_str=str, empty=''):
-  if not l:
-    return empty
-  return sep.join(map(to_str,l))
-
-def dictl(d, sort_key=None, sep='\n', empty='{}', to_str_key=lambda x:x, item_sep='='):
-  items = sorted(d.items(), key=sort_key)
-  return joinl([f"{to_str_key(k)}{item_sep}{repr(v)}" for k,v in items], sep=sep, empty=empty)
-
-def mapl(f,seq):
-  return list(map(f,seq))
-
-def filterl(f,seq):
-  return list(filter(f,seq))
-
-def printl(o, sort_key=None):
-  if isinstance(o, dict):
-    s = dictl(o, sort_key=sort_key)
-  elif isinstance(o, Iterable):
-    s = joinl(o)
-  else:
-    s = o
-  print(s)
-
-def printd(d):
-  return pprint.pprint(d)
-
-def filterd(f, d):
-  result = {}
-  for k,v in d.items():
-    if f(k,v):
-      result[k] = v
-  return result
-
 def trunc(s, max_=60):
   if len(s) > max_:
     return s[:max_-3] + '...'
   return s
-
-def containsl(list1, list2):
-  return set(list2).issubset(list1)
-
-def contains_keys(d, keys):
-  return containsl(d.keys(), keys)
-
-def non_empty(l):
-  return list(filter(lambda x:x, l))
-
-def index_or_default(n, l, default):
-  if len(l) <= n:
-    return default
-  return l[n]
 
 def percent(n,d):
   if n == d == 0:
@@ -100,6 +68,61 @@ def smquote(s: str, single=False) -> str:
     return f"‘{s}’"
   return f"“{s}”"
 
+### List utils ###
+
+def uniq(l: List[Any]):
+  """ Remove duplicates while preserving order. """
+  return list(dict.fromkeys(l))
+
+def joinl(l, sep="\n", to_str=str, empty=''):
+  if not l:
+    return empty
+  return sep.join(map(to_str,l))
+
+def mapl(f,seq):
+  return list(map(f,seq))
+
+def filterl(f,seq):
+  return list(filter(f,seq))
+
+def containsl(list1, list2):
+  return set(list2).issubset(list1)
+
+def non_empty(l):
+  return list(filter(lambda x:x, l))
+
+def index_or_default(n, l, default):
+  if len(l) <= n:
+    return default
+  return l[n]
+
+def slist(o):
+  return sorted(list(o))
+
+def minus(l1, l2):
+  return slist(set(l1) - set(l2))
+
+### Dict utils ####
+
+def dictl(d, sort_key=None, sep='\n', empty='{}', to_str_key=lambda x:x, item_sep='='):
+  items = sorted(d.items(), key=sort_key)
+  return joinl([f"{to_str_key(k)}{item_sep}{repr(v)}" for k,v in items], sep=sep, empty=empty)
+
+def printd(d):
+  return pprint.pprint(d)
+
+def filterd(f, d):
+  result = {}
+  for k,v in d.items():
+    if f(k,v):
+      result[k] = v
+  return result
+
+def contains_keys(d, keys):
+  return containsl(d.keys(), keys)
+
+#### File utils ####
+
 def file_line_reader(file_path):
   """ Generator to read file line by line, returns the line number and stripped line."""
   # DEBUG and log(f"Opening {file_path}")
@@ -109,8 +132,15 @@ def file_line_reader(file_path):
       yield line.rstrip(), line_num
       line_num += 1
 
-def time_ms():
-  return int(time.time() * 1000)
+def read_csv(f, delimiter=',', quotechar='"'):
+  result = []
+  with open(f) as fh:
+    reader = csv.reader(fh, delimiter=delimiter, quotechar=quotechar)
+    for line in reader:
+      result.append(line)
+  return result
+
+#### URL/URI utils ####
 
 def url_params(url, keep_blank_values=True, query_only=False):
   """ Returns the URL params as dict where the value is list all the param values. """
@@ -161,6 +191,11 @@ def url_decode(s):
 def url_encode(s):
   return urllib.parse.quote(s)
 
+def url_to_filename(url):
+  url = url.replace('://','_')
+  # Replace forbidden characters with underscores
+  return re.sub(r'[<>:"/\\|?*]', '_', url)
+
 def get_db_uri():
   DB_URI = "mysql://{user}:{password}@{host}/{db}"
   db_host = os.environ.get('DB_HOST')
@@ -169,42 +204,23 @@ def get_db_uri():
   password = read(os.environ.get('DB_PASSWORD_FILE'))
   return DB_URI.format(user=user, password=password, db=db, host=db_host)
 
-def url_to_filename(url):
-  url = url.replace('://','_')
-  # Replace forbidden characters with underscores
-  return re.sub(r'[<>:"/\\|?*]', '_', url)
+#### Others ####
 
-def read_csv(f, delimiter=',', quotechar='"'):
-  result = []
-  with open(f) as fh:
-    reader = csv.reader(fh, delimiter=delimiter, quotechar=quotechar)
-    for line in reader:
-      result.append(line)
-  return result
+def cmp(a,b):
+  # ascending
+  res = (a > b) - (a < b)
+  # descending
+  return -res
 
-def md5(f: str) -> str:
-  data = read(f)
-  return md5_value(data)
+def time_ms():
+  return int(time.time() * 1000)
 
-def md5_value(s: str) -> str:
-  e = s.encode('utf-8')
-  return hashlib.md5(e).hexdigest()
-
-def canon(s):
-  return s.strip().lower().strip('"').strip("'")
-
-def canonnn(s, lower=True, rm_whitespace=False, rm_punctuation=True):
-  s = s.strip() # remove leading and trailing whitespace
-  if lower:
-    s = s.lower() # lower case
-
-  if rm_whitespace:
-    s = re.sub(r'\s', '', s) # remove all whitespace
+def printl(o, sort_key=None):
+  if isinstance(o, dict):
+    s = dictl(o, sort_key=sort_key)
+  elif isinstance(o, Iterable):
+    s = joinl(o)
   else:
-    s = re.sub(r'\s+', ' ', s, flags=re.MULTILINE) # collapse whitespace, including newlines
-
-  if rm_punctuation:
-    s = re.sub(r'[^\w\s]', '', s) # remove chars that are not letters, digits or whitespace.
-  return s
-
+    s = o
+  print(s)
 

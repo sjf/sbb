@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install -q -r requirements.txt
 
 # Ensure the css file was created first.
-COPY out.css /app/out.css
+COPY data/out.css /app/data/out.css
 COPY . /app
 WORKDIR /app
 

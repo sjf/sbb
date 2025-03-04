@@ -25,7 +25,8 @@ class GDefinition:
   raw: Any # The unparsed json received from the API.
 
   # These are only present if the definition was parsed
-  source_url: Optional[str] = None # Attribution URL
+  source_url: Optional[str] = None # URL of the human readable definition
+  offensive: bool = False
   # Parsed definition, ready for frontend.
   word_types: List[GWordTypeDefinition] = field(default_factory=list)
 
@@ -114,6 +115,7 @@ class GPuzzle:
   date: str # Date in the format YYYY-MM-DD.
   center_letter: str
   outer_letters: List[str]
+  missing_answers: List[str]
   hints: List[Hint]
   _answers: List[GAnswer] = field(default_factory=list)
 

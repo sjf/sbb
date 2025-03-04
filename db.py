@@ -72,7 +72,8 @@ class DB:
     puzzle = Puzzle(
       date=p.date,
       center_letter=p.center_letter,
-      outer_letters=joinl(p.outer_letters,sep=','),
+      outer_letters=joinl(p.outer_letters, sep=''),
+      missing_answers=json.dumps(p.missing_answers),
       hints=json.dumps([ asdict(h) for h in p.hints ]))
     return self.upsert_puzzle(puzzle)
 
@@ -252,8 +253,9 @@ class DB:
       puzzle = GPuzzle(
           date=row['date'],
           center_letter=row['center_letter'],
-          outer_letters=split(row['outer_letters']),
+          outer_letters=list(row['outer_letters']),
           _answers=answers,
+          missing_answers=json.loads(row['missing_answers']),
           hints=hints)
       result.append(puzzle)
     return result
@@ -262,13 +264,34 @@ class DB:
     where_term = "WHERE hints IS ''"
     return self.fetch_gpuzzles(where_term=where_term)
 
+  def fetch_definitions(self, words: List[str]) -> Dict[str, GDefinitions]:
+    query = """
+      SELECT *
+      FROM definitions
+      WHERE word IN ({placeholders});"""
+    placeholders = DB.placeholders(len(words))
+    self.cursor.execute(query.format(placeholders=placeholders), words)
+    result = {}
+    for row in self.cursor.fetchall():
+      word = row['word']
+      result[word] = DB.deserialize_gdefs(word, row['definitions'])
+    return result
+
   def fetch_undefined_words(self) -> List[str]:
     query = """
-      SELECT DISTINCT a.word
-      FROM answers a
-      LEFT JOIN definitions d ON a.word = d.word
-      WHERE d.definitions IS NULL
-      ORDER BY a.word;"""
+      SELECT DISTINCT word
+      FROM (
+        SELECT a.word
+        FROM answers a
+        LEFT JOIN definitions d ON a.word = d.word
+        WHERE d.definitions IS NULL
+        UNION
+        SELECT json_each.value
+        FROM puzzles p, json_each(p.missing_answers)
+        LEFT JOIN definitions d ON json_each.value = d.word
+        WHERE d.definitions IS NULL
+      ) AS combined
+      ORDER BY word;"""
     return self._fetch_values(query)
 
   def _fetch_values(self, query: str) -> List[str]:

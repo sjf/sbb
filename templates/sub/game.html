@@ -105,17 +105,17 @@
   </div>
 
   <!-- Hints  -->
-  <div class="mt-4 w-full md:max-w-[400px] mx-auto flex-col items-center">
-    <div class="flex flex-row items-start">
-      <h2 class="text-2xl font-semibold mb-2 inline">Hints</h2>
-        <button id="puzzle-show-hints"
-              data-target="hints"
-              onclick="toggleVisible(this)"
-              class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
-        <span>▼</span>
-      </button>
-    </div>
-    {% if puzzle.hints %}
+  {% if puzzle.hints %}
+    <div class="mt-4 w-full md:max-w-[500px] mx-auto flex-col items-center">
+      <div class="flex flex-row items-start">
+        <h2 class="text-2xl font-semibold mb-2 inline">Hints</h2>
+          <button id="puzzle-toggle-hints"
+                data-target="hints"
+                onclick="toggleVisible(this)"
+                class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
+          <span>▼</span>
+        </button>
+      </div>
       <ul id="hints" class="list-disc pl-6 text-lg">
         {% for hint in puzzle.hints %}
           <li onclick="toggleHintAnswers(this)"
@@ -150,7 +150,39 @@
           </div>
         {% endfor %}
       </ul>
-    {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="mt-4 w-full md:max-w-[500px] mx-auto flex-col items-center">
+    <div class="flex flex-row items-start">
+      <h2 class="text-2xl font-semibold mb-2 inline">Missing words</h2>
+        <button id="puzzle-toggle-missing-answers"
+              data-target="missing-answers"
+              onclick="toggleVisible(this)"
+              class="w-auto text-center pl-2 text-xl pt-1 text-gray-700">
+        <span>▼</span>
+      </button>
+    </div>
+    <div id="missing-answers">
+      {% if puzzle.missing_answers %}
+        <div class="text-lg mb-2">These words can be made with the letters in spelling bee but were not in included the answer set.
+        </div>
+        <div class="flex flex-row items-start">
+          <div class="columns-2 md:columns-3 space-y-0">
+            {% for word in puzzle.missing_answers %}
+              <div class="text-lg break-inside-avoid {% if False %}text-yellow-700 font-bold{% endif %}">
+                <a  href="https://www.merriam-webster.com/dictionary/{{ word }}"
+                    id="puzzle-missing-answer-definition"
+                    target="_blank"
+                    class="border-b-2 border-dashed border-gray-300 cursor-pointer">{{ word }}</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="italic text-gray-700 text-lg">I couldn't find any words today that were not included in the answer set.</div>
+      {% endif %}
+    </div>
   </div>
 
   <!-- Navigation Section -->

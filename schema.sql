@@ -5,6 +5,7 @@ CREATE TABLE puzzles (
   ,date DATE NOT NULL UNIQUE
   ,center_letter TEXT NOT NULL
   ,outer_letters TEXT NOT NULL
+  ,missing_answers TEXT NOT NULL -- JSON serialized List[str]
   ,hints TEXT NOT NULL -- JSON serialized List[Hints]
 );
 

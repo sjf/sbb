@@ -8,8 +8,8 @@ from model import *
 def set_env_globals(env: Optional[Environment]) -> None:
   config['JS_VERSION'] = md5('static_files/static/script.js')
 
-  if exists('out.css') and not config['DEV']:
-    config['CSS_VERSION'] = md5('out.css')
+  if exists('data/out.css') and not config['DEV']:
+    config['CSS_VERSION'] = md5('data/out.css')
   else:
     config['CSS_VERSION'] = 'NOT_GENERATED'
 

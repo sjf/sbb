@@ -333,8 +333,8 @@ class Generator:
   def generate_css(self) -> None:
     if config['DEV']:
       return
-    shell(f'npx tailwindcss -i input.css -o out.css --minify')
-    config['CSS_VERSION'] = md5('out.css')
+    shell(f'npx tailwindcss -i input.css -o data/out.css --minify')
+    config['CSS_VERSION'] = md5('data/out.css')
     self.env.globals.update(css_version=config['CSS_VERSION'])
 
   def generate_static(self) -> None:
@@ -344,7 +344,7 @@ class Generator:
     css_version = config['CSS_VERSION']
     if not config['DEV']:
       shell(f'terser static_files/static/script.js --mangle -o {self.out_dir}/static/script.{js_version}.min.js')
-      cp('out.css', f"{self.out_dir}/static/style.{css_version}.css", verbose=True)
+      cp('data/out.css', f"{self.out_dir}/static/style.{css_version}.css", verbose=True)
     else:
       cp('static_files/static/script.js',  f'{self.out_dir}/static/script.{js_version}.js', verbose=True)
       cp('static_files/static/custom.css', f'{self.out_dir}/static/custom.css', verbose=True)
@@ -381,8 +381,8 @@ class Generator:
     if missing:
       f = log_error if config['IGNORE_MISSING'] else log_fatal
       files = joinl(missing[:20])
-      rest = "\n...\nSee missing.txt for the full list." if len(files) > 20 else ''
-      write('missing.txt', joinl(missing))
+      rest = "\n...\nSee data/missing.txt for the full list." if len(files) > 20 else ''
+      write('data/missing.txt', joinl(missing))
       f(f'Files were not regenerated: {len(missing):,} are missing:\n{files}{rest}')
     if new_files:
       log(f'Generated {len(new_files):,} files.')

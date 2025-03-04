@@ -13,11 +13,12 @@ from typing import List, Any, Dict, Optional
 from pyutils import *
 from pyutils.settings import config
 from hint_generator import HintGenerator
+from wordlist import Wordlist
+from es import ElasticSearch
 from model import *
 from db import *
 from storage import *
 from requester import *
-from es import *
 
 DIR = 'scraped/*.json'
 WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
@@ -29,6 +30,7 @@ class Importer:
     self.requester = Requester(sleep=0.5)
     self.db = DB()
     self.es = ElasticSearch()
+    self.wordlist = Wordlist()
 
   def import_files(self, files) -> None:
     # Elastic search needs the entries to be inserted in order, so the more recent entry have precedence.
@@ -39,16 +41,22 @@ class Importer:
       log(f"Importing {file}")
       content = json.loads(read(file))
       date = content['print_date']
+      answers = content['answers'] + content['pangrams']
+      outer_letters = content['outer_letters'].upper()
+      center_letter = content['center_letter'].upper()
+      missing_answers = self.missing_answers(center_letter, outer_letters, answers)
+
       puzzle = Puzzle(
         id = content['id'],
         date = date,
-        center_letter = content['center_letter'].upper(),
-        outer_letters = list(map(lambda x:x.upper(), content['outer_letters'])),
-        hints = "") # The defintions are needed before hints can be created.
+        center_letter = center_letter.upper(),
+        outer_letters = outer_letters.upper(),
+        missing_answers = json.dumps(missing_answers),
+        hints = "") # The definitions are needed before hints can be created.
       # Re-import everything, even if rows already exist.
       # Puzzles are upate on their post day with clues later.
       puzzle_id = self.db.upsert_puzzle(puzzle, ignore_dups=True) # don't overwrite existing row.
-      self.es.upsert_puzzle(puzzle.date, puzzle.center_letter, puzzle.outer_letters)
+      self.es.upsert_puzzle(date, center_letter, outer_letters)
 
       if content.get('clues', None): # Check if clues are present, because they are not available right away.
         for content_clue in content['clues']:
@@ -71,7 +79,7 @@ class Importer:
           self.db.mark_as_imported(file) # Don't reimport this file.
       else:
         # Clues are not present in the json.
-        for word in content['answers'] + content['pangrams']:
+        for word in answers:
           is_pangram = word in content['pangrams']
           answer = Answer(word = word,
             puzzle_id = puzzle_id,
@@ -86,19 +94,40 @@ class Importer:
     undefined = self.db.fetch_undefined_words()
     not_found = self.import_from_dict_apis(undefined)
     if not_found:
-      log_error(f"Missing definitions for {joinl(not_found, sep=', ')}")
+      log_error(f"Dictionary APIs did not contain: {joinl(not_found, sep=', ')}")
 
-  def generate_hints(self) -> None:
+  def generate_hints_and_missing_answers_from_defs(self) -> None:
+    # Get the puzzles that havent already been analysed
     puzzles = self.db.fetch_puzzles_without_hints()
     for puzzle in puzzles:
       assert not puzzle.hints
       hg = HintGenerator(puzzle)
       hints = hg.get_puzzle_hints()
       puzzle.hints = hints
-      self.db.upsert_gpuzzle(puzzle)
-      log(f'Updated {puzzle.date} with {len(hints)} hints')
-    self.db.commit()
+      log_debug(f'Updated {puzzle.date} with {len(hints)} hints')
     log(f"Created hints for {len(puzzles)} puzzles.")
+
+    to_lookup = []
+    for puzzle in puzzles:
+      to_lookup.extend(puzzle.missing_answers)
+
+    defs = self.db.fetch_definitions(uniq(to_lookup))
+    self.wordlist.update_denylist_from_definitions(defs.values())
+
+    c = 0
+    for puzzle in puzzles:
+      new_answers = self.wordlist.filter_bad(puzzle.missing_answers)
+      diff = minus(puzzle.missing_answers, new_answers)
+      if diff:
+        c += 1
+        mesg = joinl(diff, sep=", ")
+        log(f'Removed {len(diff)} newly-discovered bad missing answers from {puzzle.date}: {mesg}')
+      puzzle.missing_answers = new_answers
+    log(f"Updated missing answers for {c} puzzles.")
+
+    for puzzle in puzzles:
+      self.db.upsert_gpuzzle(puzzle)
+    self.db.commit()
 
   def import_from_dict_apis(self, words: List[str]) -> List[str]:
     if not words: return []
@@ -130,6 +159,30 @@ class Importer:
       return result
     parse_dict_entry(result)
     return result
+
+  def missing_answers(self, center_letter: str, outer_letters: str, answers: List[str]) -> List[str]:
+    center_letter = center_letter.lower()
+    outer_letters = outer_letters.lower()
+    def can_be_spelled(wordset, words, letter_set) -> List[str]:
+      if not center_letter in wordset:
+        return []
+      if wordset - letter_set == set():
+        return words
+      return []
+
+    letter_set = set(list(outer_letters) + [center_letter])
+    valid_words = []
+    for ws,words in self.wordlist.all_words.items():
+      valid_words.extend(can_be_spelled(ws, words, letter_set))
+    missing_answers = minus(valid_words, answers)
+    # missing_from_dict = slist(answer_set - valid_words_set)
+
+    # print('Returned from corpus:', len(valid_words))
+    # print('Answers:', len(answers))
+    # print('Missing from corpus\n' + joinl(missing_from_dict))
+    # print('-------')
+    # print('Not in answers\n' + joinl(missing_answers))
+    return missing_answers
 
 def get_clue_url(text: str) -> str:
   safe_text = to_path_safe_name(text)
@@ -177,5 +230,5 @@ if __name__ == '__main__':
     sys.exit(0)
   importer.import_files(files)
   importer.import_definitions()
-  importer.generate_hints()
+  importer.generate_hints_and_missing_answers_from_defs()
   print(importer.requester.cache_status())

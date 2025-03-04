@@ -4,13 +4,6 @@ from typing import List, Any, Dict, Optional, Tuple
 from pyutils import *
 from model import *
 
-def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
-  """ Create a clue for an answer when the NYT does not have one. """
-  if not defs.has_def:
-    return None
-  # TODO: Don't produce clue text that contains the word.
-  return defs.deff.word_types[0].meanings[0].meaning
-
 def parse_dict_entry(deff: GDefinition) -> None:
   fromm = deff.retrieved_from
   if "api.dictionaryapi.dev" in fromm:
@@ -22,8 +15,12 @@ def parse_dict_entry(deff: GDefinition) -> None:
 
 def parse_mw(deff: GDefinition) -> None:
   try:
+    # This is the link to the human readable MW page.
     deff.source_url = f'https://www.merriam-webster.com/dictionary/{deff.word}'
     for o in deff.raw:
+      if o['meta']['offensive']:
+        # If any sense is offensive, mark whole word as offensive.
+        deff.offensive = True
       td = GWordTypeDefinition(word_type = o['fl']) # functional label
       failed_to_parse = False
       for d in o['def']: # definition
@@ -67,6 +64,28 @@ def parse_wiktionary(deff: GDefinition) -> None:
       deff.word_types.append(td)
       for d in m['definitions']:
         td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
+
+def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
+  """ Create a clue for an answer when the NYT does not have one. """
+  if not defs.has_def:
+    return None
+  # TODO: Don't produce clue text that contains the word.
+  return defs.deff.word_types[0].meanings[0].meaning
+
+def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
+  if not defs.mw:
+    return False, 'no merrian-webster definition'
+  if defs.mw.offensive:
+    return False, 'offensive'
+  is_good = False
+  reason = "abbreviation"
+  for word_type in defs.mw.word_types:
+    reason = "abbreviation"
+    if word_type.word_type != 'abbreviation':
+      is_good = True
+      reason = word_type.word_type
+  # print(defs)
+  return is_good, reason
 
 MW_FORMAT = [
   ('{ldquo}', '“'),

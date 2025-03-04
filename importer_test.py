@@ -83,7 +83,7 @@ def test_import_definitions(temp_db, fake_files, mock_es):
 def test_generate_hints(temp_db, fake_files, mock_es, mock_hg):
   importer = imp.Importer()
   importer.import_files([FILE_1])
-  importer.generate_hints()
+  importer.generate_hints_and_missing_answers_from_defs()
 
   assert mock_hg.call_count == 1
 
@@ -93,17 +93,17 @@ def test_generate_hints(temp_db, fake_files, mock_es, mock_hg):
 def test_reimport_no_regen_hints(temp_db, fake_files, mock_es, mock_hg):
   importer = imp.Importer()
   importer.import_files([FILE_1_NOCLUES])
-  importer.generate_hints()
+  importer.generate_hints_and_missing_answers_from_defs()
 
   assert mock_hg.call_count == 1
   assert importer.db.fetch_gpuzzles()[0].hints == HS_1
 
   importer.import_files([FILE_1])
-  importer.generate_hints()
+  importer.generate_hints_and_missing_answers_from_defs()
   assert mock_hg.call_count == 1
 
   importer.import_files([FILE_1])
-  importer.generate_hints()
+  importer.generate_hints_and_missing_answers_from_defs()
   assert mock_hg.call_count == 1
   assert importer.db.fetch_gpuzzles()[0].hints == HS_1
 

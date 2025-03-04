@@ -6,7 +6,7 @@ import shutil
 
 from .log import log, log_fatal
 
-#### Shell Utils ###
+#### Shell, IO and Filesystem Utils ###
 
 def shell(cmd, env=None, verbose=True, with_output=False):
   if verbose:
@@ -22,10 +22,11 @@ def shell(cmd, env=None, verbose=True, with_output=False):
   result = subprocess.run(cmd, **kwargs)
   return result.stdout
 
-def read(f):
+def read(f, binary=False):
+  mode = 'rb' if binary else 'r'
   if not f:
     raise Exception("Missing file name.")
-  with open(f) as fh:
+  with open(f, mode) as fh:
     return fh.read().strip()
 
 def read_value(f):
@@ -51,15 +52,26 @@ def read_lines(f, to_list=True):
       return list(result)
     return result
 
-def write(f, s, create_dirs=False):
+def write(f, s, create_dirs=False, binary=False):
+  if not f:
+    raise Exception("Missing file name.")
   try:
     if create_dirs:
       dirs = os.path.dirname(f)
-      mkdir(dirs)
-    with open(f, 'w') as fh:
+      if dirs:
+        mkdir(dirs)
+    mode = 'wb' if binary else 'w'
+    with open(f, mode) as fh:
       fh.write(s)
   except Exception as e:
     raise Exception(f"Failed to write to '{f}'") from e
+
+def append(f, s):
+  try:
+    with open(f, 'a') as fh:
+      fh.write(s)
+  except Exception as e:
+    raise Exception(f"Failed to append to '{f}'") from e
 
 def touch(f):
   write(f, '')

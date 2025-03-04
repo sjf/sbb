@@ -6,7 +6,8 @@ from dataclasses import dataclass
 class Puzzle:
   date: str
   center_letter: str
-  outer_letters: List[str]
+  outer_letters: str
+  missing_answers: str
   hints: str
   id: Optional[int] = None
 

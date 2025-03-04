@@ -12,13 +12,24 @@ import db
 @pytest.fixture
 def fake_files(fs, monkeypatch) -> None:
   fs.pause()
+
   test_files = {}
   for file in ls("test-data/*.json"):
-    test_files[basename(file)] = read(file)
+    dest = joinp('scraped', basename(file))
+    test_files[dest] = read(file)
+
+  test_files['words.txt'] = 'aaa'
+  test_files['allowlist.txt'] = 'aaa'
+  test_files['denylist.txt'] = 'aaa'
+  requests_cache = read('test-data/requests_cache.sqlite', binary=True)
+
   fs.resume()
 
-  for file,content in test_files.items():
-    write(f"scraped/{file}", content, create_dirs=True)
+  for filename,content in test_files.items():
+    write(filename, content, create_dirs=True)
+
+  mkdir('data') # auto creating the dirs doesnt work in the fakefs, idk why.
+  write('data/requests_cache.sqlite', requests_cache, binary=True, create_dirs=False)
 
 @pytest.fixture
 def temp_db(fs, monkeypatch) -> None:

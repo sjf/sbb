@@ -30,8 +30,8 @@ class ElasticSearch:
     self.max_retries = config.get('ES_MAX_RETRIES')
     self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
 
-  def upsert_puzzle(self, date: str, center_letter: str, outer_letters: List[str]) -> None:
-    letters = joinl(sorted(outer_letters + [center_letter]), sep='')
+  def upsert_puzzle(self, date: str, center_letter: str, outer_letters: str) -> None:
+    letters = joinl(sorted(outer_letters + center_letter), sep='')
     dt = datetime.datetime.strptime(date, '%Y-%m-%d')
     month_day =      normalize(dt.strftime('%B %-d'))
     month_day_year = normalize(dt.strftime('%B %-d %Y'))
@@ -39,7 +39,7 @@ class ElasticSearch:
     day_month_year = normalize(dt.strftime('%-d %B %Y'))
     url = url_for(date)
     doc = {'type': 'puzzle', 'url': url, 'date': date,
-            'letters': letters, 'center_letter': center_letter, 'outer_letters': joinl(outer_letters, sep=''),
+            'letters': letters, 'center_letter': center_letter, 'outer_letters': outer_letters,
             'month_day': month_day, 'day_month': day_month,
             'month_day_year': month_day_year, 'day_month_year': day_month_year}
     id_ = url
@@ -320,10 +320,4 @@ def es_and(clauses, filters=None):
 def es_or(clauses):
   return {"bool":{"should": clauses}} # should means 'or'
 
-def normalize(s):
-  s = s.lower()
-  s = re.sub(r'[^\w\s]', '', s)  # Remove punctuation
-  s = re.sub(r'\s+', ' ', s)  # Collapse whitespace
-  s = s.strip()
-  return s
 

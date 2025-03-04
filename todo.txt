@@ -1,3 +1,5 @@
+http://app.aspell.net/create
+
 o scraper needs some kind of tests
 
 o on clue archive page, clue text is not selectable

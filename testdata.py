@@ -101,8 +101,8 @@ A2_C = GAnswer(word=W2_C, is_pangram=False, text=T2_C, url=U2_C, puzzle_date=D2,
 AS_2 = sorted([A2_A, A2_B, A2_C])
 AS = sorted(AS_1 + AS_2)
 
-GP_1 = GPuzzle(date=D1, center_letter=C1, outer_letters=L1, _answers=AS_1, hints=[])
-GP_2 = GPuzzle(date=D2, center_letter=C2, outer_letters=L2, _answers=AS_2, hints=[])
+GP_1 = GPuzzle(date=D1, center_letter=C1, outer_letters=L1, _answers=AS_1, hints=[], missing_answers=[])
+GP_2 = GPuzzle(date=D2, center_letter=C2, outer_letters=L2, _answers=AS_2, hints=[], missing_answers=[])
 GPS = [GP_2, GP_1]
 
 GDEF1_A = GDefinitions(word=W1_A,
@@ -119,8 +119,8 @@ H1_B = Hint(score=9,  text='This word is from Japanese.',       words=[W1_C])
 HS_1 = [H1_A, H1_B]
 
 ## Storage classes
-P_1 = Puzzle(date=D1, center_letter=C1, outer_letters=L1, hints='')
-P_2 = Puzzle(date=D2, center_letter=C2, outer_letters=L2, hints='')
+P_1 = Puzzle(date=D1, center_letter=C1, outer_letters=joinl(L1, sep=''), hints='', missing_answers='[]')
+P_2 = Puzzle(date=D2, center_letter=C2, outer_letters=joinl(L2, sep=''), hints='', missing_answers='[]')
 
 CL1_A = Clue(text=T1_A, url=U1_A)
 CL1_B = Clue(text=T1_B, url=U1_B)
