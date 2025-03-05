@@ -55,8 +55,8 @@
     <div class="px-4 py-3 border border-gray-300 rounded-lg hover:shadow-lg transition">
       <p class="text-lg font-medium">{{ item.text }}</p>
       <p class="text-sm italic mt-1">
-        {% for date in item.dates %}
-          {{ format_date(date) }}{% if not loop.last %}, {% endif %}
+        {% for date in item.dates[:3] %}
+          {{ format_date(date) }}{% if not loop.last %} • {% endif %}
         {% endfor %}
       </p>
     </div>
