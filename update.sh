@@ -7,6 +7,9 @@ else
   cd ~/sbb
 fi
 
+# Use globally installed node modules.
+export NODE_PATH=$(npm root -g)
+
 if [ ! -f .venv/bin/activate ]; then
   python3 -m venv .venv
 fi
