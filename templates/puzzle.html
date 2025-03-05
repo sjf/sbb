@@ -21,6 +21,15 @@
   }
 }
 </script>
+
+{% if prev %}
+  <link rel="prev" href="{{url_for(prev)}}">
+{% endif %}
+
+{% if next_ %}
+<link rel="next" href="{{url_for(next_)}}">
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
