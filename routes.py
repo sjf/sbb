@@ -97,7 +97,8 @@ def serve_admin_files(filename):
     return redirect('/admin/login')
   mimetype, _ = mimetypes.guess_type(filename)
   if mimetype is None:
-    mimetype = "text/plain"
+    mimetype = 'text/plain'
+  mimetype = mimetype.replace('text/csv', 'text/plain')
   return send_from_directory(config['ADMIN_FILES_DIR'], filename, mimetype=mimetype)
 
 @bp.route('/health')
