@@ -1,4 +1,4 @@
 #!/bin/bash
 set -xue
 export DEST=~/logs/ 
-goaccess.sh -v ~/logs/sbb-nginx-access.log*
+~/scripts/goaccess.sh -v ~/logs/sbb-nginx-access.log*
