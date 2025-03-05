@@ -4,6 +4,7 @@ import os
 import json
 import elasticsearch
 import fcntl
+import mimetypes
 from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app, abort, session
 from markupsafe import escape
 from http import HTTPStatus
@@ -94,7 +95,10 @@ def admin():
 def serve_admin_files(filename):
   if not session.get("authenticated", False):
     return redirect('/admin/login')
-  return send_from_directory(config['ADMIN_FILES_DIR'], filename, mimetype="text/plain")
+  mimetype, _ = mimetypes.guess_type(filename)
+  if mimetype is None:
+    mimetype = "text/plain"
+  return send_from_directory(config['ADMIN_FILES_DIR'], filename, mimetype=mimetype)
 
 @bp.route('/health')
 def health():
