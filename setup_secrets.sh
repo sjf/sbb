@@ -21,6 +21,14 @@ if [ ! -f secrets/elastic-password.txt ]; then
   # password > secrets/elastic-password.txt
   echo -n elastic > secrets/elastic-password.txt
 fi
+
+## Setup admin password
+if [ ! -f secrets/admin-password.txt ]; then
+  echo Creating admin password...
+  # password > secrets/elastic-password.txt
+  password > secrets/admin-password.txt
+fi
+
 # elasticsearch refuses to start if permissions are not correct.
 chmod 600 secrets/elastic-password.txt
 # This is required because ES requires a specific owner and permissions

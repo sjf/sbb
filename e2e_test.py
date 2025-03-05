@@ -246,8 +246,18 @@ def test_sitemap():
   response = get('/sitemap.xml')
   assert '/definition/' not in response.text
 
-####### Test URL redirects
+####### Test internal pages
 
 def test_health():
   response = get('/health')
   assert_contains(response, 'OK')
+
+@pytest.mark.parametrize('url', ['/admin/index.html', '/admin/emails.csv', '/admin/does-not-exist.txt'])
+def test_admin(url):
+  r = get(url)
+  assert_code(r, 405)
+
+@pytest.mark.parametrize('url', ['/admin/login', '/admin/logout'])
+def test_admin_login(url):
+  r = get(url)
+  assert_contains(r, 'Password')

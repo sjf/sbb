@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    padding: 20px 0 0 40px; /* Reduced top padding */
+    font-size: 1rem; /* Default size for mobile */
+    font-family: Arial, sans-serif; /* Use a clean, readable font */
+  }
+  h2 {
+    margin-bottom: 10px;
+  }
+  ul {
+    padding-left: 10px;
+    font-family: monospace;
+  }
+  li {
+    margin-bottom: 10px; /* More space between bullets */
+  }
+  a {
+    color: inherit; /* Use default text color */
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Reduce text size on larger screens */
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.1rem; /* Slightly larger on tablets */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1rem; /* Smaller on desktop */
+    }
+  }
+</style>
+</head>
+<body>
+  <h2>Files</h2>
+    <ul>
+      {% for file in files %}
+        <li><a href="/admin/{{ file }}">{{ file }}</a></li>
+      {% endfor %}
+    </ul>
+    <p><a href="/admin/logout">Logout</a></p>
+</body>
+</html>

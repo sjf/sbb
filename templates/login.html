@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    padding: 50px 0 0 50px; /* 50px padding from top and left */
+    font-size: 1.2rem; /* Default size for mobile */
+    font-family: Arial, sans-serif; /* Use a clean, readable font */
+  }
+  form {
+    margin-bottom: 20px;
+    max-width: 400px; /* Prevent form from stretching too wide */
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1rem; /* Label slightly smaller */
+  }
+  input[type="password"], input[type="submit"] {
+    font-size: 1rem; /* Default size for mobile */
+    padding: 10px;
+    margin-top: 10px;
+    display: block;
+    width: 100%; /* Make input full-width on small screens */
+    max-width: 300px; /* Limit width on larger screens */
+  }
+
+  /* Increase font size for larger screens */
+  @media (min-width: 768px) {
+    body {
+      font-size: 1.4rem; /* Slightly larger on tablets */
+    }
+    label {
+      font-size: 1.2rem;
+    }
+    input[type="password"], input[type="submit"] {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      font-size: 1.6rem; /* Larger font for desktops */
+    }
+    label {
+      font-size: 1.3rem;
+    }
+    input[type="password"], input[type="submit"] {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <form method="post">
+    <input type="text" name="username" value="admin" hidden>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" autocomplete="current-password">
+    <input type="submit" value="Login">
+  </form>
+  <pre>{{ mesg }}</pre>
+</body>
+</html>

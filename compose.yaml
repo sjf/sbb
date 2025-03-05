@@ -84,13 +84,16 @@ services:
       - ELASTIC_HOST=http://elasticsearch:9200
       - ELASTIC_API_KEY_NAME=read_only_search_key
       - ELASTIC_API_KEY_FILE=/run/secrets/elastic-api-key.txt
+      - ADMIN_PASSWORD_FILE=/run/secrets/admin-password.txt
       - PYUTILS_LOG_DIR=/var/log/
       - PYUTILS_LOG_FILE=backend-docker.log
+      - ADMIN_FILES_DIR=/var/log
     volumes:
       - /home/sjf/logs/:/var/log
     secrets:
       - flask-secret-key.txt
       - elastic-api-key.txt
+      - admin-password.txt
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://127.0.0.1:8000/health || exit 1
       interval: 10s
@@ -135,4 +138,5 @@ secrets:
     file: secrets/elastic-api-key.txt
   flask-secret-key.txt:
     file: secrets/flask-secret-key.txt
-
+  admin-password.txt:
+    file: secrets/admin-password.txt

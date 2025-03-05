@@ -4,7 +4,7 @@ import os
 import json
 import elasticsearch
 import fcntl
-from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app, abort
+from flask import Flask, render_template, request, flash, redirect, send_from_directory, Blueprint, current_app, abort, session
 from markupsafe import escape
 from http import HTTPStatus
 
@@ -61,6 +61,40 @@ if os.getenv('FLASK_ENV') == 'development':
     if exists(joinp(SERVING_DEST, filename)):
       return send_from_directory(SERVING_DEST, filename, mimetype='text/html')
     return abort(404)
+
+@bp.route('/admin/login', methods=['GET', 'POST'])
+def login():
+  if session.get("authenticated", False):
+    return redirect('/admin/index.html')
+  mesg = ""
+  if request.method == 'POST':
+    if request.form.get('password') == read(config['ADMIN_PASSWORD_FILE']):
+      session['authenticated'] = True
+      return redirect('/admin/index.html')
+    else:
+      mesg = "Login failed"
+  return render_template('login.html', mesg=mesg)
+
+@bp.route('/admin/logout')
+def logout():
+  session.pop('authenticated', None)
+  return redirect('/admin/login')
+
+@bp.route('/admin/index.html')
+def admin():
+  if not session.get("authenticated", False):
+    return redirect('/admin/login')
+  dir = config['ADMIN_FILES_DIR']
+  files = os.listdir(dir)
+  files = filter(lambda f:is_file(joinp(dir,f)), files)
+  files = sorted(files)
+  return render_template('files.html', files=files)
+
+@bp.route('/admin/<path:filename>')
+def serve_admin_files(filename):
+  if not session.get("authenticated", False):
+    return redirect('/admin/login')
+  return send_from_directory(config['ADMIN_FILES_DIR'], filename, mimetype="text/plain")
 
 @bp.route('/health')
 def health():
