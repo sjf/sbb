@@ -138,7 +138,7 @@ def test_signup():
   response = post(f'/thank-you', {'email':email})
   assert_contains(response, 'Thank you')
   assert not 'Sign up' in response.text
-  assert email in read(get_log_dir() + config['EMAIL_FILE'])
+  assert email in read(joinp(get_log_dir(), config['EMAIL_FILE']))
 
 def test_js():
   for url in ['/', '/search?q=cathode']:
