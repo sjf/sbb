@@ -58,7 +58,7 @@ jobs:
         if: failure()
         uses: namespacelabs/breakpoint-action@v0
         with:
-          duration: 15m
+          duration: 10m
           authorized-users: sjf
 
       # - name: Compress log files into logs.tgz
