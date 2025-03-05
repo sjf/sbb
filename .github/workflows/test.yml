@@ -50,6 +50,7 @@ jobs:
         env:
           BACKEND: https://localhost
           VERIFY_SSL: False
+          PYUTILS_LOG_DIR: /home/sjf/logs
           PYTHONWARNINGS: ignore:Unverified HTTPS request
         run: |
           ./e2e_tests.sh -m "testdata or unmarked"
