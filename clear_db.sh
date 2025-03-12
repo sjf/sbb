@@ -1,7 +1,8 @@
 #!/bin/bash
+set -u
 set -x
 
-rm -f nyt.db
+rm -f data/nyt.db
 # rm -rf site/*
 elasticsearch/clear.sh
 elasticsearch/setup_indexes.sh
