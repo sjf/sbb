@@ -91,7 +91,7 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
     elif '-' in hw:
       reason += f'headword:`{hw}` contains dash; '
     elif defs.word != hw and defs.word not in hom['meta']['stems']:
-      reason += f'{defs.word} not in HW or stems: {hw}, {hom['meta']['stems']}; '
+      reason += f"{defs.word} not in HW or stems: {hw}, {hom['meta']['stems']}; "
     elif hom['meta']['offensive']:
       # Don't use a word with any offensive meaning.
       return False, f'`{hw}` is offensive, {hom["shortdef"]}; '
