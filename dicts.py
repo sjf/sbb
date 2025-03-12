@@ -6,8 +6,8 @@ from pyutils.settings import config
 from model import *
 from requester import *
 
-WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 DICT_APIS = [MW_API, WIKTIONARY_API]
 
 class Dicts:
@@ -22,7 +22,14 @@ class Dicts:
     results, missing = [], []
     log(f"Looking up [{len(words)}] words:\n{joinl(words, ', ')}")
     for word in words:
-      defs = [self._retrieve_from_dict_api(word, url_fmt) for url_fmt in DICT_APIS]
+      # print(word)
+      defs = []
+      for url_fmt in DICT_APIS:
+        deff = self._retrieve_from_dict_api(word, url_fmt)
+        if deff.parsed:
+          # print(f'using {url_fmt}')
+          defs.append(deff)
+          break
       result = GDefinitions(word=word, defs=defs)
       if result.has_def:
         n += 1
@@ -64,6 +71,7 @@ class Dicts:
       return result
     if isinstance(response.json(), list) and all(isinstance(item, str) for item in response.json()):
       # MW never returns 404, it returns a list of suggested words.
+      log(f'Merriam-webster not found {word}')
       return result
     Dicts._parse_dict_entry(result)
     return result

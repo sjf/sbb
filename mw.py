@@ -4,6 +4,8 @@ from typing import List, Any, Dict, Optional, Tuple
 from pyutils import *
 from model import *
 
+DEBUG = config['DEBUG']
+
 def parse_mw(deff: GDefinition) -> None:
   try:
     # This is the link to the human readable MW page.
@@ -66,7 +68,7 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
   good = filterl(lambda t:not(is_banned(t)), types)
   bad = filterl(is_banned, types)
   # if bad and good:
-  # print(f'{defs.word} {bad} {good}')
+  DEBUG and print(f'{defs.word} {bad} {good}')
   if not good:
     return False, f"Homs are all bad word types: {joinl(bad,', ')}"
 
@@ -90,6 +92,8 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
       reason += f'headword:`{hw}` contains uppercase; '
     elif '-' in hw:
       reason += f'headword:`{hw}` contains dash; '
+    elif re.search('[^a-z]', hw):
+      reason += f'headword:`{hw}` contains non-ascii; '
     elif defs.word != hw and defs.word not in hom['meta']['stems']:
       reason += f"{defs.word} not in HW or stems: {hw}, {hom['meta']['stems']}; "
     elif hom['meta']['offensive']:
@@ -102,7 +106,7 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
       # print(hw)
       # print(json.dumps(hom, indent=4))
       # print('-------------------------------')
-  # print(defs.word, 'Headwords:', hws)
+  DEBUG and print(defs.word, 'Headwords:', hws)
   if not head_word_ok:
     return False, reason
 
