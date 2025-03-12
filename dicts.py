@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+import mw
 from typing import List, Any, Dict, Optional, Set
 from pyutils import *
 from pyutils.settings import config
-from mw import parse_dict_entry
 from model import *
 from requester import *
 
@@ -33,6 +33,25 @@ class Dicts:
     log(f"Got definitions for {n} words{mesg}.")
     return results
 
+  def _parse_dict_entry(deff: GDefinition) -> None:
+    fromm = deff.retrieved_from
+    if "api.dictionaryapi.dev" in fromm:
+      Dicts._parse_wiktionary(deff)
+    elif "dictionaryapi.com" in fromm:
+      mw.parse_mw(deff)
+    else:
+      raise Exception(f"Unhandled dict source {fromm}")
+
+  def _parse_wiktionary(deff: GDefinition) -> None:
+    # Wikitionary 3rd party API.
+    deff.source_url = deff.raw[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
+    for sense in deff.raw:
+      for m in sense.get('meanings',[]):
+        td = GWordTypeDefinition(word_type = m['partOfSpeech'])
+        deff.word_types.append(td)
+        for d in m['definitions']:
+          td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
+
   def _retrieve_from_dict_api(self, word: str, url_fmt: str) -> GDefinition:
     url = url_fmt.format(word=word)
     response = self.requester.get(url)
@@ -44,5 +63,5 @@ class Dicts:
     if isinstance(response.json(), list) and all(isinstance(item, str) for item in response.json()):
       # MW never returns 404, it returns a list of suggested words.
       return result
-    parse_dict_entry(result)
+    Dicts._parse_dict_entry(result)
     return result

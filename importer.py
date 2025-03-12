@@ -79,8 +79,9 @@ class Importer:
             clue_id = None,
             is_pangram = is_pangram)
           self.db.upsert_answer(answer)
-      self.db.commit()
       n += 1
+    self.db.commit()
+    self.es.commit()
     log(f"Imported {n} files.")
 
   def import_definitions(self) -> None:

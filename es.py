@@ -1,6 +1,7 @@
 import re
 import elasticsearch
 from elasticsearch import Elasticsearch, helpers
+from elasticsearch.helpers import bulk
 import langcodes
 from functools import cmp_to_key
 from collections import defaultdict
@@ -30,6 +31,8 @@ class ElasticSearch:
     self.max_retries = config.get('ES_MAX_RETRIES')
     self.retry_delay_secs = config.get('RETRY_DELAY_SECS')
 
+    self.updates = {}
+
   def upsert_puzzle(self, date: str, center_letter: str, outer_letters: str) -> None:
     letters = joinl(sorted(outer_letters + center_letter), sep='')
     dt = datetime.datetime.strptime(date, '%Y-%m-%d')
@@ -43,23 +46,23 @@ class ElasticSearch:
             'month_day': month_day, 'day_month': day_month,
             'month_day_year': month_day_year, 'day_month_year': day_month_year}
     id_ = url
-    self._upsert(doc, id_)
+    self.updates[id_] = doc
 
   def upsert_clue(self, url: str, word: str, text: str, date: str) -> None:
     # If the clues are inserted in chronological order, only the last clue will be stored when there
     # are clues with the same text and word. We only the most recent to show up in the search results.
     doc = {'type': 'clue', 'url': url, 'date': date, 'word': word, 'text': text}
     id_ = md5_value(word + '_' + text)
-    self._upsert(doc, id_)
+    self.updates[id_] = doc
 
-  def _upsert(self, doc: Dict[Any,Any], id_: str) -> None:
+  def commit(self):
+    updates = [{'_op_type': 'index', '_index': self.index, '_id': id_, '_source': doc, 'doc_as_upsert': True} for id_,doc in self.updates.items()]
     retries = self.max_retries + 1
     success = 0
-
+    log(f'Upserting {len(updates)} documents into Elasticsearch')
     while retries > 0:
       try:
-        body = {'doc': doc, 'doc_as_upsert': True}
-        self.es.update(index=self.index, id=id_, body=body)
+        bulk(self.es, updates)
         break # Don't retry
       except (elasticsearch.AuthenticationException, elasticsearch.AuthorizationException) as e:
         raise e

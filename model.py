@@ -26,7 +26,6 @@ class GDefinition:
 
   # These are only present if the definition was parsed
   source_url: Optional[str] = None # URL of the human readable definition
-  offensive: bool = False
   # Parsed definition, ready for frontend.
   word_types: List[GWordTypeDefinition] = field(default_factory=list)
 

@@ -4,24 +4,16 @@ from typing import List, Any, Dict, Optional, Tuple
 from pyutils import *
 from model import *
 
-def parse_dict_entry(deff: GDefinition) -> None:
-  fromm = deff.retrieved_from
-  if "api.dictionaryapi.dev" in fromm:
-    parse_wiktionary(deff)
-  elif "dictionaryapi.com" in fromm:
-    parse_mw(deff)
-  else:
-    raise Exception(f"Unhandled dict source {fromm}")
-
 def parse_mw(deff: GDefinition) -> None:
   try:
     # This is the link to the human readable MW page.
     deff.source_url = f'https://www.merriam-webster.com/dictionary/{deff.word}'
     for hom in deff.raw:
-      if hom['meta']['offensive']:
-        # If any sense is offensive, mark whole word as offensive.
-        deff.offensive = True
-      td = GWordTypeDefinition(word_type = hom['fl']) # functional label
+      fl = hom.get('fl', None)  # functional label
+      if not fl:
+        # No word type, can't handle this.
+        continue
+      td = GWordTypeDefinition(word_type = fl)
       failed_to_parse = False
       for d in hom['def']: # definition
         for s in d['sseq']: # sense
@@ -53,17 +45,7 @@ def parse_mw(deff: GDefinition) -> None:
         deff.word_types.append(td)
   except Exception as ex:
     # Just catch failures b/c the MW format is complex.
-    log_debug(f"Can't parse MW entry for {deff.retrieved_from}", ex)
-
-def parse_wiktionary(deff: GDefinition) -> None:
-  # Wikitionary 3rd party API.
-  deff.source_url = deff.raw[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
-  for sense in deff.raw:
-    for m in sense.get('meanings',[]):
-      td = GWordTypeDefinition(word_type = m['partOfSpeech'])
-      deff.word_types.append(td)
-      for d in m['definitions']:
-        td.meanings.append(GWordMeaning(meaning = d['definition'], example = d.get('example',None)))
+    log(f"Can't parse MW entry for {deff.retrieved_from}", ex)
 
 def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
   """ Create a clue for an answer when the NYT does not have one. """
@@ -76,7 +58,7 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
   if not defs.mw:
     return False, 'No MW'
 
-  banned = ['abbreviation', 'combining form', 'biographical name', 'trademark', 'geographical name']
+  banned = ['abbreviation', 'combining form', 'biographical name', 'trademark', 'geographical name', 'prefix']
   def is_banned(wt: str) -> bool:
     return wt in banned or 'phrase' in wt.lower()
 
@@ -84,7 +66,7 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
   good = filterl(lambda t:not(is_banned(t)), types)
   bad = filterl(is_banned, types)
   # if bad and good:
-  print(f'{defs.word} {bad} {good}')
+  # print(f'{defs.word} {bad} {good}')
   if not good:
     return False, f"Homs are all bad word types: {joinl(bad,', ')}"
 
@@ -95,28 +77,34 @@ def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
   head_word_ok, reason = False, ''
   hws = []
   for hom in defs.mw.raw:
-    word_type = hom['fl']
-    if word_type in banned:
+    word_type = hom.get('fl', '')
+    if is_banned(word_type):
       continue
+
     hw = hom['hwi']['hw']
     hw = hw.replace('*', '')
-    hws.append(hw)
+
     if ' ' in hw:
       reason += f'headword:`{hw}` contains space; '
     elif re.match('[A-Z]', hw):
       reason += f'headword:`{hw}` contains uppercase; '
     elif '-' in hw:
       reason += f'headword:`{hw}` contains dash; '
+    elif defs.word != hw and defs.word not in hom['meta']['stems']:
+      reason += f'{defs.word} not in HW or stems: {hw}, {hom['meta']['stems']}; '
+    elif hom['meta']['offensive']:
+      # Don't use a word with any offensive meaning.
+      return False, f'`{hw}` is offensive, {hom["shortdef"]}; '
     else:
+      hws.append(f'{hw} {hom["shortdef"]}  {hom["meta"]["id"]}')
       # At least one valid headword
       head_word_ok = True
-  print(defs.word, 'Headwords:', hws)
-
+      # print(hw)
+      # print(json.dumps(hom, indent=4))
+      # print('-------------------------------')
+  # print(defs.word, 'Headwords:', hws)
   if not head_word_ok:
     return False, reason
-
-  if defs.mw.offensive:
-    return False, 'offensive'
 
   return True, None
 
