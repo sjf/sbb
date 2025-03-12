@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ue
+# set -x
 
 if [[ -n "${GITHUB_RUN_ID:-}" ]]; then
   cd ~/work/sbb/sbb
@@ -38,4 +39,6 @@ elif [[ $CMD == 'generator' ]]; then
   ./generator.py
 elif [[ $CMD == 'e2e' ]]; then
   pytest e2e_test.py "$@"
+else
+  echo Command \"$CMD\" not recognized, use all, github, generator or e2e.
 fi
