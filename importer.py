@@ -9,7 +9,7 @@ import requests_cache
 from requests.adapters import HTTPAdapter
 from dataclasses import dataclass, asdict, fields, field
 from urllib3.util.retry import Retry
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict, Optional, Set
 from pyutils import *
 from pyutils.settings import config
 from hint_generator import HintGenerator
@@ -163,7 +163,7 @@ class Importer:
   def missing_answers(self, center_letter: str, outer_letters: str, answers: List[str]) -> List[str]:
     center_letter = center_letter.lower()
     outer_letters = outer_letters.lower()
-    def can_be_spelled(wordset, words, letter_set) -> List[str]:
+    def can_be_spelled(wordset: Set[str], words: List[str], letter_set: Set[str]) -> List[str]:
       if not center_letter in wordset:
         return []
       if wordset - letter_set == set():
