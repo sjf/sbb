@@ -1,7 +1,6 @@
 import re
 import elasticsearch
 from elasticsearch import Elasticsearch, helpers
-from elasticsearch.helpers import bulk
 import langcodes
 from functools import cmp_to_key
 from collections import defaultdict
@@ -62,8 +61,10 @@ class ElasticSearch:
     log(f'Upserting {len(updates)} documents into Elasticsearch')
     while retries > 0:
       try:
-        bulk(self.es, updates)
-        break # Don't retry
+        success, failed = helpers.bulk(self.es, updates)
+        if not failed:
+          break # Don't retry
+        log_error('Bulk upsert failed: ', failed)
       except (elasticsearch.AuthenticationException, elasticsearch.AuthorizationException) as e:
         raise e
       except Exception as ex:

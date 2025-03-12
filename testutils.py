@@ -45,7 +45,8 @@ def mock_es(fs) -> Generator:
   write(config.get('ELASTIC_API_KEY_FILE'), 'test-elastic-api-key', create_dirs=True)
 
   with patch("elasticsearch.Elasticsearch.search") as mock_search, \
-       patch("elasticsearch.Elasticsearch.update") as mock_update:
+       patch("elasticsearch.Elasticsearch.update") as mock_update, \
+       patch("elasticsearch.helpers.bulk") as mock_bulk:
     mock_search.return_value = {
       "hits": {"hits": [{"_source": {"text": "Fake Clue"}}]}
     }
@@ -54,7 +55,8 @@ def mock_es(fs) -> Generator:
       "_id": "test-id-123",
       "result": "updated"
     }
-    yield {"search": mock_search, "update": mock_update}
+    mock_bulk.return_value = (10, 0)
+    yield {"search": mock_search, "update": mock_update, "bulk": mock_bulk}
 
 @pytest.fixture
 def mock_hg() -> Generator:

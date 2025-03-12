@@ -15,7 +15,7 @@ def test_importfiles_succeeds(temp_db, fake_files, mock_es):
   importer = imp.Importer()
   importer.import_files(FILES)
 
-  assert_calls(mock_es["update"], ES_UPDATES)
+  mock_es["bulk"].assert_called_once_with(importer.es.es, ES_UPDATES)
 
   clue_pages = importer.db.fetch_gclue_pages()
   assert clue_pages == GC_PAGES
@@ -34,7 +34,11 @@ def test_reimportfiles_succeeds(temp_db, fake_files, mock_es):
   importer.import_files(FILES)
   importer.import_files(FILES)
 
-  mock_es["update"].assert_has_calls(ES_UPDATES)
+  assert mock_es["bulk"].call_count == 2
+  mock_es["bulk"].assert_has_calls([
+    call(importer.es.es, ES_UPDATES),
+    call(importer.es.es, ES_UPDATES)
+  ])
   assert importer.db.fetch_gpuzzles() == GPS
   assert importer.db.fetch_ganswers() == AS
 
@@ -42,7 +46,6 @@ def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   importer = imp.Importer()
   importer.import_files([FILE_1_NOCLUES])
 
-  assert_calls(mock_es["update"], ES_UPDATES_1[0:1]) # Only puzzle is imported
   assert importer.db.fetch_ganswers() == AS_NC_1
   puzzle = deepcopy(GP_1)
   puzzle._answers = AS_NC_1
@@ -53,7 +56,11 @@ def test_reimportfiles_with_new_clues(temp_db, fake_files, mock_es):
   # Reimport with clues.
   importer.import_files([FILE_1])
 
-  mock_es["update"].assert_has_calls(ES_UPDATES_1)
+  assert mock_es["bulk"].call_count == 2
+  mock_es["bulk"].assert_has_calls([
+    call(importer.es.es, [ES_UPDATE_P1]),
+    call(importer.es.es, ES_UPDATES_1)
+  ])
   assert importer.db.fetch_ganswers() == AS_1
   assert importer.db.fetch_gpuzzles() == [GP_1]
 
@@ -61,13 +68,16 @@ def test_files_not_reimported(temp_db, fake_files, mock_es):
   importer = imp.Importer()
   importer.import_files([FILE_1_NOCLUES, FILE_2])
 
-  mock_es["update"].assert_has_calls(ES_UPDATES_2)
   assert not importer.db.is_imported(FILE_1_NOCLUES)
   assert importer.db.is_imported(FILE_2)
 
   importer.import_files([FILE_1_NOCLUES, FILE_2])
 
-  mock_es["update"].assert_has_calls(ES_UPDATES_2)
+  assert mock_es["bulk"].call_count == 2
+  mock_es["bulk"].assert_has_calls([
+    call(importer.es.es, [ES_UPDATE_P1] + ES_UPDATES_2),
+    call(importer.es.es, [ES_UPDATE_P1] + ES_UPDATES_2)
+  ])
   assert not importer.db.is_imported(FILE_1_NOCLUES)
   assert importer.db.is_imported(FILE_2)
 

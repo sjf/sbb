@@ -33,6 +33,7 @@ class Dicts:
     log(f"Got definitions for {n} words{mesg}.")
     return results
 
+  @staticmethod
   def _parse_dict_entry(deff: GDefinition) -> None:
     fromm = deff.retrieved_from
     if "api.dictionaryapi.dev" in fromm:
@@ -42,6 +43,7 @@ class Dicts:
     else:
       raise Exception(f"Unhandled dict source {fromm}")
 
+  @staticmethod
   def _parse_wiktionary(deff: GDefinition) -> None:
     # Wikitionary 3rd party API.
     deff.source_url = deff.raw[0]['sourceUrls'][0] # idk why there needs to be >1 source url.
