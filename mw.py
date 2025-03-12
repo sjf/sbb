@@ -17,13 +17,13 @@ def parse_mw(deff: GDefinition) -> None:
   try:
     # This is the link to the human readable MW page.
     deff.source_url = f'https://www.merriam-webster.com/dictionary/{deff.word}'
-    for o in deff.raw:
-      if o['meta']['offensive']:
+    for hom in deff.raw:
+      if hom['meta']['offensive']:
         # If any sense is offensive, mark whole word as offensive.
         deff.offensive = True
-      td = GWordTypeDefinition(word_type = o['fl']) # functional label
+      td = GWordTypeDefinition(word_type = hom['fl']) # functional label
       failed_to_parse = False
-      for d in o['def']: # definition
+      for d in hom['def']: # definition
         for s in d['sseq']: # sense
           for subsense in s:
             if subsense[0] == 'sense':
@@ -45,7 +45,7 @@ def parse_mw(deff: GDefinition) -> None:
                 td.meanings.append(GWordMeaning(meaning = meaning, example = example))
         if failed_to_parse:
           # Just use the short definition.
-          for meaning in o['shortdef']:
+          for meaning in hom['shortdef']:
             if meaning:
               td.meanings.append(GWordMeaning(meaning = meaning, example = None))
       if td.meanings:
@@ -74,18 +74,51 @@ def get_clue_from_def(defs: GDefinitions) -> Optional[str]:
 
 def is_good(defs: GDefinitions) -> Tuple[bool, Optional[str]]:
   if not defs.mw:
-    return False, 'no merrian-webster definition'
+    return False, 'No MW'
+
+  banned = ['abbreviation', 'combining form', 'biographical name', 'trademark', 'geographical name']
+  def is_banned(wt: str) -> bool:
+    return wt in banned or 'phrase' in wt.lower()
+
+  types = [wt.word_type for wt in defs.mw.word_types]
+  good = filterl(lambda t:not(is_banned(t)), types)
+  bad = filterl(is_banned, types)
+  # if bad and good:
+  print(f'{defs.word} {bad} {good}')
+  if not good:
+    return False, f"Homs are all bad word types: {joinl(bad,', ')}"
+
+  # for word_type in defs.mw.word_types:
+  #   if word_type.word_type in ['abbreviation', 'combining form']:
+  #     return False, word_type.word_type
+
+  head_word_ok, reason = False, ''
+  hws = []
+  for hom in defs.mw.raw:
+    word_type = hom['fl']
+    if word_type in banned:
+      continue
+    hw = hom['hwi']['hw']
+    hw = hw.replace('*', '')
+    hws.append(hw)
+    if ' ' in hw:
+      reason += f'headword:`{hw}` contains space; '
+    elif re.match('[A-Z]', hw):
+      reason += f'headword:`{hw}` contains uppercase; '
+    elif '-' in hw:
+      reason += f'headword:`{hw}` contains dash; '
+    else:
+      # At least one valid headword
+      head_word_ok = True
+  print(defs.word, 'Headwords:', hws)
+
+  if not head_word_ok:
+    return False, reason
+
   if defs.mw.offensive:
     return False, 'offensive'
-  is_good = False
-  reason = "abbreviation"
-  for word_type in defs.mw.word_types:
-    reason = "abbreviation"
-    if word_type.word_type != 'abbreviation':
-      is_good = True
-      reason = word_type.word_type
-  # print(defs)
-  return is_good, reason
+
+  return True, None
 
 MW_FORMAT = [
   ('{ldquo}', '“'),

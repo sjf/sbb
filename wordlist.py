@@ -77,7 +77,8 @@ class Wordlist:
       if word in self.allow_list:
         log(f'{word} considered bad by MW because "{reason}", but overriden by allowlist')
         continue
-      log(f'Adding {word} to denylist because "{reason}"')
+      if reason != 'No MW':
+        log(f'Adding {word} to denylist because "{reason}"')
       self.deny_list[word] = reason
       n_added += 1
 
