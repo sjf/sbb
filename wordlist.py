@@ -36,8 +36,8 @@ class Wordlist:
           continue # too short.
         if re.match('[^a-z]', word):
           continue # contains uppercase; punctuation e.g. hyphen, period, apostrophe; or digits.
-        if 's' in word:
-          continue # letter set will never contain s; this is a choice by the game creator.
+        #if 's' in word:
+        #  continue # letter set will never contain s; this is a choice by the game creator.
         if word in self.deny_list:
           continue # already disallowed.
         word = word.lower()

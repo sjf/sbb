@@ -113,7 +113,7 @@ class ElasticSearch:
                  exact_string('day_month_year', q)]
     l = q.replace(' ', '').upper()
     l = joinl(sorted(l), sep='')
-    if len(l) == len(set(l)) == 7 and 's' not in l:
+    if len(l) == len(set(l)) == 7: # and 's' not in l:
       or_terms.append(exact_string('letters', l))
 
     return es_and([exact_string('type', 'puzzle'), es_or(or_terms)])
