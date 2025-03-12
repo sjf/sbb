@@ -266,10 +266,11 @@ class PaginateByNum:
 
   @property
   def prev(self) -> Optional[str]:
-    if not self.has_next:
+    if self.current <= 1:
+      # No previous
       return None
     if self.current == 2:
-      # Don't use page=1
+      # Omit page param when page=1
       return self.base_url
     return replace_url_param(self.base_url, 'page', self.current - 1)
 
