@@ -120,9 +120,9 @@ class Generator:
     max_date = puzzles[0].date
     min_date = puzzles[-1].date
 
-    needs_gen = filter(lambda p:not self.db.is_generated(url_for(p)), puzzles)
+    # needs_gen = filterl(lambda p:not self.db.is_generated(url_for(p)), puzzles) + puzzles[-3:]
     c = 0
-    for i, puzzle in enumerate(needs_gen):
+    for i, puzzle in enumerate(puzzles):
       url = url_for(puzzle)
       next_ = None
       if i > 0:
