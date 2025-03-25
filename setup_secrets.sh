@@ -29,6 +29,12 @@ if [ ! -f secrets/admin-password.txt ]; then
   password > secrets/admin-password.txt
 fi
 
+## Setup admin password
+if [ ! -f secrets/mw-api-key.txt ]; then
+  echo Creating MW api key...
+  echo 96fd70b1-b580-4119-b2ce-25e0988a2252 > secrets/mw-api-key.txt
+fi
+
 # elasticsearch refuses to start if permissions are not correct.
 chmod 600 secrets/elastic-password.txt
 # This is required because ES requires a specific owner and permissions
