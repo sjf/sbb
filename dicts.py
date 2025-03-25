@@ -6,7 +6,7 @@ from pyutils.settings import config
 from model import *
 from requester import *
 
-MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+MW_API = 'https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key=' + read_value(config['MW_API_KEY_FILE'])
 WIKTIONARY_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
 DICT_APIS = [MW_API, WIKTIONARY_API]
 

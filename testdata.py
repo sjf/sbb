@@ -444,7 +444,7 @@ MW_INPUT="""
 ]
 """
 MW_WORD_2 = "lima"
-MW_SOURCE_2 = 'https://dictionaryapi.com/api/v3/references/collegiate/json/lima?key=96fd70b1-b580-4119-b2ce-25e0988a2252'
+MW_SOURCE_2 = 'https://dictionaryapi.com/api/v3/references/collegiate/json/lima?key=ABCD'
 MW_INPUT_2 = """
 [
   {
